@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>영진마켓 | 지역 브랜드를 발견하다</title>
+  <meta
+    name="description"
+    content="영진관광이 엄선한 농산, 축산, 수산, 카페 지역 브랜드를 만나보세요."
+  >
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- 상단 헤더 -->
+    <header class="main-header">
+      <button class="brand-logo" id="logoButton" aria-label="홈으로 이동">
+        <span class="brand-symbol">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+
+        <span class="brand-text">
+          <strong>영진마켓</strong>
+          <small>Discover Brands</small>
+        </span>
+      </button>
+
+      <div class="header-actions">
+        <button class="icon-button notification-button" aria-label="알림">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10 21h4"></path>
+          </svg>
+          <span class="notification-dot"></span>
+        </button>
+
+        <button class="icon-button" aria-label="메뉴">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- 홈 화면 -->
+      <section id="homePage" class="page active-page">
+        <div class="search-box home-search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+
+          <input
+            id="homeSearch"
+            type="search"
+            placeholder="찾고 싶은 브랜드나 이야기를 검색해보세요"
+            autocomplete="off"
+          >
+        </div>
+
+        <!-- 메인 배너 -->
+        <section class="main-hero">
+          <img
+            src="https://loremflickr.com/1400/850/tour,bus,coast?lock=410"
+            alt="영진관광 로컬 브랜드 여행 버스"
+          >
+
+          <div class="hero-overlay"></div>
+
+          <div class="hero-content">
+            <p class="hero-label">LOCAL BRAND JOURNEY</p>
+            <h1>
+              영진관광에서<br>
+              만나는 로컬 브랜드
+            </h1>
+
+            <p class="hero-description">
+              여행의 즐거움은<br>
+              좋은 브랜드를 만나는 것에서 시작됩니다.
+            </p>
+
+            <button class="dark-button" id="storyButton">
+              브랜드 이야기 보기
+              <span>›</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 카테고리 -->
+        <section class="category-grid" aria-label="상품 카테고리">
+          <button class="category-card agriculture" data-category="agriculture">
+            <div class="category-copy">
+              <h2>농산</h2>
+              <p>과일, 채소, 쌀</p>
+              <span class="category-arrow">→</span>
+            </div>
+
+            <img
+              src="https://loremflickr.com/700/600/vegetable,fruit?lock=201"
+              alt="농산물"
+            >
+          </button>
+
+          <button class="category-card livestock" data-category="livestock">
+            <div class="category-copy">
+              <h2>축산</h2>
+              <p>한우, 돼지고기, 계란</p>
+              <span class="category-arrow">→</span>
+            </div>
+
+            <img
+              src="https://loremflickr.com/700/600/meat,egg?lock=202"
+              alt="축산물"
+            >
+          </button>
+
+          <button class="category-card seafood" data-category="seafood">
+            <div class="category-copy">
+              <h2>수산</h2>
+              <p>생선, 해산물</p>
+              <span class="category-arrow">→</span>
+            </div>
+
+            <img
+              src="https://loremflickr.com/700/600/fish,seafood?lock=203"
+              alt="수산물"
+            >
+          </button>
+
+          <button class="category-card cafe" data-category="cafe">
+            <div class="category-copy">
+              <h2>카페</h2>
+              <p>커피, 디저트, 베이커리</p>
+              <span class="category-arrow">→</span>
+            </div>
+
+            <img
+              src="https://loremflickr.com/700/600/coffee,cake?lock=204"
+              alt="카페와 디저트"
+            >
+          </button>
+        </section>
+
+        <!-- 새 브랜드 -->
+        <section class="new-brand-section">
+          <div class="section-heading">
+            <h2>새롭게 만난 브랜드</h2>
+
+            <button id="viewAllButton" class="text-button">
+              전체 보기
+              <span>›</span>
+            </button>
+          </div>
+
+          <div id="newBrandList" class="new-brand-list"></div>
+        </section>
+
+        <!-- 서비스 안내 -->
+        <section class="trust-section">
+          <article>
+            <span class="trust-icon">⌖</span>
+            <div>
+              <strong>전국 로컬 브랜드</strong>
+              <p>영진관광이 직접 발굴하고 소개합니다.</p>
+            </div>
+          </article>
+
+          <article>
+            <span class="trust-icon">✿</span>
+            <div>
+              <strong>영진관광 추천</strong>
+              <p>믿을 수 있는 브랜드만 엄선하여 추천합니다.</p>
+            </div>
+          </article>
+
+          <article>
+            <span class="trust-icon">♡</span>
+            <div>
+              <strong>브랜드 스토리</strong>
+              <p>사람과 철학이 담긴 진짜 이야기를 전합니다.</p>
+            </div>
+          </article>
+
+          <article>
+            <span class="trust-icon">♢</span>
+            <div>
+              <strong>안심하고 연결</strong>
+              <p>공식 스토어로 안전하게 연결해 드립니다.</p>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <!-- 카테고리 화면 -->
+      <section id="categoryPage" class="page">
+        <header class="category-header">
+          <button id="backButton" class="round-icon-button" aria-label="뒤로 가기">
+            <svg viewBox="0 0 24 24">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+          </button>
+
+          <h1>
+            <span id="categoryTitle">농산</span>
+          </h1>
+
+          <div class="category-header-actions">
+            <button class="round-icon-button" id="categorySearchButton" aria-label="검색">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+            </button>
+
+            <button class="round-icon-button bag-button" aria-label="장바구니">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 8h12l1 12H5L6 8Z"></path>
+                <path d="M9 8a3 3 0 0 1 6 0"></path>
+              </svg>
+              <span>2</span>
+            </button>
+          </div>
+        </header>
+
+        <div id="categorySearchArea" class="category-search-area">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+
+            <input
+              id="categorySearch"
+              type="search"
+              placeholder="브랜드 이름이나 지역을 검색하세요"
+            >
+          </div>
+        </div>
+
+        <section id="categoryHero" class="category-hero">
+          <img
+            id="categoryHeroImage"
+            src="https://loremflickr.com/1400/700/vegetables,farm?lock=301"
+            alt="카테고리 대표 이미지"
+          >
+          <div class="category-hero-overlay"></div>
+
+          <div class="category-hero-copy">
+            <p id="categoryHeroLabel">자연이 키운 건강한 먹거리</p>
+            <h2 id="categoryHeroTitle">
+              영진관광이 엄선한 농산
+            </h2>
+            <p id="categoryHeroDescription">
+              전국 농부들의 정성과 진심을 담은<br>
+              신선한 농산물을 만나보세요.
+            </p>
+          </div>
+        </section>
+
+        <div id="subcategoryList" class="subcategory-list"></div>
+
+        <div class="filter-toolbar">
+          <button id="sortButton" class="sort-button">
+            추천순
+            <span>⌄</span>
+          </button>
+
+          <button class="filter-button">
+            필터
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path>
+              <circle cx="16" cy="7" r="2"></circle>
+              <circle cx="8" cy="17" r="2"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <p class="brand-count">
+          총 <strong id="brandCount">0</strong>개의 브랜드
+        </p>
+
+        <div id="brandGrid" class="brand-grid"></div>
+      </section>
+    
+    <!-- BRAND MAP PAGE START -->
+    <section id="mapPage" class="page brand-map-page">
+      <header class="map-page-header">
+        <button
+          id="mapBackButton"
+          class="round-icon-button"
+          type="button"
+          aria-label="뒤로 가기"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </button>
+
+        <div>
+          <p>LOCAL BRAND MAP</p>
+          <h1>브랜드 지도</h1>
+        </div>
+
+        <div class="map-header-space"></div>
+      </header>
+
+      <div class="map-location-notice">
+        <strong>지역 기준으로 표시됩니다.</strong>
+        <p>
+          브랜드의 정확한 매장이나 농장 주소가 아닌
+          시·군 지역 중심 위치입니다.
+        </p>
+      </div>
+
+      <div class="map-category-filter" aria-label="지도 카테고리 필터">
+        <button
+          class="map-filter-button active"
+          type="button"
+          data-map-category="all"
+        >
+          전체
+        </button>
+
+        <button
+          class="map-filter-button"
+          type="button"
+          data-map-category="agriculture"
+        >
+          농산
+        </button>
+
+        <button
+          class="map-filter-button"
+          type="button"
+          data-map-category="livestock"
+        >
+          축산
+        </button>
+
+        <button
+          class="map-filter-button"
+          type="button"
+          data-map-category="seafood"
+        >
+          수산
+        </button>
+
+        <button
+          class="map-filter-button"
+          type="button"
+          data-map-category="cafe"
+        >
+          카페
+        </button>
+      </div>
+
+      <div class="brand-map-container">
+        <div id="brandMap" class="brand-map"></div>
+
+        <div id="mapStatus" class="map-status" hidden>
+          <strong id="mapStatusTitle">지도를 준비하고 있습니다.</strong>
+          <p id="mapStatusDescription"></p>
+        </div>
+
+        <div class="map-legend">
+          <span><i class="legend-agriculture"></i>농산</span>
+          <span><i class="legend-livestock"></i>축산</span>
+          <span><i class="legend-seafood"></i>수산</span>
+          <span><i class="legend-cafe"></i>카페</span>
+        </div>
+      </div>
+
+      <section id="mapRegionPanel" class="map-region-panel">
+        <div class="map-region-empty">
+          <strong>지도에서 지역을 선택하세요.</strong>
+          <p>지역 마커를 누르면 해당 지역의 브랜드가 표시됩니다.</p>
+        </div>
+      </section>
+    </section>
+    <!-- BRAND MAP PAGE END -->
+
+  </main>
+
+    <!-- 하단 메뉴 -->
+    <nav class="bottom-navigation">
+      <button class="bottom-nav-item active" data-nav="home">
+        <svg viewBox="0 0 24 24">
+          <path d="m3 11 9-8 9 8"></path>
+          <path d="M5 10v10h14V10"></path>
+        </svg>
+        <span>홈</span>
+      </button>
+
+      <button class="bottom-nav-item" data-nav="search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <span>브랜드 찾기</span>
+      </button>
+
+      <button class="bottom-nav-item" data-nav="map">
+        <svg viewBox="0 0 24 24">
+          <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+          <path d="M9 3v15M15 6v15"></path>
+        </svg>
+        <span>브랜드 지도</span>
+      </button>
+
+      <button class="bottom-nav-item" data-nav="favorite">
+        <svg viewBox="0 0 24 24">
+          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path>
+        </svg>
+        <span>찜 목록</span>
+      </button>
+
+      <button class="bottom-nav-item" data-nav="mypage">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M4 21a8 8 0 0 1 16 0"></path>
+        </svg>
+        <span>마이페이지</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="map-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
