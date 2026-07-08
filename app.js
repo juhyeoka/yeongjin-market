@@ -245,6 +245,7 @@ const brandData = {
 const homePage = document.querySelector("#homePage");
 const categoryPage = document.querySelector("#categoryPage");
 const mapPage = document.querySelector("#mapPage");
+const brandDetailPage = document.querySelector("#brandDetailPage");
 const newBrandList = document.querySelector("#newBrandList");
 const brandGrid = document.querySelector("#brandGrid");
 const brandCount = document.querySelector("#brandCount");
@@ -405,6 +406,7 @@ function setActiveBottomNavigation(navName) {
 }
 
 function openCategory(categoryName = "agriculture") {
+  brandDetailPage.classList.remove("active-page");
   currentCategory = categoryName;
   currentSubcategory = "전체";
   currentSort = "추천순";
@@ -434,6 +436,7 @@ function openCategory(categoryName = "agriculture") {
 }
 
 function openHome() {
+  brandDetailPage.classList.remove("active-page");
   categoryPage.classList.remove("active-page");
   mapPage.classList.remove("active-page");
   homePage.classList.add("active-page");
@@ -785,7 +788,7 @@ function renderRegionBrandPanel(regionGroup) {
       `;
 
     return `
-      <article class="map-brand-card">
+      <article class="map-brand-card" data-brand="${brand.name}">
         ${imageHtml}
 
         <div class="map-brand-information">
@@ -1073,6 +1076,7 @@ function loadKakaoMapSdk() {
 }
 
 function openBrandMapPage() {
+  brandDetailPage.classList.remove("active-page");
   homePage.classList.remove("active-page");
   categoryPage.classList.remove("active-page");
   mapPage.classList.add("active-page");
@@ -1123,6 +1127,283 @@ mapFilterButtons.forEach((button) => {
 });
 
 // BRAND MAP CODE END
+
+
+// BRAND DETAIL FEATURE START
+
+const brandCategoryNames = {
+  agriculture: "농산",
+  livestock: "축산",
+  seafood: "수산",
+  cafe: "카페"
+};
+
+let previousBrandPage = "home";
+let activeDetailBrand = null;
+
+function findBrandByName(brandName) {
+  for (const [category, brands] of Object.entries(brandData)) {
+    const brand = brands.find((item) => item.name === brandName);
+
+    if (brand) {
+      return {
+        ...brand,
+        category
+      };
+    }
+  }
+
+  return null;
+}
+
+function getCurrentVisiblePage() {
+  if (mapPage && mapPage.classList.contains("active-page")) {
+    return "map";
+  }
+
+  if (categoryPage.classList.contains("active-page")) {
+    return "category";
+  }
+
+  return "home";
+}
+
+function hideMainPagesForDetail() {
+  homePage.classList.remove("active-page");
+  categoryPage.classList.remove("active-page");
+
+  if (mapPage) {
+    mapPage.classList.remove("active-page");
+  }
+}
+
+function openBrandDetail(brandName) {
+  const brand = findBrandByName(brandName);
+
+  if (!brand) {
+    console.warn("브랜드를 찾지 못했습니다:", brandName);
+    return;
+  }
+
+  previousBrandPage = getCurrentVisiblePage();
+  activeDetailBrand = brand;
+
+  hideMainPagesForDetail();
+  brandDetailPage.classList.add("active-page");
+
+  const categoryName =
+    brandCategoryNames[brand.category] || "지역 브랜드";
+
+  const image = document.querySelector("#detailBrandImage");
+
+  image.src = brand.image || "bus.png";
+  image.alt = brand.name;
+
+  document.querySelector("#detailBrandCategory").textContent =
+    categoryName;
+
+  document.querySelector("#detailBrandName").textContent =
+    brand.name;
+
+  document.querySelector("#detailBrandLocation").textContent =
+    brand.location || "지역 정보 준비 중";
+
+  document.querySelector("#detailBrandHeadline").textContent =
+    `${brand.name}, 지역의 정성과 이야기를 담다`;
+
+  document.querySelector("#detailBrandDescription").textContent =
+    brand.description ||
+    "브랜드 소개를 준비하고 있습니다.";
+
+  document.querySelector("#detailInfoName").textContent =
+    brand.name;
+
+  document.querySelector("#detailInfoLocation").textContent =
+    brand.location || "-";
+
+  document.querySelector("#detailInfoCategory").textContent =
+    categoryName;
+
+  document.querySelector("#detailInfoTag").textContent =
+    brand.tag || brand.type || "-";
+
+  const externalLink = document.querySelector(
+    "#detailExternalLink"
+  );
+
+  const externalDisabled = document.querySelector(
+    "#detailExternalDisabled"
+  );
+
+  if (brand.url) {
+    externalLink.href = brand.url;
+    externalLink.hidden = false;
+    externalDisabled.hidden = true;
+  } else {
+    externalLink.removeAttribute("href");
+    externalLink.hidden = true;
+    externalDisabled.hidden = false;
+  }
+
+  const detailFavoriteButton = document.querySelector(
+    "#detailFavoriteButton"
+  );
+
+  const isFavorite = favoriteBrands.has(brand.name);
+
+  detailFavoriteButton.classList.toggle(
+    "active",
+    isFavorite
+  );
+
+  detailFavoriteButton.textContent =
+    isFavorite ? "♥" : "♡";
+
+  setActiveBottomNavigation("search");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function closeBrandDetail() {
+  brandDetailPage.classList.remove("active-page");
+
+  if (previousBrandPage === "map" && mapPage) {
+    mapPage.classList.add("active-page");
+    setActiveBottomNavigation("map");
+
+    setTimeout(() => {
+      if (brandMap) {
+        brandMap.relayout();
+      }
+    }, 100);
+
+    return;
+  }
+
+  if (previousBrandPage === "category") {
+    categoryPage.classList.add("active-page");
+    setActiveBottomNavigation("search");
+    return;
+  }
+
+  homePage.classList.add("active-page");
+  setActiveBottomNavigation("home");
+}
+
+document
+  .querySelector("#detailBackButton")
+  .addEventListener("click", closeBrandDetail);
+
+document
+  .querySelector("#detailFavoriteButton")
+  .addEventListener("click", () => {
+    if (!activeDetailBrand) {
+      return;
+    }
+
+    if (favoriteBrands.has(activeDetailBrand.name)) {
+      favoriteBrands.delete(activeDetailBrand.name);
+    } else {
+      favoriteBrands.add(activeDetailBrand.name);
+    }
+
+    const isFavorite = favoriteBrands.has(
+      activeDetailBrand.name
+    );
+
+    const button = document.querySelector(
+      "#detailFavoriteButton"
+    );
+
+    button.classList.toggle("active", isFavorite);
+    button.textContent = isFavorite ? "♥" : "♡";
+  });
+
+/*
+ * 기존에는 카드나 홈페이지 보기 버튼을 누르면
+ * 외부 주소로 바로 이동했지만,
+ * 이제 캡처 단계에서 먼저 상세 페이지로 이동시킵니다.
+ */
+document.addEventListener(
+  "click",
+  (event) => {
+    const clickedElement = event.target;
+
+    const card = clickedElement.closest(
+      ".new-brand-card[data-brand], " +
+      ".brand-card[data-brand], " +
+      ".map-brand-card[data-brand]"
+    );
+
+    const directLink = clickedElement.closest(
+      ".brand-site-link, .map-brand-link"
+    );
+
+    const favoriteButton = clickedElement.closest(
+      ".favorite-button"
+    );
+
+    if (favoriteButton) {
+      return;
+    }
+
+    if (!card && !directLink) {
+      return;
+    }
+
+    let brandName = card?.dataset.brand;
+
+    if (!brandName && directLink) {
+      const parentCard = directLink.closest(
+        "[data-brand]"
+      );
+
+      brandName = parentCard?.dataset.brand;
+    }
+
+    if (!brandName) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    openBrandDetail(brandName);
+  },
+  true
+);
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    if (
+      event.key !== "Enter" &&
+      event.key !== " "
+    ) {
+      return;
+    }
+
+    const card = event.target.closest(
+      ".new-brand-card[data-brand], " +
+      ".brand-card[data-brand], " +
+      ".map-brand-card[data-brand]"
+    );
+
+    if (!card) {
+      return;
+    }
+
+    event.preventDefault();
+    openBrandDetail(card.dataset.brand);
+  },
+  true
+);
+
+// BRAND DETAIL FEATURE END
 
 renderNewBrands();
 renderSubcategories();

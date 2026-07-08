@@ -71,7 +71,7 @@
         <!-- 메인 배너 -->
         <section class="main-hero">
           <img
-            src="https://loremflickr.com/1400/850/tour,bus,coast?lock=410"
+            src="bus.png"
             alt="영진관광 로컬 브랜드 여행 버스"
           >
 
@@ -388,6 +388,118 @@
       </section>
     </section>
     <!-- BRAND MAP PAGE END -->
+
+  
+    <!-- BRAND DETAIL PAGE START -->
+    <section id="brandDetailPage" class="page brand-detail-page">
+      <header class="detail-page-header">
+        <button
+          id="detailBackButton"
+          class="round-icon-button"
+          type="button"
+          aria-label="뒤로 가기"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </button>
+
+        <h1>브랜드 이야기</h1>
+
+        <button
+          id="detailFavoriteButton"
+          class="detail-favorite-button"
+          type="button"
+          aria-label="찜하기"
+        >
+          ♡
+        </button>
+      </header>
+
+      <article class="brand-detail-content">
+        <div class="brand-detail-hero">
+          <img
+            id="detailBrandImage"
+            src=""
+            alt=""
+          >
+
+          <div class="brand-detail-hero-overlay"></div>
+
+          <div class="brand-detail-hero-copy">
+            <span id="detailBrandCategory" class="detail-category-badge">
+              지역 브랜드
+            </span>
+
+            <h2 id="detailBrandName">브랜드 이름</h2>
+
+            <p id="detailBrandLocation">지역 정보</p>
+          </div>
+        </div>
+
+        <div class="brand-detail-summary">
+          <p class="detail-summary-label">BRAND STORY</p>
+
+          <h3 id="detailBrandHeadline">
+            지역의 정성과 이야기를 담은 브랜드
+          </h3>
+
+          <p id="detailBrandDescription">
+            브랜드 소개를 준비하고 있습니다.
+          </p>
+        </div>
+
+        <div class="brand-detail-information">
+          <div class="detail-information-row">
+            <span>브랜드명</span>
+            <strong id="detailInfoName">-</strong>
+          </div>
+
+          <div class="detail-information-row">
+            <span>지역</span>
+            <strong id="detailInfoLocation">-</strong>
+          </div>
+
+          <div class="detail-information-row">
+            <span>분류</span>
+            <strong id="detailInfoCategory">-</strong>
+          </div>
+
+          <div class="detail-information-row">
+            <span>주요 상품</span>
+            <strong id="detailInfoTag">-</strong>
+          </div>
+        </div>
+
+        <div class="detail-notice-box">
+          <strong>구매 전 확인해 주세요</strong>
+          <p>
+            상품 판매, 배송, 교환 및 환불은 연결되는 브랜드의
+            공식 홈페이지 또는 스마트스토어 기준으로 진행됩니다.
+          </p>
+        </div>
+
+        <a
+          id="detailExternalLink"
+          class="detail-external-link"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          공식 홈페이지·스마트스토어 보기
+          <span>→</span>
+        </a>
+
+        <div
+          id="detailExternalDisabled"
+          class="detail-external-disabled"
+          hidden
+        >
+          공식 판매 링크를 준비하고 있습니다.
+        </div>
+      </article>
+    </section>
+    <!-- BRAND DETAIL PAGE END -->
 
   </main>
 

@@ -2340,3 +2340,331 @@ img {
 }
 
 /* MOBILE PHONE FINAL END */
+
+
+/* BRAND DETAIL PAGE DESIGN START */
+
+/* 메인 버스 배너 */
+.main-hero > img {
+  object-position: center center;
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 22, 35, 0.92) 0%,
+      rgba(7, 22, 35, 0.67) 43%,
+      rgba(7, 22, 35, 0.12) 77%
+    );
+}
+
+/* 상세 페이지 */
+.brand-detail-page {
+  padding-bottom: 20px;
+}
+
+.detail-page-header {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  min-height: 68px;
+  margin-bottom: 16px;
+}
+
+.detail-page-header h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: -1.2px;
+}
+
+.detail-favorite-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #26313c;
+  font-size: 29px;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.detail-favorite-button.active {
+  color: #f24d42;
+}
+
+.brand-detail-content {
+  width: 100%;
+}
+
+.brand-detail-hero {
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+  background: #e8eaec;
+  border-radius: 28px;
+}
+
+.brand-detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brand-detail-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 22, 34, 0.02) 28%,
+      rgba(10, 22, 34, 0.82) 100%
+    );
+}
+
+.brand-detail-hero-copy {
+  position: absolute;
+  right: 34px;
+  bottom: 33px;
+  left: 34px;
+  color: #ffffff;
+}
+
+.detail-category-badge {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 7px 11px;
+  color: #172330;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 999px;
+}
+
+.brand-detail-hero-copy h2 {
+  margin: 0 0 7px;
+  font-size: 39px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -2px;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.38);
+}
+
+.brand-detail-hero-copy p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.brand-detail-summary {
+  padding: 36px 4px 30px;
+  border-bottom: 1px solid #e9ebed;
+}
+
+.detail-summary-label {
+  margin: 0 0 10px;
+  color: #f24d42;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.brand-detail-summary h3 {
+  margin: 0 0 16px;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: -1.4px;
+}
+
+.brand-detail-summary > p:last-child {
+  margin: 0;
+  color: #606a74;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.brand-detail-information {
+  margin-top: 27px;
+  overflow: hidden;
+  border: 1px solid #e8eaec;
+  border-radius: 20px;
+}
+
+.detail-information-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  align-items: center;
+  min-height: 62px;
+  padding: 13px 20px;
+  border-bottom: 1px solid #eceef0;
+}
+
+.detail-information-row:last-child {
+  border-bottom: 0;
+}
+
+.detail-information-row span {
+  color: #8b9299;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detail-information-row strong {
+  color: #27323d;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.detail-notice-box {
+  margin-top: 22px;
+  padding: 19px 21px;
+  background: #f6f7f8;
+  border-radius: 18px;
+}
+
+.detail-notice-box strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #303b46;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.detail-notice-box p {
+  margin: 0;
+  color: #747c85;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.detail-external-link,
+.detail-external-disabled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 58px;
+  margin-top: 21px;
+  padding: 15px 20px;
+  font-size: 15px;
+  font-weight: 900;
+  border-radius: 18px;
+}
+
+.detail-external-link {
+  gap: 13px;
+  color: #ffffff;
+  text-decoration: none;
+  background: #f24d42;
+  box-shadow: 0 10px 24px rgba(242, 77, 66, 0.24);
+}
+
+.detail-external-link:hover {
+  background: #d93b33;
+}
+
+.detail-external-link span {
+  font-size: 21px;
+}
+
+.detail-external-disabled {
+  color: #92999f;
+  background: #eceeef;
+}
+
+/* 기존 바로가기 링크도 상세 보기 버튼처럼 표시 */
+.brand-site-link,
+.map-brand-link {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .main-hero {
+    height: 360px;
+  }
+
+  .main-hero > img {
+    object-position: 62% center;
+  }
+
+  .brand-detail-hero {
+    height: 390px;
+    border-radius: 23px;
+  }
+
+  .brand-detail-hero-copy {
+    right: 23px;
+    bottom: 24px;
+    left: 23px;
+  }
+
+  .brand-detail-hero-copy h2 {
+    font-size: 31px;
+  }
+
+  .brand-detail-summary {
+    padding: 29px 2px 25px;
+  }
+
+  .brand-detail-summary h3 {
+    font-size: 23px;
+  }
+
+  .brand-detail-summary > p:last-child {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .detail-information-row {
+    grid-template-columns: 90px 1fr;
+    min-height: 57px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .detail-page-header {
+    min-height: 57px;
+    margin-bottom: 12px;
+  }
+
+  .detail-page-header h1 {
+    font-size: 21px;
+  }
+
+  .brand-detail-hero {
+    height: 350px;
+  }
+
+  .brand-detail-hero-copy h2 {
+    font-size: 28px;
+  }
+
+  .detail-category-badge {
+    font-size: 10px;
+  }
+
+  .detail-information-row span {
+    font-size: 11px;
+  }
+
+  .detail-information-row strong {
+    font-size: 12px;
+  }
+
+  .detail-external-link,
+  .detail-external-disabled {
+    min-height: 55px;
+    font-size: 13px;
+  }
+}
+
+/* BRAND DETAIL PAGE DESIGN END */
