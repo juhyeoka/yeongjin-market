@@ -3831,3 +3831,53 @@ img {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+
+/* REGION SELECTOR FORCE VISIBLE START */
+
+.region-selector-section {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 5 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 0 18px !important;
+}
+
+.region-selector-heading,
+.region-select-grid,
+.selected-region-summary {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
+}
+
+.region-selector-heading {
+  justify-content: space-between;
+}
+
+.region-select-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.selected-region-summary {
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .region-select-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 390px) {
+  .region-select-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* REGION SELECTOR FORCE VISIBLE END */
