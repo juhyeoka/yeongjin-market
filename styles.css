@@ -3355,3 +3355,36 @@ img {
 }
 
 /* CLEAN MAP MARKER DESIGN END */
+
+/* 메인 영진관광 버스 이미지 최종 설정 */
+.main-hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.main-hero {
+  position: relative;
+  background: #172330;
+}
+
+.hero-overlay,
+.hero-content {
+  position: absolute;
+  z-index: 2;
+}
+
+.hero-overlay {
+  inset: 0;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .main-hero > img {
+    object-position: 58% center;
+  }
+}
