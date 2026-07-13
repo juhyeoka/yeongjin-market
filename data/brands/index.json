@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "i4",
+    "name": "i4",
+    "category": "농산",
+    "categoryKey": "agriculture",
+    "product": "계란",
+    "region": "충남 홍성",
+    "headline": "농장 환경과 생산 과정을 직접 확인할 수 있는 계란",
+    "description": "i4는 농장의 사육 환경과 생산 정보를 소비자가 직접 확인할 수 있도록 투명한 정보를 제공하는 계란 브랜드입니다.",
+    "shopUrl": "https://smartstore.naver.com/i4company/products/13640294223",
+    "homepageUrl": "https://junada040828.cafe24.com/skin-skin10",
+    "traceUrl": "https://eggtrace-82hy.onrender.com/p/EGG-0001",
+    "publicUrl": "https://yeongjin-market.onrender.com/brands/i4/",
+    "qrImage": "qrcodes/i4.png",
+    "images": {
+      "main": "assets/brands/i4/main.jpg",
+      "gallery": [
+        "assets/brands/i4/gallery-1.jpg",
+        "assets/brands/i4/gallery-2.jpg",
+        "assets/brands/i4/gallery-3.jpg"
+      ]
+    }
+  }
+]

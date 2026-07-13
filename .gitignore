@@ -1,2 +1,5 @@
 .DS_Store
 backup/
+
+# 자동화 도구 가상환경
+.venv-tools/

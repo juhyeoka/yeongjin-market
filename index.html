@@ -364,6 +364,66 @@
         </button>
       </div>
 
+      
+      <!-- REGION SELECTOR START -->
+      <section class="region-selector-section">
+        <div class="region-selector-heading">
+          <div>
+            <p>지역으로 브랜드 찾기</p>
+            <h2>원하는 지역을 선택하세요</h2>
+          </div>
+
+          <button
+            id="regionResetButton"
+            class="region-reset-button"
+            type="button"
+          >
+            초기화
+          </button>
+        </div>
+
+        <div class="region-select-grid">
+          <label class="region-select-box">
+            <span>시·도</span>
+
+            <select id="provinceSelect">
+              <option value="">전체 시·도</option>
+            </select>
+          </label>
+
+          <label class="region-select-box">
+            <span>시·군·구</span>
+
+            <select id="citySelect" disabled>
+              <option value="">전체 시·군·구</option>
+            </select>
+          </label>
+
+          <label class="region-select-box">
+            <span>구·읍·면</span>
+
+            <select id="districtSelect" disabled>
+              <option value="">전체 구·읍·면</option>
+            </select>
+          </label>
+
+          <label class="region-select-box">
+            <span>동·리</span>
+
+            <select id="neighborhoodSelect" disabled>
+              <option value="">전체 동·리</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="selectedRegionSummary" class="selected-region-summary">
+          <span>선택된 지역</span>
+          <strong>전국</strong>
+        </div>
+      </section>
+      <!-- REGION SELECTOR END -->
+
+
       <div class="brand-map-container">
         <div id="brandMap" class="brand-map"></div>
 
