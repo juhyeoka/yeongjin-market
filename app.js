@@ -46,7 +46,7 @@ const brandData = {
       tag: "계란",
       type: "계란",
       image: "assets/i4-eggs.png",
-      url: "https://junada040828.cafe24.com/skin-skin10",
+      url: "https://smartstore.naver.com/i4company/products/13640294223",
       new: true
     },
 
@@ -861,6 +861,14 @@ function createRegionOverlay(regionGroup, position) {
   `;
 
   markerButton.addEventListener("click", () => {
+    document
+      .querySelectorAll(".region-map-marker")
+      .forEach((marker) => {
+        marker.classList.remove("is-selected");
+      });
+
+    markerButton.classList.add("is-selected");
+
     selectMapRegion(regionGroup, position);
   });
 
@@ -1013,7 +1021,7 @@ function initializeBrandMap() {
  */
 function loadKakaoMapSdk() {
   const javascriptKey = String(
-    window.KAKAO_JAVASCRIPT_KEY || ""
+    window.KAKAO_JAVASCRIPT_KEY || "f57a96a349d16225f9a68cfcba81cbdf"
   ).trim();
 
   if (
@@ -1208,8 +1216,7 @@ function openBrandDetail(brandName) {
   document.querySelector("#detailBrandLocation").textContent =
     brand.location || "지역 정보 준비 중";
 
-  document.querySelector("#detailBrandHeadline").textContent =
-    `${brand.name}, 지역의 정성과 이야기를 담다`;
+  
 
   document.querySelector("#detailBrandDescription").textContent =
     brand.description ||

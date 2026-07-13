@@ -390,116 +390,198 @@
     <!-- BRAND MAP PAGE END -->
 
   
-    <!-- BRAND DETAIL PAGE START -->
-    <section id="brandDetailPage" class="page brand-detail-page">
-      <header class="detail-page-header">
-        <button
-          id="detailBackButton"
-          class="round-icon-button"
-          type="button"
-          aria-label="뒤로 가기"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+    <!-- I4 DETAIL PAGE START -->
+    <section id="brandDetailPage" class="page i4-detail-page">
+      <header class="i4-detail-header">
+        <button id="detailBackButton" class="round-icon-button" type="button">
+          <svg viewBox="0 0 24 24">
             <path d="m15 18-6-6 6-6"></path>
           </svg>
         </button>
 
-        <h1>브랜드 이야기</h1>
+        <h1>i4</h1>
 
-        <button
-          id="detailFavoriteButton"
-          class="detail-favorite-button"
-          type="button"
-          aria-label="찜하기"
-        >
+        <button id="detailFavoriteButton" class="i4-heart-button" type="button">
           ♡
         </button>
       </header>
 
-      <article class="brand-detail-content">
-        <div class="brand-detail-hero">
-          <img
-            id="detailBrandImage"
-            src=""
-            alt=""
-          >
+      <div class="i4-product-image-wrap">
+        <img
+          id="detailBrandImage"
+          src="assets/i4-eggs.png"
+          alt="i4 계란"
+        >
+        <span class="i4-main-badge">i4 ORIGINAL</span>
+      </div>
 
-          <div class="brand-detail-hero-overlay"></div>
+      <section class="i4-main-info">
+        <p class="i4-category-text">농산 · 계란</p>
 
-          <div class="brand-detail-hero-copy">
-            <span id="detailBrandCategory" class="detail-category-badge">
-              지역 브랜드
-            </span>
+        <h2 id="detailBrandName">i4</h2>
 
-            <h2 id="detailBrandName">브랜드 이름</h2>
+        <p class="i4-one-line">
+          농장 환경과 생산 과정을 직접 확인할 수 있는 계란
+        </p>
 
-            <p id="detailBrandLocation">지역 정보</p>
-          </div>
+        <div class="i4-review-row">
+          <span class="i4-star">★ 5.0</span>
+          <span>신선한 계란을 정직하게 전달합니다</span>
+        </div>
+      </section>
+
+      <section class="i4-story-section">
+        <p class="i4-small-title">BRAND STORY</p>
+
+        <h3>보이지 않던 생산 과정을<br>소비자에게 보여주는 계란</h3>
+
+        <p id="detailBrandDescription">
+          i4는 단순히 계란을 판매하는 것을 넘어,
+          농장의 사육 환경과 생산 과정을 소비자가 직접 확인할 수 있도록
+          투명한 정보를 제공하는 계란 브랜드입니다.
+        </p>
+      </section>
+
+      <section class="i4-feature-section">
+        <h3>i4가 다른 이유</h3>
+
+        <div class="i4-feature-grid">
+          <article>
+            <strong>01</strong>
+            <h4>생산 정보 확인</h4>
+            <p>제품과 연결된 정보를 통해 생산 과정을 확인할 수 있습니다.</p>
+          </article>
+
+          <article>
+            <strong>02</strong>
+            <h4>농장 환경 공개</h4>
+            <p>소비자가 안심할 수 있도록 농장 환경 정보를 제공합니다.</p>
+          </article>
+
+          <article>
+            <strong>03</strong>
+            <h4>신선한 계란</h4>
+            <p>생산부터 판매까지 신선도를 중요하게 관리합니다.</p>
+          </article>
+
+          <article>
+            <strong>04</strong>
+            <h4>정직한 브랜드</h4>
+            <p>제품에 대한 정보를 숨기지 않고 투명하게 전달합니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="i4-info-table">
+        <h3>상품 정보</h3>
+
+        <div>
+          <span>브랜드</span>
+          <strong>i4</strong>
         </div>
 
-        <div class="brand-detail-summary">
-          <p class="detail-summary-label">BRAND STORY</p>
-
-          <h3 id="detailBrandHeadline">
-            지역의 정성과 이야기를 담은 브랜드
-          </h3>
-
-          <p id="detailBrandDescription">
-            브랜드 소개를 준비하고 있습니다.
-          </p>
+        <div>
+          <span>상품 분류</span>
+          <strong>계란</strong>
         </div>
 
-        <div class="brand-detail-information">
-          <div class="detail-information-row">
-            <span>브랜드명</span>
-            <strong id="detailInfoName">-</strong>
-          </div>
-
-          <div class="detail-information-row">
-            <span>지역</span>
-            <strong id="detailInfoLocation">-</strong>
-          </div>
-
-          <div class="detail-information-row">
-            <span>분류</span>
-            <strong id="detailInfoCategory">-</strong>
-          </div>
-
-          <div class="detail-information-row">
-            <span>주요 상품</span>
-            <strong id="detailInfoTag">-</strong>
-          </div>
+        <div>
+          <span>판매처</span>
+          <strong>네이버 스마트스토어</strong>
         </div>
 
-        <div class="detail-notice-box">
-          <strong>구매 전 확인해 주세요</strong>
-          <p>
-            상품 판매, 배송, 교환 및 환불은 연결되는 브랜드의
-            공식 홈페이지 또는 스마트스토어 기준으로 진행됩니다.
-          </p>
+        <div>
+          <span>브랜드 특징</span>
+          <strong>생산 과정 및 농장 정보 확인</strong>
+        </div>
+      </section>
+
+      
+      <!-- I4 FARM STATUS START -->
+      <section class="i4-farm-status-section">
+        <div class="i4-farm-status-heading">
+          <div>
+            <p>FARM TRACEABILITY</p>
+            <h3>농장 상태를 직접 확인하세요</h3>
+          </div>
+
+          <span class="i4-live-badge">
+            <i></i>
+            LIVE
+          </span>
+        </div>
+
+        <p class="i4-farm-status-description">
+          i4 계란은 제품에 연결된 농장 정보를 통해
+          사육 환경과 최근 활동 상태를 확인할 수 있습니다.
+        </p>
+
+        <div class="i4-farm-status-preview">
+          <article>
+            <span>제품 코드</span>
+            <strong>EGG-0001</strong>
+          </article>
+
+          <article>
+            <span>농장 신뢰 리포트</span>
+            <strong>상태 확인 가능</strong>
+          </article>
+
+          <article>
+            <span>최근 활동 기록</span>
+            <strong>영상·사진 증거</strong>
+          </article>
         </div>
 
         <a
-          id="detailExternalLink"
-          class="detail-external-link"
-          href="#"
+          class="i4-farm-status-link"
+          href="https://eggtrace-82hy.onrender.com/p/EGG-0001"
           target="_blank"
           rel="noopener noreferrer"
         >
-          공식 홈페이지·스마트스토어 보기
-          <span>→</span>
+          <span class="i4-farm-link-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 12h16"></path>
+              <path d="m14 6 6 6-6 6"></path>
+            </svg>
+          </span>
+
+          <span class="i4-farm-link-copy">
+            <strong>실시간 농장 상태 보기</strong>
+            <small>신뢰 점수, 활동 기록, 증거 영상을 확인할 수 있습니다.</small>
+          </span>
+
+          <span class="i4-farm-link-arrow">→</span>
         </a>
 
-        <div
-          id="detailExternalDisabled"
-          class="detail-external-disabled"
-          hidden
-        >
-          공식 판매 링크를 준비하고 있습니다.
-        </div>
-      </article>
+        <p class="i4-farm-status-note">
+          농장 데이터는 제품 코드와 연결된 정보이며,
+          화면에 표시되는 위치는 정확한 농장 주소가 아닌 제품 추적용 정보입니다.
+        </p>
+      </section>
+      <!-- I4 FARM STATUS END -->
+
+
+      <section class="i4-purchase-notice">
+        <h3>구매 안내</h3>
+        <p>
+          가격, 배송, 교환 및 환불 정책은
+          네이버 스마트스토어의 상품 페이지를 기준으로 합니다.
+        </p>
+      </section>
+
+      <a
+        id="detailExternalLink"
+        class="i4-buy-button"
+        href="https://smartstore.naver.com/i4company/products/13640294223"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        네이버 스마트스토어에서 구매하기
+        <span>→</span>
+      </a>
     </section>
-    <!-- BRAND DETAIL PAGE END -->
+    <!-- I4 DETAIL PAGE END -->
 
   </main>
 
