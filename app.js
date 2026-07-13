@@ -1412,6 +1412,684 @@ document.addEventListener(
 
 // BRAND DETAIL FEATURE END
 
+
+// HIERARCHICAL REGION SELECTOR START
+
+const provinceSelect = document.querySelector("#provinceSelect");
+const citySelect = document.querySelector("#citySelect");
+const districtSelect = document.querySelector("#districtSelect");
+const neighborhoodSelect = document.querySelector(
+  "#neighborhoodSelect"
+);
+const regionResetButton = document.querySelector(
+  "#regionResetButton"
+);
+const selectedRegionSummary = document.querySelector(
+  "#selectedRegionSummary strong"
+);
+
+const provinceFullNames = {
+  서울: "서울특별시",
+  부산: "부산광역시",
+  대구: "대구광역시",
+  인천: "인천광역시",
+  광주: "광주광역시",
+  대전: "대전광역시",
+  울산: "울산광역시",
+  세종: "세종특별자치시",
+  경기: "경기도",
+  강원: "강원특별자치도",
+  충북: "충청북도",
+  충남: "충청남도",
+  전북: "전북특별자치도",
+  전남: "전라남도",
+  경북: "경상북도",
+  경남: "경상남도",
+  제주: "제주특별자치도"
+};
+
+let selectedProvince = "";
+let selectedCity = "";
+let selectedDistrict = "";
+let selectedNeighborhood = "";
+let selectedRegionMarker = null;
+
+/*
+ * 기존 location 문자열을 자동 분리합니다.
+ *
+ * 예:
+ * 충남 홍성 -> 시도: 충남 / 시군구: 홍성
+ * 서울 강남구 역삼동 -> 시도: 서울 / 시군구: 강남구 / 동: 역삼동
+ *
+ * 앞으로 업체 데이터에 province, city, district,
+ * neighborhood를 직접 넣으면 그 값을 우선 사용합니다.
+ */
+function normalizeBrandRegion(brand) {
+  const locationParts = String(brand.location || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  return {
+    ...brand,
+    province:
+      brand.province ||
+      locationParts[0] ||
+      "지역 미정",
+
+    city:
+      brand.city ||
+      locationParts[1] ||
+      "",
+
+    district:
+      brand.district ||
+      locationParts[2] ||
+      "",
+
+    neighborhood:
+      brand.neighborhood ||
+      locationParts[3] ||
+      ""
+  };
+}
+
+function getRegionBrands() {
+  let brands = getAllMapBrands().map(normalizeBrandRegion);
+
+  if (activeMapCategory !== "all") {
+    brands = brands.filter(
+      (brand) => brand.category === activeMapCategory
+    );
+  }
+
+  return brands;
+}
+
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, "ko"));
+}
+
+function setSelectOptions(
+  selectElement,
+  values,
+  placeholder
+) {
+  selectElement.innerHTML = `
+    <option value="">${placeholder}</option>
+    ${values.map((value) => `
+      <option value="${value}">${value}</option>
+    `).join("")}
+  `;
+
+  selectElement.disabled = values.length === 0;
+}
+
+function updateProvinceOptions() {
+  const brands = getRegionBrands();
+
+  const provinces = uniqueSorted(
+    brands.map((brand) => brand.province)
+  );
+
+  setSelectOptions(
+    provinceSelect,
+    provinces,
+    "전체 시·도"
+  );
+
+  provinceSelect.disabled = false;
+
+  if (
+    selectedProvince &&
+    provinces.includes(selectedProvince)
+  ) {
+    provinceSelect.value = selectedProvince;
+  } else {
+    selectedProvince = "";
+  }
+}
+
+function updateCityOptions() {
+  const brands = getRegionBrands().filter(
+    (brand) =>
+      !selectedProvince ||
+      brand.province === selectedProvince
+  );
+
+  const cities = uniqueSorted(
+    brands.map((brand) => brand.city)
+  );
+
+  setSelectOptions(
+    citySelect,
+    cities,
+    "전체 시·군·구"
+  );
+
+  if (
+    selectedCity &&
+    cities.includes(selectedCity)
+  ) {
+    citySelect.value = selectedCity;
+  } else {
+    selectedCity = "";
+  }
+}
+
+function updateDistrictOptions() {
+  const brands = getRegionBrands().filter((brand) => {
+    return (
+      (!selectedProvince ||
+        brand.province === selectedProvince) &&
+      (!selectedCity ||
+        brand.city === selectedCity)
+    );
+  });
+
+  const districts = uniqueSorted(
+    brands.map((brand) => brand.district)
+  );
+
+  setSelectOptions(
+    districtSelect,
+    districts,
+    "전체 구·읍·면"
+  );
+
+  if (
+    selectedDistrict &&
+    districts.includes(selectedDistrict)
+  ) {
+    districtSelect.value = selectedDistrict;
+  } else {
+    selectedDistrict = "";
+  }
+}
+
+function updateNeighborhoodOptions() {
+  const brands = getRegionBrands().filter((brand) => {
+    return (
+      (!selectedProvince ||
+        brand.province === selectedProvince) &&
+      (!selectedCity ||
+        brand.city === selectedCity) &&
+      (!selectedDistrict ||
+        brand.district === selectedDistrict)
+    );
+  });
+
+  const neighborhoods = uniqueSorted(
+    brands.map((brand) => brand.neighborhood)
+  );
+
+  setSelectOptions(
+    neighborhoodSelect,
+    neighborhoods,
+    "전체 동·리"
+  );
+
+  if (
+    selectedNeighborhood &&
+    neighborhoods.includes(selectedNeighborhood)
+  ) {
+    neighborhoodSelect.value =
+      selectedNeighborhood;
+  } else {
+    selectedNeighborhood = "";
+  }
+}
+
+function getSelectedRegionText() {
+  const values = [
+    selectedProvince,
+    selectedCity,
+    selectedDistrict,
+    selectedNeighborhood
+  ].filter(Boolean);
+
+  return values.length > 0
+    ? values.join(" ")
+    : "전국";
+}
+
+function filterBrandsBySelectedRegion() {
+  return getRegionBrands().filter((brand) => {
+    return (
+      (!selectedProvince ||
+        brand.province === selectedProvince) &&
+      (!selectedCity ||
+        brand.city === selectedCity) &&
+      (!selectedDistrict ||
+        brand.district === selectedDistrict) &&
+      (!selectedNeighborhood ||
+        brand.neighborhood === selectedNeighborhood)
+    );
+  });
+}
+
+function renderSelectedRegionBrands() {
+  const brands = filterBrandsBySelectedRegion();
+  const regionText = getSelectedRegionText();
+
+  selectedRegionSummary.textContent = regionText;
+
+  if (brands.length === 0) {
+    mapRegionPanel.innerHTML = `
+      <div class="region-no-result">
+        <strong>등록된 브랜드가 없습니다.</strong>
+        <p>
+          다른 지역이나 카테고리를 선택해 주세요.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  const brandCards = brands.map((brand) => {
+    const categoryLabel =
+      mapCategoryLabels[brand.category] ||
+      "지역 브랜드";
+
+    const imageClass =
+      brand.name === "i4" ? " i4-image" : "";
+
+    return `
+      <article
+        class="map-brand-card"
+        data-brand="${brand.name}"
+        role="button"
+        tabindex="0"
+      >
+        <div class="map-brand-image${imageClass}">
+          <img
+            src="${brand.image || ""}"
+            alt="${brand.name}"
+            onerror="this.style.display='none'"
+          >
+        </div>
+
+        <div class="map-brand-information">
+          <span class="map-brand-category">
+            ${categoryLabel} · ${brand.location}
+          </span>
+
+          <h3>${brand.name}</h3>
+
+          <p>
+            ${brand.description ||
+              "브랜드 소개를 준비하고 있습니다."}
+          </p>
+
+          <span class="map-brand-link">
+            브랜드 상세 보기
+          </span>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  mapRegionPanel.innerHTML = `
+    <div class="map-region-heading">
+      <div>
+        <p>선택한 지역의 브랜드</p>
+        <h2>${regionText}</h2>
+      </div>
+
+      <span>${brands.length}개 브랜드</span>
+    </div>
+
+    <div class="map-brand-list">
+      ${brandCards}
+    </div>
+  `;
+}
+
+function buildRegionSearchQuery() {
+  const parts = [
+    provinceFullNames[selectedProvince] ||
+      selectedProvince,
+    selectedCity,
+    selectedDistrict,
+    selectedNeighborhood
+  ].filter(Boolean);
+
+  return parts.join(" ");
+}
+
+function updateMapForSelectedRegion() {
+  if (
+    !brandMap ||
+    !mapGeocoder
+  ) {
+    return;
+  }
+
+  if (selectedRegionMarker) {
+    selectedRegionMarker.setMap(null);
+    selectedRegionMarker = null;
+  }
+
+  const query = buildRegionSearchQuery();
+
+  if (!query) {
+    brandMap.setCenter(
+      new kakao.maps.LatLng(36.35, 127.8)
+    );
+    brandMap.setLevel(12);
+    return;
+  }
+
+  mapGeocoder.addressSearch(
+    query,
+    (result, status) => {
+      if (
+        status !== kakao.maps.services.Status.OK ||
+        result.length === 0
+      ) {
+        console.warn(
+          "선택 지역 좌표 검색 실패:",
+          query
+        );
+        return;
+      }
+
+      const position = new kakao.maps.LatLng(
+        Number(result[0].y),
+        Number(result[0].x)
+      );
+
+      selectedRegionMarker = new kakao.maps.Marker({
+        position,
+        map: brandMap
+      });
+
+      brandMap.panTo(position);
+
+      if (selectedNeighborhood) {
+        brandMap.setLevel(5);
+      } else if (selectedDistrict) {
+        brandMap.setLevel(6);
+      } else if (selectedCity) {
+        brandMap.setLevel(8);
+      } else {
+        brandMap.setLevel(10);
+      }
+    }
+  );
+}
+
+function refreshRegionSelector() {
+  updateProvinceOptions();
+  updateCityOptions();
+  updateDistrictOptions();
+  updateNeighborhoodOptions();
+  renderSelectedRegionBrands();
+  updateMapForSelectedRegion();
+}
+
+provinceSelect.addEventListener("change", () => {
+  selectedProvince = provinceSelect.value;
+  selectedCity = "";
+  selectedDistrict = "";
+  selectedNeighborhood = "";
+
+  updateCityOptions();
+  updateDistrictOptions();
+  updateNeighborhoodOptions();
+  renderSelectedRegionBrands();
+  updateMapForSelectedRegion();
+});
+
+citySelect.addEventListener("change", () => {
+  selectedCity = citySelect.value;
+  selectedDistrict = "";
+  selectedNeighborhood = "";
+
+  updateDistrictOptions();
+  updateNeighborhoodOptions();
+  renderSelectedRegionBrands();
+  updateMapForSelectedRegion();
+});
+
+districtSelect.addEventListener("change", () => {
+  selectedDistrict = districtSelect.value;
+  selectedNeighborhood = "";
+
+  updateNeighborhoodOptions();
+  renderSelectedRegionBrands();
+  updateMapForSelectedRegion();
+});
+
+neighborhoodSelect.addEventListener("change", () => {
+  selectedNeighborhood =
+    neighborhoodSelect.value;
+
+  renderSelectedRegionBrands();
+  updateMapForSelectedRegion();
+});
+
+regionResetButton.addEventListener("click", () => {
+  selectedProvince = "";
+  selectedCity = "";
+  selectedDistrict = "";
+  selectedNeighborhood = "";
+
+  refreshRegionSelector();
+});
+
+/*
+ * 기존 지도 전체 마커 출력 함수를 교체합니다.
+ * 이제 지도에는 다수 마커를 그리지 않고,
+ * 선택한 지역 한 곳만 표시합니다.
+ */
+renderMapRegions = async function() {
+  clearMapOverlays();
+  refreshRegionSelector();
+};
+
+/*
+ * 카테고리 버튼을 누르면 지역 목록도 자동 재구성됩니다.
+ */
+mapFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setTimeout(() => {
+      selectedProvince = "";
+      selectedCity = "";
+      selectedDistrict = "";
+      selectedNeighborhood = "";
+      refreshRegionSelector();
+    }, 0);
+  });
+});
+
+refreshRegionSelector();
+
+// HIERARCHICAL REGION SELECTOR END
+
+
+// FAST REGION MAP START
+
+/*
+ * 정확한 주소 검색을 매번 호출하지 않고
+ * 지역 중심 좌표를 바로 사용합니다.
+ */
+const fastRegionCoordinates = {
+  "전국": [36.35, 127.8, 12],
+
+  "서울": [37.5665, 126.9780, 9],
+  "부산": [35.1796, 129.0756, 9],
+  "대구": [35.8714, 128.6014, 9],
+  "인천": [37.4563, 126.7052, 9],
+  "광주": [35.1595, 126.8526, 9],
+  "대전": [36.3504, 127.3845, 9],
+  "울산": [35.5384, 129.3114, 9],
+  "세종": [36.4800, 127.2890, 9],
+
+  "경기": [37.4138, 127.5183, 10],
+  "강원": [37.8228, 128.1555, 10],
+  "충북": [36.6357, 127.4917, 10],
+  "충남": [36.6588, 126.6728, 10],
+  "전북": [35.7175, 127.1530, 10],
+  "전남": [34.8679, 126.9910, 10],
+  "경북": [36.4919, 128.8889, 10],
+  "경남": [35.4606, 128.2132, 10],
+  "제주": [33.4996, 126.5312, 10],
+
+  "충남 홍성": [36.6012, 126.6608, 7],
+  "충남 공주": [36.4465, 127.1190, 7],
+  "충북 영동": [36.1750, 127.7764, 7],
+
+  "경기 이천": [37.2720, 127.4350, 7],
+
+  "강원 횡성": [37.4917, 127.9850, 7],
+  "강원 평창": [37.3705, 128.3900, 7],
+  "강원 강릉": [37.7519, 128.8761, 7],
+  "강원 속초": [38.2070, 128.5918, 7],
+
+  "경북 청도": [35.6474, 128.7340, 7],
+  "경북 의성": [36.3527, 128.6971, 7],
+
+  "경남 고성": [34.9730, 128.3220, 7],
+  "경남 통영": [34.8544, 128.4330, 7],
+  "경남 남해": [34.8377, 127.8926, 7],
+
+  "전북 익산": [35.9483, 126.9576, 7],
+  "전북 전주": [35.8242, 127.1480, 7],
+
+  "전남 나주": [35.0158, 126.7108, 7],
+  "전남 완도": [34.3110, 126.7550, 7],
+  "전남 보성": [34.7715, 127.0800, 7]
+};
+
+let fastSelectedMarker = null;
+
+function getFastRegionKey() {
+  const values = [
+    selectedProvince,
+    selectedCity,
+    selectedDistrict,
+    selectedNeighborhood
+  ].filter(Boolean);
+
+  while (values.length > 0) {
+    const key = values.join(" ");
+
+    if (fastRegionCoordinates[key]) {
+      return key;
+    }
+
+    values.pop();
+  }
+
+  return selectedProvince || "전국";
+}
+
+function moveMapImmediately() {
+  if (!brandMap || !window.kakao?.maps) {
+    return;
+  }
+
+  const key = getFastRegionKey();
+  const info =
+    fastRegionCoordinates[key] ||
+    fastRegionCoordinates["전국"];
+
+  const [latitude, longitude, level] = info;
+  const position = new kakao.maps.LatLng(
+    latitude,
+    longitude
+  );
+
+  if (fastSelectedMarker) {
+    fastSelectedMarker.setMap(null);
+    fastSelectedMarker = null;
+  }
+
+  if (key !== "전국") {
+    fastSelectedMarker = new kakao.maps.Marker({
+      map: brandMap,
+      position
+    });
+  }
+
+  brandMap.setCenter(position);
+  brandMap.setLevel(level);
+
+  setTimeout(() => {
+    brandMap.relayout();
+    brandMap.setCenter(position);
+  }, 80);
+}
+
+/*
+ * 기존 주소 검색 기반 함수를 빠른 좌표 이동으로 교체합니다.
+ */
+updateMapForSelectedRegion = moveMapImmediately;
+
+/*
+ * 지도 생성 즉시 기본 지도를 먼저 보여줍니다.
+ */
+initializeBrandMap = function() {
+  const container = document.querySelector("#brandMap");
+
+  if (!container) {
+    return;
+  }
+
+  if (!brandMap) {
+    brandMap = new kakao.maps.Map(container, {
+      center: new kakao.maps.LatLng(36.35, 127.8),
+      level: 12
+    });
+
+    if (
+      kakao.maps.services &&
+      kakao.maps.services.Geocoder
+    ) {
+      mapGeocoder = new kakao.maps.services.Geocoder();
+    }
+  }
+
+  hideMapStatus();
+
+  setTimeout(() => {
+    brandMap.relayout();
+    moveMapImmediately();
+    refreshRegionSelector();
+  }, 60);
+};
+
+/*
+ * SDK 로딩이 끝없이 멈추는 상황 방지
+ */
+const originalLoadKakaoMapSdk = loadKakaoMapSdk;
+
+loadKakaoMapSdk = function() {
+  const timeoutId = setTimeout(() => {
+    if (!brandMap) {
+      showMapStatus(
+        "지도를 불러오는 데 시간이 걸리고 있습니다.",
+        "네트워크 상태를 확인한 뒤 새로고침해 주세요.",
+        true
+      );
+    }
+  }, 8000);
+
+  originalLoadKakaoMapSdk();
+
+  const waitForMap = setInterval(() => {
+    if (brandMap) {
+      clearTimeout(timeoutId);
+      clearInterval(waitForMap);
+    }
+  }, 100);
+};
+
+// FAST REGION MAP END
+
 renderNewBrands();
 renderSubcategories();
 renderBrandGrid();
