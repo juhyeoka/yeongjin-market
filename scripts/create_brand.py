@@ -115,10 +115,28 @@ def build_detail_html(brand: dict, base_url: str) -> str:
         ensure_ascii=False,
     )
 
+    collab_logo = """
+      <span class="collab-logo">
+        <span class="market-logo">
+          <svg class="yeongjin-mark" viewBox="115 245 465 335" role="img" aria-label="영진관광 로고">
+            <image href="/assets/brand/yeongjin-logo-original.png" width="2022" height="778"></image>
+          </svg>
+          <span class="market-logo-copy">
+            <strong>영진마켓</strong>
+            <small>Discover Brands</small>
+          </span>
+        </span>
+        <span class="collab-times" aria-hidden="true">×</span>
+        <svg class="fynd-logo" viewBox="90 410 1080 410" role="img" aria-label="FYND 로고">
+          <image href="/assets/brand/fynd-logo-original.jpeg" width="1260" height="1260"></image>
+        </svg>
+      </span>
+    """.strip()
+
     actions = "".join(
         [
             optional_action(
-                brand.get("shopUrl", ""), "공식 판매처에서 상품 보기", "primary"
+                brand.get("shopUrl", ""), "공식 스마트스토어 방문", "primary"
             ),
             optional_action(brand.get("traceUrl", ""), "생산 정보 확인하기"),
             optional_action(brand.get("homepageUrl", ""), "브랜드 홈페이지"),
@@ -133,21 +151,57 @@ def build_detail_html(brand: dict, base_url: str) -> str:
           </a>
         """
 
+    shop_action = ""
+    if brand.get("shopUrl"):
+        shop_label = (
+            "네이버 스마트스토어에서 보기"
+            if "smartstore.naver.com" in brand["shopUrl"]
+            else "공식 판매처에서 보기"
+        )
+        shop_action = f"""
+          <a href="{escape(brand['shopUrl'])}" target="_blank" rel="noopener noreferrer">
+            {shop_label} <span>↗</span>
+          </a>
+        """.strip()
+
+    gallery_items: list[str] = []
+    for gallery_image in brand.get("images", {}).get("gallery", []):
+        if not gallery_image:
+            continue
+        local_path = BASE_DIR / gallery_image.lstrip("/")
+        if gallery_image.startswith(("http://", "https://")) or local_path.exists():
+            gallery_items.append(
+                f"""
+          <figure>
+            <img src="{escape(gallery_image)}" alt="{name} 브랜드 스토리 사진" loading="lazy">
+          </figure>
+                """.strip()
+            )
+    gallery_html = ""
+    if gallery_items:
+        gallery_html = (
+            '<div class="brand-detail-gallery">'
+            + "".join(gallery_items)
+            + "</div>"
+        )
+    gallery_block = f"\n      {gallery_html}" if gallery_html else ""
+
     return f"""<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{name} {product} | 영진마켓</title>
+  <title>{name} {product} | 영진마켓 × FYND</title>
   <meta name="description" content="{headline}">
+  <meta name="keywords" content="{name}, {product}, {region}, 영진마켓, FYND, 지역 브랜드">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260727">
+  <link rel="stylesheet" href="/styles.css?v=20260727-platform">
   <meta property="og:type" content="product">
-  <meta property="og:site_name" content="영진마켓">
-  <meta property="og:title" content="{name} {product} | 영진마켓">
+  <meta property="og:site_name" content="영진마켓 × FYND">
+  <meta property="og:title" content="{name} {product} | 영진마켓 × FYND">
   <meta property="og:description" content="{headline}">
   <meta property="og:url" content="{page_url}">
   <meta property="og:image" content="{image_url}">
@@ -158,26 +212,20 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 <body class="brand-detail-body">
   <header class="site-header">
     <div class="header-inner brand-detail-header">
-      <a class="wordmark" href="/" aria-label="영진마켓 홈">
-        <span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="wordmark-copy">
-          <strong>영진마켓</strong>
-          <small>YEONGJIN MARKET</small>
-        </span>
-      </a>
+      <a href="/" aria-label="영진마켓 × FYND 홈">{collab_logo}</a>
       <a class="brand-detail-back" href="/">← 브랜드 목록</a>
     </div>
   </header>
 
   <main class="brand-detail-main">
-    <p class="brand-detail-breadcrumb">영진마켓 · {category} · {region}</p>
+    <p class="brand-detail-breadcrumb">입점 브랜드 · {category} · {region}</p>
     <section class="brand-detail-hero">
       <div class="brand-detail-visual">
         <img src="{image}" alt="{name} {product}" fetchpriority="high">
         <span>{name}</span>
       </div>
       <div class="brand-detail-copy">
-        <p class="section-kicker">LOCAL BRAND</p>
+        <p class="section-kicker">MEET THE BRAND</p>
         <h1>{headline}</h1>
         <p>{description}</p>
         <dl>
@@ -189,24 +237,33 @@ def build_detail_html(brand: dict, base_url: str) -> str:
         <div class="brand-detail-actions">{actions}</div>
       </div>
     </section>
+
+    <section class="brand-detail-product">
+      <p class="section-kicker">REPRESENTATIVE PRODUCT</p>
+      <h2>대표 상품</h2>
+      <div class="brand-detail-product-card">
+        <img src="{image}" alt="{name} {product} 대표 상품" loading="lazy">
+        <div class="brand-detail-product-copy">
+          <strong>{name} {product}</strong>
+          <p>{headline}</p>
+          <p>상품 구성: {quantity}</p>
+          {shop_action if shop_action else ""}
+        </div>
+      </div>
+    </section>
+
     <section class="brand-detail-story">
       <p class="section-kicker">BRAND STORY</p>
       <h2>{escape(brand.get("storyTitle") or "브랜드가 지키는 가치")}</h2>
-      <p>{escape(brand.get("storyDescription") or brand["description"])}</p>
+      <p>{escape(brand.get("storyDescription") or brand["description"])}</p>{gallery_block}
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner brand-detail-footer">
-      <a class="wordmark wordmark-footer" href="/">
-        <span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="wordmark-copy">
-          <strong>영진마켓</strong>
-          <small>YEONGJIN MARKET</small>
-        </span>
-      </a>
+      <a class="footer-collab-logo" href="/">{collab_logo}</a>
       <p>지역의 좋은 상품과 브랜드 이야기를 소개합니다.</p>
-      <small>© 2026 YEONGJIN MARKET. All rights reserved.</small>
+      <small>© 2026 YEONGJIN MARKET × FYND.</small>
     </div>
   </footer>
 </body>
