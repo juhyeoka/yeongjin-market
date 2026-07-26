@@ -1,0 +1,28 @@
+{
+  "slug": "brand-slug",
+  "name": "브랜드명",
+  "category": "농산",
+  "categoryKey": "agriculture",
+  "product": "대표 상품",
+  "region": "충남 지역",
+  "headline": "브랜드를 설명하는 한 줄 문장",
+  "description": "브랜드의 생산 철학과 상품 이야기를 작성합니다.",
+  "quantity": "상품 구성",
+  "storyTitle": "브랜드가 전하고 싶은 핵심 가치",
+  "storyDescription": "업체가 전달한 브랜드 이야기와 생산 철학을 작성합니다.",
+  "shopUrl": "",
+  "homepageUrl": "",
+  "traceUrl": "",
+  "phone": "",
+  "published": true,
+  "sortOrder": 20,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/brand-slug/",
+  "qrImage": "",
+  "images": {
+    "main": "/assets/brands/brand-slug/main.jpg",
+    "gallery": [
+      "/assets/brands/brand-slug/story-1.jpg",
+      "/assets/brands/brand-slug/story-2.jpg"
+    ]
+  }
+}

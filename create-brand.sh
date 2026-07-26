@@ -4,13 +4,6 @@ set -e
 
 cd "$(dirname "$0")"
 
-if [ ! -x ".venv-tools/bin/python" ]; then
-  echo "도구용 가상환경을 생성합니다."
-  python3 -m venv .venv-tools
-  .venv-tools/bin/python -m pip install --upgrade pip
-  .venv-tools/bin/python -m pip install qrcode pillow
-fi
-
 DEFAULT_RENDER_URL="https://yeongjin-market.onrender.com"
 
 echo ""
@@ -20,5 +13,8 @@ if [ -z "$SITE_URL" ]; then
   SITE_URL="$DEFAULT_RENDER_URL"
 fi
 
-.venv-tools/bin/python scripts/create_brand.py \
-  --base-url "$SITE_URL"
+python3 scripts/create_brand.py --base-url "$SITE_URL"
+
+echo ""
+echo "업체 사진을 assets/brands/<slug>/ 폴더에 넣은 뒤 아래 명령을 실행하세요."
+echo "python3 scripts/create_brand.py --build-all --base-url \"$SITE_URL\""

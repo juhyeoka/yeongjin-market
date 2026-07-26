@@ -1,694 +1,603 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>영진마켓 | 지역 브랜드를 발견하다</title>
+
+  <title>영진마켓 | i4 무항생제 유정란 브랜드 스토리</title>
   <meta
     name="description"
-    content="영진관광이 엄선한 농산, 축산, 수산, 카페 지역 브랜드를 만나보세요."
+    content="이동 중 만나는 좋은 브랜드, 영진마켓. 충남 홍성의 계란 브랜드 i4 무항생제 유정란과 투명한 생산 이야기를 소개합니다."
   >
-  <link rel="icon" href="assets/favicon.svg">
-  <link rel="stylesheet" href="styles.css?v=1783959454">
+  <meta name="keywords" content="영진마켓, i4, 아이포, 무항생제 유정란, 계란, 홍성 계란, 지역 브랜드, 로컬 브랜드">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="영진마켓">
   <meta name="theme-color" content="#ffffff">
+  <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="format-detection" content="telephone=no">
+
+  <link rel="canonical" href="https://yeongjin-market.onrender.com/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/i4-eggs.png" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="/styles.css?v=20260727">
+
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="영진마켓">
+  <meta property="og:title" content="영진마켓 | i4 무항생제 유정란">
+  <meta
+    property="og:description"
+    content="좋은 브랜드를 발견하는 시간. i4 유정란의 상품과 브랜드 이야기를 만나보세요."
+  >
+  <meta property="og:url" content="https://yeongjin-market.onrender.com/">
+  <meta property="og:image" content="https://yeongjin-market.onrender.com/assets/i4-eggs.png">
+  <meta property="og:image:width" content="1667">
+  <meta property="og:image:height" content="943">
+  <meta property="og:image:alt" content="i4 무항생제 유정란 제품">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="영진마켓 | i4 무항생제 유정란">
+  <meta
+    name="twitter:description"
+    content="충남 홍성의 계란 브랜드 i4와 투명한 생산 이야기를 소개합니다."
+  >
+  <meta name="twitter:image" content="https://yeongjin-market.onrender.com/assets/i4-eggs.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://yeongjin-market.onrender.com/#website",
+        "url": "https://yeongjin-market.onrender.com/",
+        "name": "영진마켓",
+        "alternateName": "YEONGJIN MARKET",
+        "description": "지역의 좋은 브랜드와 상품 이야기를 소개하는 영진마켓",
+        "inLanguage": "ko-KR"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://yeongjin-market.onrender.com/#organization",
+        "name": "영진마켓",
+        "url": "https://yeongjin-market.onrender.com/",
+        "logo": "https://yeongjin-market.onrender.com/assets/favicon.svg"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://yeongjin-market.onrender.com/#i4-eggs",
+        "name": "i4 무항생제 유정란",
+        "alternateName": "i4 유정란 10개입",
+        "image": [
+          "https://yeongjin-market.onrender.com/assets/i4-eggs.png"
+        ],
+        "description": "농장의 사육 환경과 생산 정보를 확인할 수 있도록 투명한 정보를 제공하는 i4 유정란입니다.",
+        "category": "계란",
+        "brand": {
+          "@type": "Brand",
+          "name": "i4"
+        },
+        "url": "https://yeongjin-market.onrender.com/brands/i4/"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
-  <div class="app-shell">
+  <a class="skip-link" href="#main">본문 바로가기</a>
 
-    <!-- 상단 헤더 -->
-    <header class="main-header">
-      <button class="brand-logo" id="logoButton" aria-label="홈으로 이동">
-        <span class="brand-symbol">
-          <i></i>
-          <i></i>
-          <i></i>
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="영진마켓 홈">
+        <span class="wordmark-symbol" aria-hidden="true">
+          <i></i><i></i><i></i>
         </span>
-
-        <span class="brand-text">
+        <span class="wordmark-copy">
           <strong>영진마켓</strong>
-          <small>Discover Brands</small>
+          <small>YEONGJIN MARKET</small>
         </span>
-      </button>
-
-      <div class="header-actions">
-        <button class="icon-button notification-button" aria-label="알림">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-            <path d="M10 21h4"></path>
-          </svg>
-          <span class="notification-dot"></span>
-        </button>
-
-        <button class="icon-button" aria-label="메뉴">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <main>
-      <!-- 홈 화면 -->
-      <section id="homePage" class="page active-page">
-        <div class="search-box home-search-box">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m20 20-3.5-3.5"></path>
-          </svg>
-
-          <input
-            id="homeSearch"
-            type="search"
-            placeholder="찾고 싶은 브랜드나 이야기를 검색해보세요"
-            autocomplete="off"
-          >
-        </div>
-
-        <!-- 메인 배너 -->
-        <section class="main-hero">
-          <img
-            src="assets/hero-bus.png"
-            alt="영진관광 로컬 브랜드 여행 버스"
-          >
-
-          <div class="hero-overlay"></div>
-
-          <div class="hero-content">
-            <p class="hero-label">LOCAL BRAND JOURNEY</p>
-            <h1>
-              영진관광에서<br>
-              만나는 로컬 브랜드
-            </h1>
-
-            <p class="hero-description">
-              여행의 즐거움은<br>
-              좋은 브랜드를 만나는 것에서 시작됩니다.
-            </p>
-
-            <button class="dark-button" id="storyButton">
-              브랜드 이야기 보기
-              <span>›</span>
-            </button>
-          </div>
-        </section>
-
-        <!-- 카테고리 -->
-        <section class="category-grid" aria-label="상품 카테고리">
-          <button class="category-card agriculture" data-category="agriculture">
-            <div class="category-copy">
-              <h2>농산</h2>
-              <p>과일, 채소, 쌀</p>
-              <span class="category-arrow">→</span>
-            </div>
-
-            <img
-              src="https://loremflickr.com/700/600/vegetable,fruit?lock=201"
-              alt="농산물"
-            >
-          </button>
-
-          <button class="category-card livestock" data-category="livestock">
-            <div class="category-copy">
-              <h2>축산</h2>
-              <p>한우, 돼지고기, 계란</p>
-              <span class="category-arrow">→</span>
-            </div>
-
-            <img
-              src="https://loremflickr.com/700/600/meat,egg?lock=202"
-              alt="축산물"
-            >
-          </button>
-
-          <button class="category-card seafood" data-category="seafood">
-            <div class="category-copy">
-              <h2>수산</h2>
-              <p>생선, 해산물</p>
-              <span class="category-arrow">→</span>
-            </div>
-
-            <img
-              src="https://loremflickr.com/700/600/fish,seafood?lock=203"
-              alt="수산물"
-            >
-          </button>
-
-          <button class="category-card cafe" data-category="cafe">
-            <div class="category-copy">
-              <h2>카페</h2>
-              <p>커피, 디저트, 베이커리</p>
-              <span class="category-arrow">→</span>
-            </div>
-
-            <img
-              src="https://loremflickr.com/700/600/coffee,cake?lock=204"
-              alt="카페와 디저트"
-            >
-          </button>
-        </section>
-
-        <!-- 새 브랜드 -->
-        <section class="new-brand-section">
-          <div class="section-heading">
-            <h2>새롭게 만난 브랜드</h2>
-
-            <button id="viewAllButton" class="text-button">
-              전체 보기
-              <span>›</span>
-            </button>
-          </div>
-
-          <div id="newBrandList" class="new-brand-list"></div>
-        </section>
-
-        <!-- 서비스 안내 -->
-        <section class="trust-section">
-          <article>
-            <span class="trust-icon">⌖</span>
-            <div>
-              <strong>전국 로컬 브랜드</strong>
-              <p>영진관광이 직접 발굴하고 소개합니다.</p>
-            </div>
-          </article>
-
-          <article>
-            <span class="trust-icon">✿</span>
-            <div>
-              <strong>영진관광 추천</strong>
-              <p>믿을 수 있는 브랜드만 엄선하여 추천합니다.</p>
-            </div>
-          </article>
-
-          <article>
-            <span class="trust-icon">♡</span>
-            <div>
-              <strong>브랜드 스토리</strong>
-              <p>사람과 철학이 담긴 진짜 이야기를 전합니다.</p>
-            </div>
-          </article>
-
-          <article>
-            <span class="trust-icon">♢</span>
-            <div>
-              <strong>안심하고 연결</strong>
-              <p>공식 스토어로 안전하게 연결해 드립니다.</p>
-            </div>
-          </article>
-        </section>
-      </section>
-
-      <!-- 카테고리 화면 -->
-      <section id="categoryPage" class="page">
-        <header class="category-header">
-          <button id="backButton" class="round-icon-button" aria-label="뒤로 가기">
-            <svg viewBox="0 0 24 24">
-              <path d="m15 18-6-6 6-6"></path>
-            </svg>
-          </button>
-
-          <h1>
-            <span id="categoryTitle">농산</span>
-          </h1>
-
-          <div class="category-header-actions">
-            <button class="round-icon-button" id="categorySearchButton" aria-label="검색">
-              <svg viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="m20 20-3.5-3.5"></path>
-              </svg>
-            </button>
-
-            <button class="round-icon-button bag-button" aria-label="장바구니">
-              <svg viewBox="0 0 24 24">
-                <path d="M6 8h12l1 12H5L6 8Z"></path>
-                <path d="M9 8a3 3 0 0 1 6 0"></path>
-              </svg>
-              <span>2</span>
-            </button>
-          </div>
-        </header>
-
-        <div id="categorySearchArea" class="category-search-area">
-          <div class="search-box">
-            <svg viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m20 20-3.5-3.5"></path>
-            </svg>
-
-            <input
-              id="categorySearch"
-              type="search"
-              placeholder="브랜드 이름이나 지역을 검색하세요"
-            >
-          </div>
-        </div>
-
-        <section id="categoryHero" class="category-hero">
-          <img
-            id="categoryHeroImage"
-            src="https://loremflickr.com/1400/700/vegetables,farm?lock=301"
-            alt="카테고리 대표 이미지"
-          >
-          <div class="category-hero-overlay"></div>
-
-          <div class="category-hero-copy">
-            <p id="categoryHeroLabel">자연이 키운 건강한 먹거리</p>
-            <h2 id="categoryHeroTitle">
-              영진관광이 엄선한 농산
-            </h2>
-            <p id="categoryHeroDescription">
-              전국 농부들의 정성과 진심을 담은<br>
-              신선한 농산물을 만나보세요.
-            </p>
-          </div>
-        </section>
-
-        <div id="subcategoryList" class="subcategory-list"></div>
-
-        <div class="filter-toolbar">
-          <button id="sortButton" class="sort-button">
-            추천순
-            <span>⌄</span>
-          </button>
-
-          <button class="filter-button">
-            필터
-            <svg viewBox="0 0 24 24">
-              <path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path>
-              <circle cx="16" cy="7" r="2"></circle>
-              <circle cx="8" cy="17" r="2"></circle>
-            </svg>
-          </button>
-        </div>
-
-        <p class="brand-count">
-          총 <strong id="brandCount">0</strong>개의 브랜드
-        </p>
-
-        <div id="brandGrid" class="brand-grid"></div>
-      </section>
-    
-    <!-- BRAND MAP PAGE START -->
-    <section id="mapPage" class="page brand-map-page">
-      <header class="map-page-header">
-        <button
-          id="mapBackButton"
-          class="round-icon-button"
-          type="button"
-          aria-label="뒤로 가기"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m15 18-6-6 6-6"></path>
-          </svg>
-        </button>
-
-        <div>
-          <p>LOCAL BRAND MAP</p>
-          <h1>브랜드 지도</h1>
-        </div>
-
-        <div class="map-header-space"></div>
-      </header>
-
-      <div class="map-location-notice">
-        <strong>지역 기준으로 표시됩니다.</strong>
-        <p>
-          브랜드의 정확한 매장이나 농장 주소가 아닌
-          시·군 지역 중심 위치입니다.
-        </p>
-      </div>
-
-      <div class="map-category-filter" aria-label="지도 카테고리 필터">
-        <button
-          class="map-filter-button active"
-          type="button"
-          data-map-category="all"
-        >
-          전체
-        </button>
-
-        <button
-          class="map-filter-button"
-          type="button"
-          data-map-category="agriculture"
-        >
-          농산
-        </button>
-
-        <button
-          class="map-filter-button"
-          type="button"
-          data-map-category="livestock"
-        >
-          축산
-        </button>
-
-        <button
-          class="map-filter-button"
-          type="button"
-          data-map-category="seafood"
-        >
-          수산
-        </button>
-
-        <button
-          class="map-filter-button"
-          type="button"
-          data-map-category="cafe"
-        >
-          카페
-        </button>
-      </div>
-
-      
-      <!-- REGION SELECTOR START -->
-      <section class="region-selector-section">
-        <div class="region-selector-heading">
-          <div>
-            <p>지역으로 브랜드 찾기</p>
-            <h2>원하는 지역을 선택하세요</h2>
-          </div>
-
-          <button
-            id="regionResetButton"
-            class="region-reset-button"
-            type="button"
-          >
-            초기화
-          </button>
-        </div>
-
-        <div class="region-select-grid">
-          <label class="region-select-box">
-            <span>시·도</span>
-
-            <select id="provinceSelect">
-              <option value="">전체 시·도</option>
-            </select>
-          </label>
-
-          <label class="region-select-box">
-            <span>시·군·구</span>
-
-            <select id="citySelect" disabled>
-              <option value="">전체 시·군·구</option>
-            </select>
-          </label>
-
-          <label class="region-select-box">
-            <span>구·읍·면</span>
-
-            <select id="districtSelect" disabled>
-              <option value="">전체 구·읍·면</option>
-            </select>
-          </label>
-
-          <label class="region-select-box">
-            <span>동·리</span>
-
-            <select id="neighborhoodSelect" disabled>
-              <option value="">전체 동·리</option>
-            </select>
-          </label>
-        </div>
-
-        <div id="selectedRegionSummary" class="selected-region-summary">
-          <span>선택된 지역</span>
-          <strong>전국</strong>
-        </div>
-      </section>
-      <!-- REGION SELECTOR END -->
-
-
-      <div class="brand-map-container">
-        <div id="brandMap" class="brand-map"></div>
-
-        <div id="mapStatus" class="map-status" hidden>
-          <strong id="mapStatusTitle">지도를 준비하고 있습니다.</strong>
-          <p id="mapStatusDescription"></p>
-        </div>
-
-        <div class="map-legend">
-          <span><i class="legend-agriculture"></i>농산</span>
-          <span><i class="legend-livestock"></i>축산</span>
-          <span><i class="legend-seafood"></i>수산</span>
-          <span><i class="legend-cafe"></i>카페</span>
-        </div>
-      </div>
-
-      <section id="mapRegionPanel" class="map-region-panel">
-        <div class="map-region-empty">
-          <strong>지도에서 지역을 선택하세요.</strong>
-          <p>지역 마커를 누르면 해당 지역의 브랜드가 표시됩니다.</p>
-        </div>
-      </section>
-    </section>
-    <!-- BRAND MAP PAGE END -->
-
-  
-    <!-- I4 DETAIL PAGE START -->
-    <section id="brandDetailPage" class="page i4-detail-page">
-      <header class="i4-detail-header">
-        <button id="detailBackButton" class="round-icon-button" type="button">
-          <svg viewBox="0 0 24 24">
-            <path d="m15 18-6-6 6-6"></path>
-          </svg>
-        </button>
-
-        <h1>i4</h1>
-
-        <button id="detailFavoriteButton" class="i4-heart-button" type="button">
-          ♡
-        </button>
-      </header>
-
-      <div class="i4-product-image-wrap">
-        <img
-          id="detailBrandImage"
-          src="assets/i4-eggs.png"
-          alt="i4 계란"
-        >
-        <span class="i4-main-badge">i4 ORIGINAL</span>
-      </div>
-
-      <section class="i4-main-info">
-        <p class="i4-category-text">농산 · 계란</p>
-
-        <h2 id="detailBrandName">i4</h2>
-
-        <p class="i4-one-line">
-          농장 환경과 생산 과정을 직접 확인할 수 있는 계란
-        </p>
-
-        <div class="i4-review-row">
-          <span class="i4-star">★ 5.0</span>
-          <span>신선한 계란을 정직하게 전달합니다</span>
-        </div>
-      </section>
-
-      <section class="i4-story-section">
-        <p class="i4-small-title">BRAND STORY</p>
-
-        <h3>보이지 않던 생산 과정을<br>소비자에게 보여주는 계란</h3>
-
-        <p id="detailBrandDescription">
-          i4는 단순히 계란을 판매하는 것을 넘어,
-          농장의 사육 환경과 생산 과정을 소비자가 직접 확인할 수 있도록
-          투명한 정보를 제공하는 계란 브랜드입니다.
-        </p>
-      </section>
-
-      <section class="i4-feature-section">
-        <h3>i4가 다른 이유</h3>
-
-        <div class="i4-feature-grid">
-          <article>
-            <strong>01</strong>
-            <h4>생산 정보 확인</h4>
-            <p>제품과 연결된 정보를 통해 생산 과정을 확인할 수 있습니다.</p>
-          </article>
-
-          <article>
-            <strong>02</strong>
-            <h4>농장 환경 공개</h4>
-            <p>소비자가 안심할 수 있도록 농장 환경 정보를 제공합니다.</p>
-          </article>
-
-          <article>
-            <strong>03</strong>
-            <h4>신선한 계란</h4>
-            <p>생산부터 판매까지 신선도를 중요하게 관리합니다.</p>
-          </article>
-
-          <article>
-            <strong>04</strong>
-            <h4>정직한 브랜드</h4>
-            <p>제품에 대한 정보를 숨기지 않고 투명하게 전달합니다.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="i4-info-table">
-        <h3>상품 정보</h3>
-
-        <div>
-          <span>브랜드</span>
-          <strong>i4</strong>
-        </div>
-
-        <div>
-          <span>상품 분류</span>
-          <strong>계란</strong>
-        </div>
-
-        <div>
-          <span>판매처</span>
-          <strong>네이버 스마트스토어</strong>
-        </div>
-
-        <div>
-          <span>브랜드 특징</span>
-          <strong>생산 과정 및 농장 정보 확인</strong>
-        </div>
-      </section>
-
-      
-      <!-- I4 FARM STATUS START -->
-      <section class="i4-farm-status-section">
-        <div class="i4-farm-status-heading">
-          <div>
-            <p>FARM TRACEABILITY</p>
-            <h3>농장 상태를 직접 확인하세요</h3>
-          </div>
-
-          <span class="i4-live-badge">
-            <i></i>
-            LIVE
-          </span>
-        </div>
-
-        <p class="i4-farm-status-description">
-          i4 계란은 제품에 연결된 농장 정보를 통해
-          사육 환경과 최근 활동 상태를 확인할 수 있습니다.
-        </p>
-
-        <div class="i4-farm-status-preview">
-          <article>
-            <span>제품 코드</span>
-            <strong>EGG-0001</strong>
-          </article>
-
-          <article>
-            <span>농장 신뢰 리포트</span>
-            <strong>상태 확인 가능</strong>
-          </article>
-
-          <article>
-            <span>최근 활동 기록</span>
-            <strong>영상·사진 증거</strong>
-          </article>
-        </div>
-
-        <a
-          class="i4-farm-status-link"
-          href="https://eggtrace-82hy.onrender.com/p/EGG-0001"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="i4-farm-link-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 12h16"></path>
-              <path d="m14 6 6 6-6 6"></path>
-            </svg>
-          </span>
-
-          <span class="i4-farm-link-copy">
-            <strong>실시간 농장 상태 보기</strong>
-            <small>신뢰 점수, 활동 기록, 증거 영상을 확인할 수 있습니다.</small>
-          </span>
-
-          <span class="i4-farm-link-arrow">→</span>
-        </a>
-
-        <p class="i4-farm-status-note">
-          농장 데이터는 제품 코드와 연결된 정보이며,
-          화면에 표시되는 위치는 정확한 농장 주소가 아닌 제품 추적용 정보입니다.
-        </p>
-      </section>
-      <!-- I4 FARM STATUS END -->
-
-
-      <section class="i4-purchase-notice">
-        <h3>구매 안내</h3>
-        <p>
-          가격, 배송, 교환 및 환불 정책은
-          네이버 스마트스토어의 상품 페이지를 기준으로 합니다.
-        </p>
-      </section>
+      </a>
+
+      <nav class="desktop-nav" aria-label="주요 메뉴">
+        <a href="#product">오늘의 상품</a>
+        <a href="#story">브랜드 스토리</a>
+        <a href="#information">상품 정보</a>
+        <a href="#contact">문의</a>
+      </nav>
 
       <a
-        id="detailExternalLink"
-        class="i4-buy-button"
+        class="header-shop-link"
+        id="headerShopLink"
         href="https://smartstore.naver.com/i4company/products/13640294223"
         target="_blank"
         rel="noopener noreferrer"
       >
-        네이버 스마트스토어에서 구매하기
-        <span>→</span>
+        공식 판매처
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8"></path>
+        </svg>
       </a>
-    </section>
-    <!-- I4 DETAIL PAGE END -->
 
+      <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+        aria-label="메뉴 열기"
+        aria-controls="mobileMenu"
+        aria-expanded="false"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴" hidden>
+      <a href="#product"><span>01</span>오늘의 상품</a>
+      <a href="#story"><span>02</span>브랜드 스토리</a>
+      <a href="#information"><span>03</span>상품 정보</a>
+      <a href="#contact"><span>04</span>문의</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-anchor" aria-labelledby="heroTitle">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span aria-hidden="true"></span>
+            LOCAL BRAND CURATION
+          </p>
+
+          <h1 id="heroTitle">
+            이동 중 만나는<br>
+            <em>좋은 브랜드</em>
+          </h1>
+
+          <p class="hero-description">
+            스쳐 지나가기 쉬운 지역의 좋은 상품을 발견하고,<br class="desktop-break">
+            그 안에 담긴 사람과 생산 이야기를 전합니다.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#product">
+              오늘의 브랜드 보기
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </a>
+            <a
+              class="button button-secondary"
+              id="heroHomepageLink"
+              href="https://junada040828.cafe24.com/skin-skin10"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              i4 공식 홈페이지
+            </a>
+          </div>
+
+          <div class="hero-note">
+            <span class="hero-note-mark" id="heroBrandMark">i4</span>
+            <p id="heroBrandSummary">
+              <strong>이번에 만난 브랜드</strong>
+              충남 홍성 · 무항생제 유정란
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-product" aria-label="i4 유정란 대표 상품">
+          <div class="hero-product-halo" aria-hidden="true"></div>
+          <div class="hero-product-card">
+            <div class="hero-product-top">
+              <span>YEONGJIN PICK</span>
+              <span>01 / 01</span>
+            </div>
+            <img
+              id="heroBrandImage"
+              src="/assets/i4-eggs.png"
+              width="1667"
+              height="943"
+              alt="i4 무항생제 유정란 10개입 제품"
+              fetchpriority="high"
+            >
+            <div class="hero-product-bottom">
+              <div>
+                <small>TODAY'S BRAND</small>
+                <strong id="heroBrandName">i4 유정란</strong>
+              </div>
+              <a href="#product" aria-label="i4 상품 정보로 이동">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <span class="floating-tag floating-tag-one">무항생제</span>
+          <span class="floating-tag floating-tag-two">생산 정보 확인</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-strip" aria-label="영진마켓 소개">
+      <div class="intro-strip-inner">
+        <p><strong>하나의 상품,</strong> 더 깊이 보는 브랜드 이야기</p>
+        <ul>
+          <li>지역 브랜드 발굴</li>
+          <li>생산 정보 연결</li>
+          <li>공식 판매처 안내</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="featured section-anchor" id="product" aria-labelledby="productTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">TODAY'S BRAND</p>
+          <h2 id="productTitle">오늘 만나는 단 하나의 상품</h2>
+        </div>
+        <p>
+          여러 상품을 나열하기보다<br>
+          지금 소개할 브랜드 하나에 집중합니다.
+        </p>
+      </div>
+
+      <article class="product-showcase">
+        <div class="product-visual">
+          <span class="product-index">YJ PICK 01</span>
+          <img
+            id="productBrandImage"
+            src="/assets/i4-eggs.png"
+            width="1667"
+            height="943"
+            alt="노란 포장과 갈색 계란으로 구성된 i4 무항생제 유정란"
+            loading="lazy"
+          >
+          <span class="product-stamp" id="productBrandStamp">i4</span>
+        </div>
+
+        <div class="product-copy">
+          <div class="product-labels" id="productLabels">
+            <span>충남 홍성</span>
+            <span>계란</span>
+            <span>10개입</span>
+          </div>
+
+          <p class="product-brand" id="productBrandName">i4 · 아이포</p>
+          <h3 id="productHeadline">생산 이야기를 확인할 수 있는<br>무항생제 유정란</h3>
+          <p class="product-description" id="productDescription">
+            i4는 계란 한 알이 식탁에 오기까지의 과정을 더 투명하게
+            전하려는 브랜드입니다. 포장에 담긴 QR을 통해 생산 정보를
+            확인하고, 공식 판매처에서 상품을 만나보세요.
+          </p>
+
+          <dl class="product-facts">
+            <div>
+              <dt>상품명</dt>
+              <dd id="productFactName">i4 무항생제 유정란</dd>
+            </div>
+            <div>
+              <dt>구성</dt>
+              <dd id="productFactQuantity">대란 10개입 · 550g 이상</dd>
+            </div>
+            <div>
+              <dt>지역</dt>
+              <dd id="productFactRegion">충남 홍성</dd>
+            </div>
+          </dl>
+
+          <div class="product-actions">
+            <a
+              class="button button-dark"
+              id="productShopLink"
+              href="https://smartstore.naver.com/i4company/products/13640294223"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span id="productShopLabel">네이버 스마트스토어</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7M9 7h8v8"></path>
+              </svg>
+            </a>
+            <a
+              class="button button-outline"
+              id="productTraceLink"
+              href="https://eggtrace-82hy.onrender.com/p/EGG-0001"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              생산 정보 확인
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="trust" aria-labelledby="trustTitle">
+      <div class="trust-inner">
+        <div class="trust-heading">
+          <p class="section-kicker section-kicker-light">WHY THIS BRAND</p>
+          <h2 id="trustTitle">상품 너머의 정보까지<br>확인할 수 있도록</h2>
+        </div>
+
+        <div class="trust-list">
+          <article>
+            <span>01</span>
+            <div class="trust-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 14h2v2h-2zM19 14h1v3h-3v3h-3v-2"></path>
+              </svg>
+            </div>
+            <h3>QR 생산 정보</h3>
+            <p>포장에 연결된 정보로 상품의 생산 이력을 확인합니다.</p>
+          </article>
+
+          <article>
+            <span>02</span>
+            <div class="trust-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3 4 7v5c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V7l-8-4Z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+            </div>
+            <h3>투명한 연결</h3>
+            <p>브랜드가 제공하는 공식 정보와 판매 채널을 바로 연결합니다.</p>
+          </article>
+
+          <article>
+            <span>03</span>
+            <div class="trust-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21s7-4.4 7-11a4 4 0 0 0-7-2.5A4 4 0 0 0 5 10c0 6.6 7 11 7 11Z"></path>
+              </svg>
+            </div>
+            <h3>지역 브랜드</h3>
+            <p>지역에서 만들어지는 좋은 상품과 사람의 이야기를 소개합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="brand-directory section-anchor"
+      id="brandDirectory"
+      aria-labelledby="brandDirectoryTitle"
+      hidden
+    >
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">MORE LOCAL BRANDS</p>
+          <h2 id="brandDirectoryTitle">새롭게 함께하는 브랜드</h2>
+        </div>
+        <p>
+          입점 브랜드가 추가되면<br>
+          이곳에서 차례로 소개합니다.
+        </p>
+      </div>
+      <div class="brand-directory-grid" id="brandDirectoryGrid"></div>
+    </section>
+
+    <section class="story section-anchor" id="story" aria-labelledby="storyTitle">
+      <div class="story-intro">
+        <p class="section-kicker">BRAND STORY</p>
+        <h2 id="storyTitle">
+          좋은 계란을 넘어,<br>
+          <em id="storyTitleAccent">믿을 수 있는 과정</em>을 전합니다.
+        </h2>
+        <p id="storyDescription">
+          매일 먹는 식재료일수록 어디에서 어떻게 왔는지 알 수 있어야 한다는
+          생각. i4는 소비자가 생산 정보를 직접 확인할 수 있는 방식으로
+          상품과 농장을 연결합니다.
+        </p>
+      </div>
+
+      <div class="story-grid">
+        <figure class="story-main-image">
+          <img
+            id="storyMainImage"
+            src="/assets/i4-eggs.png"
+            width="1667"
+            height="943"
+            alt="i4 무항생제 유정란 제품과 포장"
+            loading="lazy"
+          >
+          <figcaption>
+            <span>01</span>
+            <div>
+              <strong id="storyCaptionTitle">상품에 담긴 브랜드의 약속</strong>
+              <p id="storyCaptionDescription">필요한 정보를 소비자가 직접 확인할 수 있도록 연결합니다.</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <div class="story-side">
+          <article class="story-placeholder" id="storyGalleryOne">
+            <span class="placeholder-number">02</span>
+            <div class="placeholder-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 20V9l8-5 8 5v11M8 20v-6h8v6M7 10h.01M17 10h.01"></path>
+              </svg>
+            </div>
+            <p>농장 전경과 생산 환경</p>
+            <small>업체 제공 사진 준비 중</small>
+          </article>
+
+          <article class="story-placeholder story-placeholder-warm" id="storyGalleryTwo">
+            <span class="placeholder-number">03</span>
+            <div class="placeholder-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21c4.5-3.2 7-7.1 7-11a7 7 0 1 0-14 0c0 3.9 2.5 7.8 7 11Z"></path>
+                <path d="M9 11c1.8 0 3-1.1 3-3 0 1.9 1.2 3 3 3-1.8 0-3 1.1-3 3 0-1.9-1.2-3-3-3Z"></path>
+              </svg>
+            </div>
+            <p>브랜드를 만드는 사람들</p>
+            <small>업체 제공 사진 준비 중</small>
+          </article>
+        </div>
+      </div>
+
+      <aside class="story-quote">
+        <span aria-hidden="true">“</span>
+        <blockquote>
+          매일 만나는 식재료에<br>
+          확인할 수 있는 믿음을 더합니다.
+        </blockquote>
+        <p>i4 BRAND MESSAGE</p>
+      </aside>
+    </section>
+
+    <section class="information section-anchor" id="information" aria-labelledby="informationTitle">
+      <div class="information-grid">
+        <div class="information-copy">
+          <p class="section-kicker">PRODUCT INFORMATION</p>
+          <h2 id="informationTitle">상품을 더 자세히<br>확인해보세요.</h2>
+          <p>
+            영진마켓은 상품을 직접 판매하지 않습니다. 구매와 세부 상품 정보는
+            i4의 공식 판매처에서 확인할 수 있습니다.
+          </p>
+        </div>
+
+        <div class="information-links">
+          <a
+            id="informationShopLink"
+            href="https://smartstore.naver.com/i4company/products/13640294223"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>01</span>
+            <div>
+              <small>OFFICIAL STORE</small>
+              <strong>네이버 스마트스토어에서 상품 보기</strong>
+            </div>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
+
+          <a
+            id="informationTraceLink"
+            href="https://eggtrace-82hy.onrender.com/p/EGG-0001"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>02</span>
+            <div>
+              <small>TRACE INFORMATION</small>
+              <strong>계란 생산 정보 확인하기</strong>
+            </div>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
+
+          <a
+            id="informationHomepageLink"
+            href="https://junada040828.cafe24.com/skin-skin10"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>03</span>
+            <div>
+              <small>BRAND HOME</small>
+              <strong>i4 공식 홈페이지 방문하기</strong>
+            </div>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact section-anchor" id="contact" aria-labelledby="contactTitle">
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <p class="section-kicker section-kicker-light">CONTACT</p>
+          <h2 id="contactTitle">상품이 궁금하신가요?</h2>
+          <p>
+            연락처를 전달받는 즉시 이 자리에서 바로 통화할 수 있도록
+            버튼이 활성화됩니다.
+          </p>
+        </div>
+
+        <button
+          class="contact-call"
+          id="contactCall"
+          type="button"
+          data-phone=""
+          aria-disabled="true"
+        >
+          <span class="contact-call-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2C9.7 21 3 14.3 3 6c0-1.1.9-2 2-2Z"></path>
+            </svg>
+          </span>
+          <span class="contact-call-copy">
+            <small>PHONE INQUIRY</small>
+            <strong>전화 문의 준비 중</strong>
+          </span>
+          <span class="contact-call-status">연락처 등록 대기</span>
+        </button>
+      </div>
+    </section>
   </main>
 
-    <!-- 하단 메뉴 -->
-    <nav class="bottom-navigation">
-      <button class="bottom-nav-item active" data-nav="home">
-        <svg viewBox="0 0 24 24">
-          <path d="m3 11 9-8 9 8"></path>
-          <path d="M5 10v10h14V10"></path>
-        </svg>
-        <span>홈</span>
-      </button>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="wordmark wordmark-footer" href="#top" aria-label="영진마켓 맨 위로">
+        <span class="wordmark-symbol" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+        <span class="wordmark-copy">
+          <strong>영진마켓</strong>
+          <small>YEONGJIN MARKET</small>
+        </span>
+      </a>
 
-      <button class="bottom-nav-item" data-nav="search">
-        <svg viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.5-3.5"></path>
-        </svg>
-        <span>브랜드 찾기</span>
-      </button>
+      <p>
+        이동 중 만나는 좋은 브랜드.<br>
+        지역의 상품과 이야기를 한곳에 연결합니다.
+      </p>
 
-      <button class="bottom-nav-item" data-nav="map">
-        <svg viewBox="0 0 24 24">
-          <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
-          <path d="M9 3v15M15 6v15"></path>
-        </svg>
-        <span>브랜드 지도</span>
-      </button>
+      <div class="footer-links">
+        <a href="#product">오늘의 상품</a>
+        <a href="#story">브랜드 스토리</a>
+        <a href="#contact">문의</a>
+      </div>
 
-      <button class="bottom-nav-item" data-nav="favorite">
-        <svg viewBox="0 0 24 24">
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path>
-        </svg>
-        <span>찜 목록</span>
-      </button>
+      <small>© 2026 YEONGJIN MARKET. All rights reserved.</small>
+    </div>
+  </footer>
 
-      <button class="bottom-nav-item" data-nav="mypage">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="7" r="4"></circle>
-          <path d="M4 21a8 8 0 0 1 16 0"></path>
-        </svg>
-        <span>마이페이지</span>
-      </button>
-    </nav>
-  </div>
+  <nav class="bottom-navigation" aria-label="모바일 빠른 메뉴">
+    <a class="bottom-navigation-item active" href="#top" data-section="top">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 11 9-8 9 8M5 10v10h14V10"></path>
+      </svg>
+      <span>홈</span>
+    </a>
+    <a class="bottom-navigation-item" href="#product" data-section="product">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 8h12l1 12H5L6 8ZM9 8a3 3 0 0 1 6 0"></path>
+      </svg>
+      <span>상품</span>
+    </a>
+    <a class="bottom-navigation-item" href="#story" data-section="story">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"></path>
+        <path d="M8 8h7M8 12h7"></path>
+      </svg>
+      <span>스토리</span>
+    </a>
+    <a class="bottom-navigation-item" href="#contact" data-section="contact">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2C9.7 21 3 14.3 3 6c0-1.1.9-2 2-2Z"></path>
+      </svg>
+      <span>문의</span>
+    </a>
+  </nav>
 
-  <script src="map-config.js?v=1783959454"></script>
-  <script src="app.js?v=1783959454"></script>
+  <script src="/app.js?v=20260727"></script>
 </body>
 </html>

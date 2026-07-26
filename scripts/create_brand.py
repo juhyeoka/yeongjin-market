@@ -5,12 +5,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
+from datetime import date
 from html import escape
 from pathlib import Path
 from urllib.parse import urlparse
-
-import qrcode
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,712 +16,354 @@ DATA_DIR = BASE_DIR / "data" / "brands"
 ASSET_DIR = BASE_DIR / "assets" / "brands"
 PAGE_DIR = BASE_DIR / "brands"
 QR_DIR = BASE_DIR / "qrcodes"
-
+DEFAULT_BASE_URL = "https://yeongjin-market.onrender.com"
 
 CATEGORY_MAP = {
     "농산": "agriculture",
     "축산": "livestock",
     "수산": "seafood",
     "카페": "cafe",
+    "건강": "health",
+    "생활": "lifestyle",
 }
 
 
 def ask(label: str, default: str = "", required: bool = False) -> str:
     while True:
-        default_text = f" [{default}]" if default else ""
-        value = input(f"{label}{default_text}: ").strip()
-
-        if not value:
-            value = default
-
+        suffix = f" [{default}]" if default else ""
+        value = input(f"{label}{suffix}: ").strip() or default
         if required and not value:
             print("필수 입력값입니다.")
             continue
-
         return value
+
+
+def ask_yes_no(label: str, default: bool = True) -> bool:
+    default_label = "Y/n" if default else "y/N"
+    value = input(f"{label} [{default_label}]: ").strip().lower()
+    if not value:
+        return default
+    return value in {"y", "yes", "예", "네"}
 
 
 def slugify(value: str) -> str:
     value = value.strip().lower()
     value = re.sub(r"[^a-z0-9가-힣_-]+", "-", value)
     value = re.sub(r"-+", "-", value).strip("-")
-
     if not value:
-        raise ValueError("slug를 만들 수 없습니다.")
-
+        raise ValueError("브랜드 주소용 slug를 만들 수 없습니다.")
     return value
 
 
 def validate_url(value: str) -> str:
     if not value:
         return ""
-
     parsed = urlparse(value)
-
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise ValueError(f"올바르지 않은 URL입니다: {value}")
-
     return value
 
 
-def build_detail_html(brand: dict) -> str:
+def read_brand_files() -> list[dict]:
+    brands: list[dict] = []
+    for path in sorted(DATA_DIR.glob("*.json")):
+        if path.name in {"index.json", "brand.example.json"}:
+            continue
+        brands.append(json.loads(path.read_text(encoding="utf-8")))
+    return brands
+
+
+def optional_action(url: str, label: str, class_name: str = "") -> str:
+    if not url:
+        return ""
+    return (
+        f"""
+      <a class="brand-detail-action {class_name}" href="{escape(url)}"
+         target="_blank" rel="noopener noreferrer">
+        {escape(label)} <span>↗</span>
+      </a>
+    """.strip()
+        + "\n"
+    )
+
+
+def build_detail_html(brand: dict, base_url: str) -> str:
     name = escape(brand["name"])
-    category = escape(brand["category"])
-    region = escape(brand["region"])
     product = escape(brand["product"])
+    region = escape(brand["region"])
+    category = escape(brand["category"])
     headline = escape(brand["headline"])
     description = escape(brand["description"])
-    main_image = escape(brand["images"]["main"])
+    quantity = escape(brand.get("quantity") or "공식 판매처에서 확인")
+    image = escape(
+        brand.get("images", {}).get("main")
+        or "/assets/brands/brand-placeholder.svg"
+    )
+    page_url = f"{base_url}/brands/{escape(brand['slug'])}/"
+    image_url = image if image.startswith("http") else f"{base_url}{image}"
+    structured_data = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": f"{brand['name']} {brand['product']}",
+            "image": image_url,
+            "description": brand["description"],
+            "category": brand["category"],
+            "brand": {"@type": "Brand", "name": brand["name"]},
+            "url": page_url,
+        },
+        ensure_ascii=False,
+    )
 
-    shop_url = escape(brand.get("shopUrl", ""))
-    homepage_url = escape(brand.get("homepageUrl", ""))
-    trace_url = escape(brand.get("traceUrl", ""))
+    actions = "".join(
+        [
+            optional_action(
+                brand.get("shopUrl", ""), "공식 판매처에서 상품 보기", "primary"
+            ),
+            optional_action(brand.get("traceUrl", ""), "생산 정보 확인하기"),
+            optional_action(brand.get("homepageUrl", ""), "브랜드 홈페이지"),
+        ]
+    )
 
-    buttons = []
+    phone = re.sub(r"[^\d+]", "", brand.get("phone", ""))
+    if phone:
+        actions += f"""
+          <a class="brand-detail-action phone" href="tel:{escape(phone)}">
+            전화 문의 {escape(brand['phone'])} <span>☎</span>
+          </a>
+        """
 
-    if trace_url:
-        buttons.append(
-            f'''
-            <a class="action trace" href="{trace_url}" target="_blank"
-               rel="noopener noreferrer">
-              농장 상태 확인
-              <span>→</span>
-            </a>
-            '''
-        )
-
-    if shop_url:
-        buttons.append(
-            f'''
-            <a class="action shop" href="{shop_url}" target="_blank"
-               rel="noopener noreferrer">
-              스마트스토어에서 구매
-              <span>→</span>
-            </a>
-            '''
-        )
-
-    if homepage_url:
-        buttons.append(
-            f'''
-            <a class="action homepage" href="{homepage_url}" target="_blank"
-               rel="noopener noreferrer">
-              공식 홈페이지 보기
-              <span>→</span>
-            </a>
-            '''
-        )
-
-    if not buttons:
-        buttons.append(
-            '''
-            <div class="disabled">
-              공식 판매 링크를 준비하고 있습니다.
-            </div>
-            '''
-        )
-
-    button_html = "\n".join(buttons)
-
-    return f'''<!DOCTYPE html>
+    return f"""<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{name} {product} | 영진마켓</title>
+  <meta name="description" content="{headline}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#ffffff">
-  <title>{name} | 영진마켓</title>
-
-  <style>
-    * {{
-      box-sizing: border-box;
-    }}
-
-    html {{
-      -webkit-text-size-adjust: 100%;
-    }}
-
-    body {{
-      margin: 0;
-      color: #172330;
-      background: #f2f4f5;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Apple SD Gothic Neo",
-        "Noto Sans KR",
-        sans-serif;
-    }}
-
-    img {{
-      display: block;
-      width: 100%;
-    }}
-
-    a {{
-      color: inherit;
-    }}
-
-    .page {{
-      width: min(100%, 720px);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 18px 18px 45px;
-      background: #ffffff;
-    }}
-
-    .header {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 58px;
-    }}
-
-    .back {{
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      font-size: 23px;
-      text-decoration: none;
-      background: #f4f5f6;
-      border-radius: 50%;
-    }}
-
-    .header strong {{
-      font-size: 20px;
-      font-weight: 900;
-    }}
-
-    .header-space {{
-      width: 44px;
-    }}
-
-    .hero {{
-      position: relative;
-      height: 470px;
-      overflow: hidden;
-      background:
-        linear-gradient(145deg, #fff8dd, #ebdeaf);
-      border-radius: 27px;
-    }}
-
-    .hero img {{
-      height: 100%;
-      object-fit: cover;
-    }}
-
-    .hero::after {{
-      position: absolute;
-      inset: 0;
-      content: "";
-      background:
-        linear-gradient(
-          180deg,
-          transparent 40%,
-          rgba(10, 22, 34, 0.78) 100%
-        );
-    }}
-
-    .hero-copy {{
-      position: absolute;
-      right: 27px;
-      bottom: 27px;
-      left: 27px;
-      z-index: 2;
-      color: #ffffff;
-    }}
-
-    .badge {{
-      display: inline-flex;
-      margin-bottom: 11px;
-      padding: 7px 11px;
-      color: #172330;
-      font-size: 11px;
-      font-weight: 900;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 999px;
-    }}
-
-    .hero h1 {{
-      margin: 0 0 7px;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -2px;
-    }}
-
-    .hero p {{
-      margin: 0;
-      color: rgba(255, 255, 255, 0.87);
-      font-size: 14px;
-      font-weight: 700;
-    }}
-
-    .intro {{
-      padding: 34px 3px;
-      border-bottom: 1px solid #e8eaec;
-    }}
-
-    .label {{
-      margin: 0 0 9px;
-      color: #f24d42;
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1.8px;
-    }}
-
-    .intro h2 {{
-      margin: 0 0 17px;
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1.45;
-      letter-spacing: -1.4px;
-    }}
-
-    .intro > p:last-child {{
-      margin: 0;
-      color: #66717b;
-      font-size: 14px;
-      line-height: 1.9;
-    }}
-
-    .information {{
-      margin-top: 25px;
-      overflow: hidden;
-      border: 1px solid #e7e9eb;
-      border-radius: 20px;
-    }}
-
-    .row {{
-      display: grid;
-      grid-template-columns: 105px 1fr;
-      gap: 18px;
-      min-height: 58px;
-      padding: 14px 18px;
-      border-bottom: 1px solid #eceeef;
-    }}
-
-    .row:last-child {{
-      border-bottom: 0;
-    }}
-
-    .row span {{
-      color: #8a929a;
-      font-size: 12px;
-    }}
-
-    .row strong {{
-      font-size: 13px;
-      font-weight: 800;
-    }}
-
-    .actions {{
-      display: grid;
-      gap: 11px;
-      margin-top: 23px;
-    }}
-
-    .action,
-    .disabled {{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 58px;
-      padding: 15px 19px;
-      font-size: 14px;
-      font-weight: 900;
-      text-decoration: none;
-      border-radius: 18px;
-    }}
-
-    .trace {{
-      color: #ffffff;
-      background: #1b7d4a;
-    }}
-
-    .shop {{
-      color: #ffffff;
-      background: #03c75a;
-    }}
-
-    .homepage {{
-      color: #ffffff;
-      background: #172330;
-    }}
-
-    .disabled {{
-      justify-content: center;
-      color: #8b9298;
-      background: #eceeef;
-    }}
-
-    .notice {{
-      margin-top: 19px;
-      padding: 18px;
-      color: #737b83;
-      font-size: 11px;
-      line-height: 1.7;
-      background: #f6f7f8;
-      border-radius: 17px;
-    }}
-
-    @media (max-width: 600px) {{
-      .page {{
-        padding: 13px 14px 35px;
-      }}
-
-      .hero {{
-        height: 365px;
-        border-radius: 23px;
-      }}
-
-      .hero-copy {{
-        right: 21px;
-        bottom: 22px;
-        left: 21px;
-      }}
-
-      .hero h1 {{
-        font-size: 30px;
-      }}
-
-      .intro {{
-        padding: 29px 2px;
-      }}
-
-      .intro h2 {{
-        font-size: 23px;
-      }}
-
-      .row {{
-        grid-template-columns: 85px 1fr;
-      }}
-    }}
-  </style>
+  <link rel="canonical" href="{page_url}">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=20260727">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="영진마켓">
+  <meta property="og:title" content="{name} {product} | 영진마켓">
+  <meta property="og:description" content="{headline}">
+  <meta property="og:url" content="{page_url}">
+  <meta property="og:image" content="{image_url}">
+  <script type="application/ld+json">
+  {structured_data}
+  </script>
 </head>
-
-<body>
-  <main class="page">
-    <header class="header">
-      <a class="back" href="../../index.html" aria-label="영진마켓 홈">
-        ←
+<body class="brand-detail-body">
+  <header class="site-header">
+    <div class="header-inner brand-detail-header">
+      <a class="wordmark" href="/" aria-label="영진마켓 홈">
+        <span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="wordmark-copy">
+          <strong>영진마켓</strong>
+          <small>YEONGJIN MARKET</small>
+        </span>
       </a>
-
-      <strong>{name}</strong>
-      <div class="header-space"></div>
-    </header>
-
-    <section class="hero">
-      <img
-        src="../../{main_image}"
-        alt="{name} 대표 이미지"
-        onerror="
-          this.style.display='none';
-          this.parentElement.style.background=
-          'linear-gradient(145deg,#fff8dd,#ebdeaf)';
-        "
-      >
-
-      <div class="hero-copy">
-        <span class="badge">{category} · {product}</span>
-        <h1>{name}</h1>
-        <p>{region}</p>
-      </div>
-    </section>
-
-    <section class="intro">
-      <p class="label">BRAND STORY</p>
-      <h2>{headline}</h2>
-      <p>{description}</p>
-    </section>
-
-    <section class="information">
-      <div class="row">
-        <span>브랜드</span>
-        <strong>{name}</strong>
-      </div>
-
-      <div class="row">
-        <span>분류</span>
-        <strong>{category} · {product}</strong>
-      </div>
-
-      <div class="row">
-        <span>지역</span>
-        <strong>{region}</strong>
-      </div>
-    </section>
-
-    <section class="actions">
-      {button_html}
-    </section>
-
-    <div class="notice">
-      상품 가격, 배송, 교환 및 환불은 연결되는 각 업체의
-      공식 판매처 정책을 기준으로 합니다.
+      <a class="brand-detail-back" href="/">← 브랜드 목록</a>
     </div>
+  </header>
+
+  <main class="brand-detail-main">
+    <p class="brand-detail-breadcrumb">영진마켓 · {category} · {region}</p>
+    <section class="brand-detail-hero">
+      <div class="brand-detail-visual">
+        <img src="{image}" alt="{name} {product}" fetchpriority="high">
+        <span>{name}</span>
+      </div>
+      <div class="brand-detail-copy">
+        <p class="section-kicker">LOCAL BRAND</p>
+        <h1>{headline}</h1>
+        <p>{description}</p>
+        <dl>
+          <div><dt>브랜드</dt><dd>{name}</dd></div>
+          <div><dt>대표 상품</dt><dd>{product}</dd></div>
+          <div><dt>상품 구성</dt><dd>{quantity}</dd></div>
+          <div><dt>지역</dt><dd>{region}</dd></div>
+        </dl>
+        <div class="brand-detail-actions">{actions}</div>
+      </div>
+    </section>
+    <section class="brand-detail-story">
+      <p class="section-kicker">BRAND STORY</p>
+      <h2>{escape(brand.get("storyTitle") or "브랜드가 지키는 가치")}</h2>
+      <p>{escape(brand.get("storyDescription") or brand["description"])}</p>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner brand-detail-footer">
+      <a class="wordmark wordmark-footer" href="/">
+        <span class="wordmark-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="wordmark-copy">
+          <strong>영진마켓</strong>
+          <small>YEONGJIN MARKET</small>
+        </span>
+      </a>
+      <p>지역의 좋은 상품과 브랜드 이야기를 소개합니다.</p>
+      <small>© 2026 YEONGJIN MARKET. All rights reserved.</small>
+    </div>
+  </footer>
 </body>
 </html>
-'''
+"""
 
 
-def update_brand_index() -> None:
-    brands = []
+def build_sitemap(brands: list[dict], base_url: str) -> None:
+    today = date.today().isoformat()
+    urls = [
+        (
+            f"{base_url}/",
+            "weekly",
+            "1.0",
+        )
+    ]
+    for brand in brands:
+        if brand.get("published", True):
+            urls.append(
+                (
+                    f"{base_url}/brands/{brand['slug']}/",
+                    "monthly",
+                    "0.8",
+                )
+            )
 
-    for json_file in sorted(DATA_DIR.glob("*.json")):
-        if json_file.name == "index.json":
-            continue
+    entries = "\n".join(
+        f"""  <url>
+    <loc>{escape(url)}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>{frequency}</changefreq>
+    <priority>{priority}</priority>
+  </url>"""
+        for url, frequency, priority in urls
+    )
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{entries}\n"
+        "</urlset>\n"
+    )
+    (BASE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
-        try:
-            data = json.loads(json_file.read_text(encoding="utf-8"))
-            brands.append(data)
-        except Exception as error:
-            print(f"경고: {json_file.name} 읽기 실패: {error}")
 
-    index_path = DATA_DIR / "index.json"
-    index_path.write_text(
-        json.dumps(brands, ensure_ascii=False, indent=2),
+def build_all(base_url: str) -> list[dict]:
+    brands = read_brand_files()
+    brands.sort(key=lambda brand: (brand.get("sortOrder", 999), brand["name"]))
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (DATA_DIR / "index.json").write_text(
+        json.dumps(brands, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 
-
-def make_qr(url: str, output_path: Path) -> None:
-    qr = qrcode.QRCode(
-        version=None,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=12,
-        border=4,
-    )
-
-    qr.add_data(url)
-    qr.make(fit=True)
-
-    image = qr.make_image(
-        fill_color="black",
-        back_color="white",
-    )
-
-    image.save(output_path)
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="영진마켓 업체 페이지와 QR을 자동 생성합니다."
-    )
-
-    parser.add_argument(
-        "--base-url",
-        default="https://yeongjin-market.onrender.com",
-        help="배포된 영진마켓 기본 주소",
-    )
-
-    parser.add_argument(
-        "--non-interactive",
-        action="store_true",
-        help="대화형 입력을 사용하지 않음",
-    )
-
-    parser.add_argument("--slug")
-    parser.add_argument("--name")
-    parser.add_argument("--category")
-    parser.add_argument("--product")
-    parser.add_argument("--region")
-    parser.add_argument("--headline")
-    parser.add_argument("--description")
-    parser.add_argument("--shop-url", default="")
-    parser.add_argument("--homepage-url", default="")
-    parser.add_argument("--trace-url", default="")
-
-    args = parser.parse_args()
-
-    for directory in (
-        DATA_DIR,
-        ASSET_DIR,
-        PAGE_DIR,
-        QR_DIR,
-    ):
-        directory.mkdir(parents=True, exist_ok=True)
-
-    if args.non_interactive:
-        required = {
-            "slug": args.slug,
-            "name": args.name,
-            "category": args.category,
-            "product": args.product,
-            "region": args.region,
-            "headline": args.headline,
-            "description": args.description,
-        }
-
-        missing = [
-            key for key, value in required.items()
-            if not value
-        ]
-
-        if missing:
-            print(
-                "필수 인자가 없습니다:",
-                ", ".join(missing),
-                file=sys.stderr,
-            )
-            return 1
-
-        raw_slug = args.slug
-        name = args.name
-        category = args.category
-        product = args.product
-        region = args.region
-        headline = args.headline
-        description = args.description
-        shop_url = args.shop_url
-        homepage_url = args.homepage_url
-        trace_url = args.trace_url
-
-    else:
-        print()
-        print("====================================")
-        print(" 영진마켓 신규 업체 자동 생성")
-        print("====================================")
-        print()
-
-        name = ask("업체명", required=True)
-        raw_slug = ask(
-            "업체 영문 주소",
-            default=slugify(name),
-            required=True,
+    for brand in brands:
+        page_path = PAGE_DIR / brand["slug"] / "index.html"
+        page_path.parent.mkdir(parents=True, exist_ok=True)
+        page_path.write_text(
+            build_detail_html(brand, base_url),
+            encoding="utf-8",
         )
 
-        category = ask(
-            "카테고리(농산/축산/수산/카페)",
-            default="농산",
-            required=True,
-        )
+    build_sitemap(brands, base_url)
+    return brands
 
-        product = ask("주요 상품", required=True)
-        region = ask("지역", required=True)
-        headline = ask("한 줄 소개", required=True)
-        description = ask("상세 설명", required=True)
 
-        shop_url = ask("스마트스토어 주소")
-        homepage_url = ask("공식 홈페이지 주소")
-        trace_url = ask("농장 추적 또는 상태 확인 주소")
-
-    slug = slugify(raw_slug)
-
-    if category not in CATEGORY_MAP:
-        print(
-            "카테고리는 농산, 축산, 수산, 카페 중 하나여야 합니다.",
-            file=sys.stderr,
-        )
-        return 1
-
-    try:
-        shop_url = validate_url(shop_url)
-        homepage_url = validate_url(homepage_url)
-        trace_url = validate_url(trace_url)
-        base_url = validate_url(args.base_url.rstrip("/"))
-    except ValueError as error:
-        print(error, file=sys.stderr)
-        return 1
+def create_brand(base_url: str) -> dict:
+    print("\n새 입점 브랜드 정보를 입력합니다.")
+    name = ask("브랜드명", required=True)
+    slug = slugify(ask("영문 주소(slug)", default=name, required=True))
+    category = ask("카테고리", default="농산", required=True)
+    product = ask("대표 상품", required=True)
+    region = ask("지역", required=True)
+    headline = ask("한 줄 소개", required=True)
+    description = ask("브랜드 소개", required=True)
+    quantity = ask("상품 구성", default="공식 판매처에서 확인")
+    story_title = ask("브랜드 스토리 제목", default="브랜드가 지키는 가치")
+    story_description = ask("브랜드 스토리 본문", default=description)
+    shop_url = validate_url(ask("공식 판매처 URL"))
+    homepage_url = validate_url(ask("브랜드 홈페이지 URL"))
+    trace_url = validate_url(ask("생산/이력 정보 URL"))
+    phone = ask("전화번호")
+    published = ask_yes_no("사이트에 바로 공개할까요?", default=True)
 
     brand_asset_dir = ASSET_DIR / slug
-    brand_page_dir = PAGE_DIR / slug
-
     brand_asset_dir.mkdir(parents=True, exist_ok=True)
-    brand_page_dir.mkdir(parents=True, exist_ok=True)
-
-    main_image_relative = f"assets/brands/{slug}/main.jpg"
-
-    public_url = f"{base_url}/brands/{slug}/"
+    (brand_asset_dir / "README.txt").write_text(
+        "main.jpg: 대표 상품 사진\n"
+        "story-1.jpg, story-2.jpg: 업체가 제공한 브랜드 스토리 사진\n",
+        encoding="utf-8",
+    )
 
     brand = {
         "slug": slug,
         "name": name,
         "category": category,
-        "categoryKey": CATEGORY_MAP[category],
+        "categoryKey": CATEGORY_MAP.get(category, slugify(category)),
         "product": product,
         "region": region,
         "headline": headline,
         "description": description,
+        "quantity": quantity,
+        "storyTitle": story_title,
+        "storyDescription": story_description,
         "shopUrl": shop_url,
         "homepageUrl": homepage_url,
         "traceUrl": trace_url,
-        "publicUrl": public_url,
-        "qrImage": f"qrcodes/{slug}.png",
+        "phone": phone,
+        "published": published,
+        "sortOrder": 100,
+        "publicUrl": f"{base_url}/brands/{slug}/",
+        "qrImage": "",
         "images": {
-            "main": main_image_relative,
+            "main": f"/assets/brands/{slug}/main.jpg",
             "gallery": [
-                f"assets/brands/{slug}/gallery-1.jpg",
-                f"assets/brands/{slug}/gallery-2.jpg",
-                f"assets/brands/{slug}/gallery-3.jpg",
+                f"/assets/brands/{slug}/story-1.jpg",
+                f"/assets/brands/{slug}/story-2.jpg",
             ],
         },
     }
 
-    brand_json_path = DATA_DIR / f"{slug}.json"
-    brand_json_path.write_text(
-        json.dumps(brand, ensure_ascii=False, indent=2),
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    data_path = DATA_DIR / f"{slug}.json"
+    if data_path.exists() and not ask_yes_no("이미 존재합니다. 덮어쓸까요?", False):
+        raise SystemExit("취소했습니다.")
+    data_path.write_text(
+        json.dumps(brand, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    return brand
 
-    detail_html = build_detail_html(brand)
 
-    detail_page_path = brand_page_dir / "index.html"
-    detail_page_path.write_text(
-        detail_html,
-        encoding="utf-8",
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="영진마켓 입점 브랜드 데이터와 상세 페이지를 관리합니다."
     )
-
-    qr_path = QR_DIR / f"{slug}.png"
-    make_qr(public_url, qr_path)
-
-    image_guide = brand_asset_dir / "README.txt"
-    image_guide.write_text(
-        f"""[{name} 이미지 넣는 위치]
-
-대표 이미지:
-main.jpg
-
-추가 사진:
-gallery-1.jpg
-gallery-2.jpg
-gallery-3.jpg
-
-권장 크기:
-- 대표 이미지: 1200 x 1200 이상
-- 추가 이미지: 가로 1200px 이상
-- JPG 또는 PNG
-""",
-        encoding="utf-8",
+    parser.add_argument(
+        "--base-url",
+        default=DEFAULT_BASE_URL,
+        help="배포 주소",
     )
+    parser.add_argument(
+        "--build-all",
+        action="store_true",
+        help="기존 데이터로 브랜드 목록·상세 페이지·사이트맵만 다시 만듭니다.",
+    )
+    args = parser.parse_args()
+    base_url = args.base_url.rstrip("/")
 
-    update_brand_index()
+    if not args.build_all:
+        brand = create_brand(base_url)
+        print(f"\n{brand['name']} 데이터를 저장했습니다.")
 
-    print()
-    print("====================================")
-    print(" 업체 생성 완료")
-    print("====================================")
-    print(f"업체명:       {name}")
-    print(f"업체 주소:    {public_url}")
-    print(f"JSON:         {brand_json_path}")
-    print(f"상세페이지:   {detail_page_path}")
-    print(f"이미지 폴더:  {brand_asset_dir}")
-    print(f"QR 코드:      {qr_path}")
-    print()
-    print("대표 사진을 아래 이름으로 넣으세요.")
-    print(f"  {brand_asset_dir / 'main.jpg'}")
-    print()
-    print("배포 명령:")
-    print("  git add .")
-    print(f'  git commit -m "Add {name} brand page"')
-    print("  git push")
-    print()
-
-    return 0
+    brands = build_all(base_url)
+    print(f"총 {len(brands)}개 브랜드 페이지를 갱신했습니다.")
+    print("브랜드 노출 순서는 페이지를 새로 열 때마다 무작위로 결정됩니다.")
+    print("대표 사진을 assets/brands/<slug>/main.jpg에 넣고 다시 실행하세요.")
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
