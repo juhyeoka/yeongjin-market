@@ -1,0 +1,26 @@
+{
+  "slug": "demo-fire-grill",
+  "name": "불향고기집",
+  "category": "식당",
+  "categoryKey": "restaurant",
+  "product": "숯불구이",
+  "region": "충남 천안",
+  "headline": "불향과 육즙을 제대로 살린 든든한 숯불구이",
+  "description": "홈페이지의 식당 카테고리와 브랜드 순환 기능을 확인하기 위해 만든 샘플 브랜드입니다.",
+  "quantity": "샘플 메뉴",
+  "storyTitle": "화면 확인용 샘플",
+  "storyDescription": "실제 입점 식당의 메뉴 사진과 소개 자료를 받으면 해당 업체 정보로 교체됩니다.",
+  "shopUrl": "",
+  "homepageUrl": "",
+  "traceUrl": "",
+  "phone": "",
+  "published": true,
+  "demo": true,
+  "sortOrder": 907,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/demo-fire-grill/",
+  "qrImage": "",
+  "images": {
+    "main": "/assets/brands/demo/fire-grill.jpg",
+    "gallery": []
+  }
+}

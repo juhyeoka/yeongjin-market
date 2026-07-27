@@ -1,0 +1,26 @@
+{
+  "slug": "demo-seed-oil",
+  "name": "들꽃기름방",
+  "category": "건강",
+  "categoryKey": "health",
+  "product": "저온압착 들기름",
+  "region": "전북 고창",
+  "headline": "고소한 향과 원재료의 맛을 지킨 저온압착 기름",
+  "description": "홈페이지의 입점 브랜드 노출과 무작위 순환 기능을 확인하기 위해 만든 샘플 브랜드입니다.",
+  "quantity": "샘플 상품",
+  "storyTitle": "화면 확인용 샘플",
+  "storyDescription": "실제 입점 업체의 사진과 소개 자료를 받으면 해당 업체 정보로 교체됩니다.",
+  "shopUrl": "",
+  "homepageUrl": "",
+  "traceUrl": "",
+  "phone": "",
+  "published": true,
+  "demo": true,
+  "sortOrder": 912,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/demo-seed-oil/",
+  "qrImage": "",
+  "images": {
+    "main": "/assets/brands/demo/seed-oil.jpg",
+    "gallery": []
+  }
+}

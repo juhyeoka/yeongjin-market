@@ -14,13 +14,27 @@ const emptyResult = document.querySelector("#emptyResult");
 const onboardingSlots = document.querySelector("#onboardingSlots");
 const recentBrandButton = document.querySelector("#recentBrandButton");
 const toast = document.querySelector("#toast");
+const mapCategoryFilter = document.querySelector("#mapCategoryFilter");
+const mapRegionPanel = document.querySelector("#mapRegionPanel");
+const mapLoading = document.querySelector("#mapLoading");
 
 const RECENT_BRAND_KEY = "yeongjin-market-recent-brand";
+const BRAND_ROTATION_INTERVAL = 10000;
 
 let randomizedBrands = [];
 let activeCategory = "all";
 let searchKeyword = "";
 let toastTimer = null;
+let brandRotationTimer = null;
+let brandGridInteractionActive = false;
+let brandRotationPauseUntil = 0;
+let brandMap = null;
+let brandMapGeocoder = null;
+let brandMapOverlays = [];
+let brandMapResizeObserver = null;
+let activeMapCategory = "all";
+let mapRenderSequence = 0;
+const regionPositionCache = new Map();
 
 function setMenuOpen(open) {
   if (!menuButton || !mobileMenu) {
@@ -95,6 +109,69 @@ function shuffled(items) {
   }
 
   return result;
+}
+
+function hasSameOrder(first, second) {
+  return (
+    first.length === second.length &&
+    first.every((brand, index) => brand.slug === second[index]?.slug)
+  );
+}
+
+function shuffledWithNewOrder(items) {
+  if (items.length < 2) {
+    return [...items];
+  }
+
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const nextOrder = shuffled(items);
+    if (!hasSameOrder(items, nextOrder)) {
+      return nextOrder;
+    }
+  }
+
+  return [...items.slice(1), items[0]];
+}
+
+function canRotateBrands() {
+  return (
+    randomizedBrands.length > 1 &&
+    activeCategory === "all" &&
+    !searchKeyword &&
+    !document.hidden &&
+    !brandGridInteractionActive &&
+    Date.now() >= brandRotationPauseUntil
+  );
+}
+
+function rotateBrandOrder() {
+  if (!brandGrid || !canRotateBrands()) {
+    return;
+  }
+
+  const applyNewOrder = () => {
+    randomizedBrands = shuffledWithNewOrder(randomizedBrands);
+    renderBrands();
+    window.requestAnimationFrame(() => {
+      brandGrid.classList.remove("is-reordering");
+    });
+  };
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyNewOrder();
+    return;
+  }
+
+  brandGrid.classList.add("is-reordering");
+  window.setTimeout(applyNewOrder, 240);
+}
+
+function startBrandRotation() {
+  window.clearInterval(brandRotationTimer);
+  brandRotationTimer = window.setInterval(
+    rotateBrandOrder,
+    BRAND_ROTATION_INTERVAL
+  );
 }
 
 function normalized(value) {
@@ -326,6 +403,32 @@ brandGrid?.addEventListener("click", (event) => {
   }
 });
 
+brandGrid?.addEventListener("mouseenter", () => {
+  brandGridInteractionActive = true;
+});
+
+brandGrid?.addEventListener("mouseleave", () => {
+  brandGridInteractionActive = false;
+});
+
+brandGrid?.addEventListener("focusin", () => {
+  brandGridInteractionActive = true;
+});
+
+brandGrid?.addEventListener("focusout", (event) => {
+  if (!brandGrid.contains(event.relatedTarget)) {
+    brandGridInteractionActive = false;
+  }
+});
+
+brandGrid?.addEventListener(
+  "touchstart",
+  () => {
+    brandRotationPauseUntil = Date.now() + BRAND_ROTATION_INTERVAL;
+  },
+  { passive: true }
+);
+
 function showToast(message) {
   if (!toast) {
     return;
@@ -353,6 +456,296 @@ recentBrandButton?.addEventListener("click", () => {
   showToast("아직 확인한 브랜드가 없습니다.");
 });
 
+const regionSearchQueries = {
+  "충남 홍성": "충청남도 홍성군",
+  "충남 예산": "충청남도 예산군",
+  "전남 나주": "전라남도 나주시",
+  "충남 공주": "충청남도 공주시",
+  "경북 문경": "경상북도 문경시",
+  "제주 제주시": "제주특별자치도 제주시",
+  "세종 조치원": "세종특별자치시 조치원읍",
+  "충남 천안": "충청남도 천안시",
+  "대전 유성": "대전광역시 유성구",
+  "충북 청주": "충청북도 청주시",
+  "경남 통영": "경상남도 통영시",
+  "충북 영동": "충청북도 영동군",
+  "전북 고창": "전북특별자치도 고창군"
+};
+
+function showMapMessage(title, description) {
+  if (!mapLoading) {
+    return;
+  }
+
+  mapLoading.innerHTML = `
+    <strong>${escapeHtml(title)}</strong>
+    <span>${escapeHtml(description)}</span>
+  `;
+  mapLoading.hidden = false;
+}
+
+function hideMapMessage() {
+  if (mapLoading) {
+    mapLoading.hidden = true;
+  }
+}
+
+function renderMapCategoryButtons(brands) {
+  if (!mapCategoryFilter) {
+    return;
+  }
+
+  const categories = [...new Set(brands.map((brand) => brand.category))]
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, "ko"));
+
+  mapCategoryFilter.innerHTML = [
+    '<button class="active" type="button" data-map-category="all">전체</button>',
+    ...categories.map(
+      (category) => `
+        <button type="button" data-map-category="${escapeHtml(category)}">
+          ${escapeHtml(category)}
+        </button>
+      `
+    )
+  ].join("");
+}
+
+function groupMapBrands(brands) {
+  const groups = new Map();
+
+  brands.forEach((brand) => {
+    const region = brand.region || "지역 미정";
+    if (!groups.has(region)) {
+      groups.set(region, { region, brands: [] });
+    }
+    groups.get(region).brands.push(brand);
+  });
+
+  return [...groups.values()];
+}
+
+function clearBrandMapOverlays() {
+  brandMapOverlays.forEach((overlay) => overlay.setMap(null));
+  brandMapOverlays = [];
+}
+
+function resolveRegionPosition(region) {
+  if (regionPositionCache.has(region)) {
+    return Promise.resolve(regionPositionCache.get(region));
+  }
+
+  const query = regionSearchQueries[region] || region;
+
+  return new Promise((resolve) => {
+    brandMapGeocoder.addressSearch(query, (result, status) => {
+      if (
+        status === kakao.maps.services.Status.OK &&
+        Array.isArray(result) &&
+        result[0]
+      ) {
+        const position = new kakao.maps.LatLng(
+          Number(result[0].y),
+          Number(result[0].x)
+        );
+        regionPositionCache.set(region, position);
+        resolve(position);
+        return;
+      }
+
+      resolve(null);
+    });
+  });
+}
+
+function renderMapRegionPanel(group) {
+  if (!mapRegionPanel) {
+    return;
+  }
+
+  const cards = group.brands
+    .map(
+      (brand) => `
+        <a class="map-region-brand" href="${getBrandPageUrl(brand)}">
+          <img
+            src="${escapeHtml(brand.images?.main || "/assets/brands/brand-placeholder.svg")}"
+            alt=""
+            loading="lazy"
+          >
+          <span>
+            <small>${brand.demo ? "샘플 · " : ""}${escapeHtml(brand.category)}</small>
+            <strong>${escapeHtml(brand.name)}</strong>
+            <i>${escapeHtml(brand.product)}</i>
+          </span>
+          <b aria-hidden="true">→</b>
+        </a>
+      `
+    )
+    .join("");
+
+  mapRegionPanel.innerHTML = `
+    <p class="section-kicker">REGION BRANDS</p>
+    <h3>${escapeHtml(group.region)}</h3>
+    <span>${group.brands.length}개 브랜드 · 지역 중심 위치</span>
+    <div class="map-region-brand-list">${cards}</div>
+  `;
+}
+
+function createRegionOverlay(group, position) {
+  const markerButton = document.createElement("button");
+  markerButton.type = "button";
+  markerButton.className = "brand-region-marker";
+  markerButton.setAttribute(
+    "aria-label",
+    `${group.region} 브랜드 ${group.brands.length}개 보기`
+  );
+  markerButton.innerHTML = `
+    <span>${escapeHtml(group.region)}</span>
+    <strong>${group.brands.length}</strong>
+  `;
+
+  markerButton.addEventListener("click", () => {
+    brandMap.panTo(position);
+    brandMap.setLevel(7);
+    renderMapRegionPanel(group);
+  });
+
+  const overlay = new kakao.maps.CustomOverlay({
+    map: brandMap,
+    position,
+    content: markerButton,
+    yAnchor: 1.15,
+    zIndex: 5
+  });
+
+  brandMapOverlays.push(overlay);
+}
+
+async function renderBrandMapMarkers() {
+  if (!brandMap || !brandMapGeocoder) {
+    return;
+  }
+
+  const renderSequence = ++mapRenderSequence;
+  clearBrandMapOverlays();
+
+  const mapBrands =
+    activeMapCategory === "all"
+      ? randomizedBrands
+      : randomizedBrands.filter(
+          (brand) => brand.category === activeMapCategory
+        );
+  const groups = groupMapBrands(mapBrands);
+
+  showMapMessage(
+    "브랜드 지역을 표시하고 있습니다.",
+    "등록된 지역의 중심 위치를 확인하는 중입니다."
+  );
+
+  const positionedGroups = await Promise.all(
+    groups.map(async (group) => ({
+      group,
+      position: await resolveRegionPosition(group.region)
+    }))
+  );
+
+  if (renderSequence !== mapRenderSequence) {
+    return;
+  }
+
+  const validGroups = positionedGroups.filter((item) => item.position);
+  if (!validGroups.length) {
+    showMapMessage(
+      "표시할 지역을 찾지 못했습니다.",
+      "다른 카테고리를 선택해 주세요."
+    );
+    return;
+  }
+
+  const bounds = new kakao.maps.LatLngBounds();
+  validGroups.forEach(({ group, position }) => {
+    createRegionOverlay(group, position);
+    bounds.extend(position);
+  });
+
+  brandMap.setBounds(bounds);
+  hideMapMessage();
+}
+
+function initializeBrandMap() {
+  const mapContainer = document.querySelector("#brandMap");
+  if (!mapContainer || brandMap) {
+    return;
+  }
+
+  brandMap = new kakao.maps.Map(mapContainer, {
+    center: new kakao.maps.LatLng(36.35, 127.75),
+    level: 12
+  });
+  brandMapGeocoder = new kakao.maps.services.Geocoder();
+
+  if ("ResizeObserver" in window) {
+    brandMapResizeObserver = new ResizeObserver(() => {
+      window.requestAnimationFrame(() => {
+        if (!brandMap) {
+          return;
+        }
+        const currentCenter = brandMap.getCenter();
+        const currentLevel = brandMap.getLevel();
+        brandMap.relayout();
+        brandMap.setCenter(currentCenter);
+        brandMap.setLevel(currentLevel);
+      });
+    });
+    brandMapResizeObserver.observe(mapContainer);
+  }
+
+  renderBrandMapMarkers();
+}
+
+function loadKakaoMapSdk() {
+  const key = String(window.KAKAO_JAVASCRIPT_KEY || "").trim();
+  if (!key) {
+    showMapMessage(
+      "카카오맵 설정을 확인해 주세요.",
+      "지도 JavaScript 키가 설정되지 않았습니다."
+    );
+    return;
+  }
+
+  if (window.kakao?.maps) {
+    kakao.maps.load(initializeBrandMap);
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src =
+    "https://dapi.kakao.com/v2/maps/sdk.js" +
+    `?appkey=${encodeURIComponent(key)}` +
+    "&autoload=false&libraries=services";
+  script.addEventListener("load", () => kakao.maps.load(initializeBrandMap));
+  script.addEventListener("error", () => {
+    showMapMessage(
+      "카카오맵을 불러오지 못했습니다.",
+      "잠시 후 다시 시도해 주세요."
+    );
+  });
+  document.head.appendChild(script);
+}
+
+mapCategoryFilter?.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-map-category]");
+  if (!button) {
+    return;
+  }
+
+  activeMapCategory = button.dataset.mapCategory;
+  mapCategoryFilter.querySelectorAll("button").forEach((item) => {
+    item.classList.toggle("active", item === button);
+  });
+  renderBrandMapMarkers();
+});
+
 async function loadBrands() {
   try {
     const response = await fetch("/data/brands/index.json", {
@@ -369,6 +762,7 @@ async function loadBrands() {
     );
 
     renderCategoryButtons(randomizedBrands);
+    renderMapCategoryButtons(randomizedBrands);
 
     const initialSearch = new URL(window.location.href).searchParams.get("search");
     if (initialSearch && brandSearchInput) {
@@ -380,6 +774,8 @@ async function loadBrands() {
     }
 
     renderBrands();
+    startBrandRotation();
+    loadKakaoMapSdk();
   } catch (error) {
     console.error(error);
     randomizedBrands = [
@@ -395,7 +791,9 @@ async function loadBrands() {
       }
     ];
     renderCategoryButtons(randomizedBrands);
+    renderMapCategoryButtons(randomizedBrands);
     renderBrands();
+    loadKakaoMapSdk();
   }
 }
 
