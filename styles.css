@@ -122,8 +122,8 @@ svg {
 
 .yeongjin-mark {
   flex: 0 0 auto;
-  width: 46px;
-  height: 38px;
+  width: 50px;
+  height: 36px;
 }
 
 .market-logo-copy {
@@ -135,7 +135,7 @@ svg {
 }
 
 .market-logo-copy strong {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 950;
   letter-spacing: -1px;
   white-space: nowrap;
@@ -158,8 +158,8 @@ svg {
 }
 
 .fynd-logo {
-  width: 83px;
-  height: 34px;
+  width: 104px;
+  height: 36px;
 }
 
 .desktop-nav {
@@ -295,9 +295,9 @@ svg {
   gap: 50px;
   align-items: center;
   width: min(100% - 48px, 1180px);
-  min-height: 490px;
+  min-height: 370px;
   margin: 0 auto;
-  padding: 72px 0 98px;
+  padding: 46px 0 82px;
 }
 
 .hero-copy {
@@ -316,7 +316,7 @@ svg {
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(48px, 6vw, 76px);
+  font-size: clamp(40px, 4.8vw, 58px);
   font-weight: 950;
   line-height: 1.02;
   letter-spacing: -0.075em;
@@ -328,9 +328,9 @@ svg {
 }
 
 .hero-copy > p:last-child {
-  margin: 24px 0 0;
+  margin: 18px 0 0;
   color: #666b73;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.75;
 }
@@ -338,14 +338,14 @@ svg {
 .hero-illustration {
   position: relative;
   align-self: stretch;
-  min-height: 320px;
+  min-height: 260px;
   overflow: hidden;
 }
 
 .hero-illustration::after {
   position: absolute;
   right: 2%;
-  bottom: 30px;
+  bottom: 14px;
   left: 0;
   height: 110px;
   content: "";
@@ -354,7 +354,7 @@ svg {
 
 .hero-sun {
   position: absolute;
-  top: 34px;
+  top: 14px;
   right: 92px;
   width: 118px;
   height: 118px;
@@ -365,7 +365,7 @@ svg {
 .hero-city {
   position: absolute;
   right: 20px;
-  bottom: 86px;
+  bottom: 62px;
   width: 60%;
   height: 110px;
   opacity: 0.3;
@@ -383,7 +383,7 @@ svg {
 .hero-road {
   position: absolute;
   right: 10px;
-  bottom: 51px;
+  bottom: 27px;
   width: 95%;
   height: 70px;
   background: linear-gradient(170deg, transparent 0 32%, #e6e7e7 33% 62%, transparent 63%);
@@ -392,7 +392,7 @@ svg {
 .hero-bus {
   position: absolute;
   right: 35px;
-  bottom: 80px;
+  bottom: 56px;
   z-index: 2;
   width: 300px;
   height: 106px;
@@ -446,7 +446,7 @@ svg {
 
 .hero-search {
   position: absolute;
-  bottom: 36px;
+  bottom: 18px;
   left: 0;
   z-index: 4;
   display: flex;
@@ -504,7 +504,7 @@ svg {
 }
 
 .brand-section {
-  padding: 74px max(24px, calc((100vw - 1180px) / 2)) 92px;
+  padding: 50px max(24px, calc((100vw - 1180px) / 2)) 92px;
   background: #f7f7f5;
 }
 
@@ -643,6 +643,19 @@ svg {
   backdrop-filter: blur(10px);
   font-size: 11px;
   font-weight: 800;
+}
+
+.brand-card-badge i {
+  display: inline-flex;
+  margin-right: 5px;
+  padding: 3px 6px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 999px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: 0.02em;
 }
 
 .brand-card-copy {
@@ -918,11 +931,37 @@ svg {
 }
 
 .footer-collab-logo {
-  filter: brightness(0) invert(1);
+  display: inline-flex;
+  width: max-content;
+  padding: 9px 13px;
+  background: #fff;
+  border-radius: 13px;
 }
 
 .footer-collab-logo .market-logo-copy small {
-  color: #aaa;
+  color: #767b84;
+}
+
+.brand-detail-sample-notice {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  color: #7a5200;
+  background: #fff7df;
+  border: 1px solid #f1dfaa;
+  border-radius: 13px;
+}
+
+.brand-detail-sample-notice strong {
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.brand-detail-sample-notice span {
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .footer-inner p,
@@ -1245,8 +1284,8 @@ svg {
   }
 
   .yeongjin-mark {
-    width: 38px;
-    height: 33px;
+    width: 41px;
+    height: 31px;
   }
 
   .market-logo-copy {
@@ -1268,8 +1307,8 @@ svg {
   }
 
   .fynd-logo {
-    width: 59px;
-    height: 29px;
+    width: 78px;
+    height: 31px;
   }
 
   .header-actions {
@@ -1292,8 +1331,8 @@ svg {
   .hero {
     display: block;
     width: 100%;
-    min-height: 455px;
-    padding: 48px 20px 98px;
+    min-height: 370px;
+    padding: 34px 20px 88px;
     overflow: hidden;
   }
 
@@ -1302,22 +1341,22 @@ svg {
   }
 
   .hero h1 {
-    font-size: clamp(40px, 12vw, 58px);
+    font-size: clamp(35px, 10vw, 46px);
   }
 
   .hero-copy > p:last-child {
     max-width: 290px;
     margin-top: 18px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.65;
   }
 
   .hero-illustration {
     position: absolute;
     right: -30px;
-    bottom: 48px;
-    width: 58%;
-    min-height: 235px;
+    bottom: 42px;
+    width: 54%;
+    min-height: 210px;
   }
 
   .hero-city {
@@ -1372,7 +1411,7 @@ svg {
 
   .hero-search {
     right: 20px;
-    bottom: 24px;
+    bottom: 18px;
     left: 20px;
     width: auto;
     height: 54px;
@@ -1386,7 +1425,7 @@ svg {
   }
 
   .brand-section {
-    padding-top: 54px;
+    padding-top: 42px;
     padding-bottom: 68px;
   }
 

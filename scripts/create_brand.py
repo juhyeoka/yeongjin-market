@@ -101,6 +101,13 @@ def build_detail_html(brand: dict, base_url: str) -> str:
     )
     page_url = f"{base_url}/brands/{escape(brand['slug'])}/"
     image_url = image if image.startswith("http") else f"{base_url}{image}"
+    is_demo = bool(brand.get("demo"))
+    robots_value = (
+        "noindex, nofollow, noarchive"
+        if is_demo
+        else "index, follow, max-image-preview:large"
+    )
+    sample_label = " · 샘플 브랜드" if is_demo else ""
     structured_data = json.dumps(
         {
             "@context": "https://schema.org",
@@ -151,6 +158,14 @@ def build_detail_html(brand: dict, base_url: str) -> str:
           </a>
         """
 
+    if is_demo:
+        actions = """
+          <div class="brand-detail-sample-notice">
+            <strong>화면 확인용 샘플 브랜드입니다.</strong>
+            <span>실제 업체 입점 시 공식 판매처 정보로 교체됩니다.</span>
+          </div>
+        """
+
     shop_action = ""
     if brand.get("shopUrl"):
         shop_label = (
@@ -194,11 +209,11 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   <title>{name} {product} | 영진마켓 × FYND</title>
   <meta name="description" content="{headline}">
   <meta name="keywords" content="{name}, {product}, {region}, 영진마켓, FYND, 지역 브랜드">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="{robots_value}">
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260727-inquiry">
+  <link rel="stylesheet" href="/styles.css?v=20260727-brands">
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="영진마켓 × FYND">
   <meta property="og:title" content="{name} {product} | 영진마켓 × FYND">
@@ -218,7 +233,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   </header>
 
   <main class="brand-detail-main">
-    <p class="brand-detail-breadcrumb">입점 브랜드 · {category} · {region}</p>
+    <p class="brand-detail-breadcrumb">입점 브랜드{sample_label} · {category} · {region}</p>
     <section class="brand-detail-hero">
       <div class="brand-detail-visual">
         <img src="{image}" alt="{name} {product}" fetchpriority="high">
@@ -281,7 +296,7 @@ def build_sitemap(brands: list[dict], base_url: str) -> None:
         )
     ]
     for brand in brands:
-        if brand.get("published", True):
+        if brand.get("published", True) and not brand.get("demo"):
             urls.append(
                 (
                     f"{base_url}/brands/{brand['slug']}/",

@@ -1,0 +1,26 @@
+{
+  "slug": "demo-sunshine-orchard",
+  "name": "햇살담은농원",
+  "category": "농산",
+  "categoryKey": "agriculture",
+  "product": "부사 사과",
+  "region": "충남 예산",
+  "headline": "예산의 일교차를 품은 아삭하고 달콤한 사과",
+  "description": "홈페이지의 입점 브랜드 노출과 무작위 순서 기능을 확인하기 위해 만든 샘플 브랜드입니다.",
+  "quantity": "샘플 상품",
+  "storyTitle": "화면 확인용 샘플",
+  "storyDescription": "실제 입점 업체의 사진과 소개 자료를 받으면 해당 업체 정보로 교체됩니다.",
+  "shopUrl": "",
+  "homepageUrl": "",
+  "traceUrl": "",
+  "phone": "",
+  "published": true,
+  "demo": true,
+  "sortOrder": 901,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/demo-sunshine-orchard/",
+  "qrImage": "",
+  "images": {
+    "main": "/assets/brands/demo/sunshine-orchard.jpg",
+    "gallery": []
+  }
+}

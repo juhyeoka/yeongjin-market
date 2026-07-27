@@ -122,12 +122,18 @@ function getBrandPageUrl(brand) {
 function renderBrandCard(brand, index) {
   const image =
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
-  const sizeClass = index % 4 === 0 ? " brand-card-featured" : "";
+  const sizeClass = [
+    index % 4 === 0 ? "brand-card-featured" : "",
+    brand.demo ? "brand-card-demo" : ""
+  ]
+    .filter(Boolean)
+    .join(" ");
   const location = [brand.category, brand.region].filter(Boolean).join(" · ");
+  const cardClass = sizeClass ? ` ${sizeClass}` : "";
 
   return `
     <a
-      class="brand-card${sizeClass}"
+      class="brand-card${cardClass}"
       href="${getBrandPageUrl(brand)}"
       data-brand-slug="${escapeHtml(brand.slug)}"
       data-brand-name="${escapeHtml(brand.name)}"
@@ -138,7 +144,10 @@ function renderBrandCard(brand, index) {
         ${index < 2 ? 'fetchpriority="high"' : 'loading="lazy"'}
       >
       <span class="brand-card-overlay"></span>
-      <span class="brand-card-badge">${escapeHtml(location)}</span>
+      <span class="brand-card-badge">
+        ${brand.demo ? "<i>샘플</i>" : ""}
+        ${escapeHtml(location)}
+      </span>
       <span class="brand-card-copy">
         <strong>${escapeHtml(brand.name)}</strong>
         <small>${escapeHtml(brand.headline)}</small>
@@ -200,12 +209,18 @@ function renderBrands() {
   }
 
   if (resultSummary) {
+    const realCount = brands.filter((brand) => !brand.demo).length;
+    const demoCount = brands.filter((brand) => brand.demo).length;
+    const sampleSuffix = demoCount > 0 ? " · 화면 확인용 샘플 포함" : "";
+
     if (searchKeyword) {
-      resultSummary.textContent = `"${brandSearchInput.value.trim()}" 검색 결과 ${brands.length}개`;
+      resultSummary.textContent = `"${brandSearchInput.value.trim()}" 검색 결과 ${brands.length}개${sampleSuffix}`;
     } else if (activeCategory !== "all") {
-      resultSummary.textContent = `${activeCategory} 브랜드 ${brands.length}개`;
+      resultSummary.textContent = `${activeCategory} 브랜드 ${brands.length}개${sampleSuffix}`;
     } else {
-      resultSummary.textContent = `현재 ${brands.length}개의 입점 브랜드를 만나볼 수 있습니다.`;
+      resultSummary.textContent =
+        `실제 입점 ${realCount}개` +
+        (demoCount > 0 ? ` · 화면 확인용 샘플 ${demoCount}개` : "");
     }
   }
 
