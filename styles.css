@@ -1446,6 +1446,46 @@ svg {
   color: rgba(255, 255, 255, 0.55);
 }
 
+.footer-signature {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  width: max-content;
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-signature strong,
+.footer-signature em {
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.footer-signature > span {
+  color: #777;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.footer-yeongjin-mark {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  height: 24px;
+  transform: skew(-20deg);
+}
+
+.footer-yeongjin-mark b {
+  display: block;
+  width: 6px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
 .brand-detail-sample-notice {
   grid-column: 1 / -1;
   display: flex;

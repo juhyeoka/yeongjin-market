@@ -277,9 +277,14 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 
   <footer class="site-footer">
     <div class="footer-inner brand-detail-footer">
-      <a class="footer-collab-logo" href="/">{collab_logo}</a>
+      <a class="footer-signature" href="/" aria-label="FYND × 영진관광 홈">
+        <strong>FYND</strong>
+        <span aria-hidden="true">×</span>
+        <i class="footer-yeongjin-mark" aria-hidden="true"><b></b><b></b><b></b></i>
+        <em>영진관광</em>
+      </a>
       <p>지역의 좋은 상품과 브랜드 이야기를 소개합니다.</p>
-      <small>© 2026 FYND × YEONGJIN MARKET.</small>
+      <small>© 2026 FYND × 영진관광.</small>
     </div>
   </footer>
 </body>
@@ -294,7 +299,17 @@ def build_sitemap(brands: list[dict], base_url: str) -> None:
             f"{base_url}/",
             "weekly",
             "1.0",
-        )
+        ),
+        (
+            f"{base_url}/guide.html",
+            "monthly",
+            "0.6",
+        ),
+        (
+            f"{base_url}/partnership.html",
+            "monthly",
+            "0.6",
+        ),
     ]
     for brand in brands:
         if brand.get("published", True) and not brand.get("demo"):
