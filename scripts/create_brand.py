@@ -135,7 +135,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
           </svg>
           <span class="market-logo-copy">
             <strong>영진마켓</strong>
-            <small>Discover Brands</small>
+            <small>LOCAL BRAND SELECT</small>
           </span>
         </span>
       </span>
@@ -168,6 +168,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
         """
 
     shop_action = ""
+    mobile_shop_action = ""
     if brand.get("shopUrl"):
         shop_label = (
             "네이버 스마트스토어에서 보기"
@@ -179,6 +180,13 @@ def build_detail_html(brand: dict, base_url: str) -> str:
             {shop_label} <span>↗</span>
           </a>
         """.strip()
+        mobile_shop_action = f"""
+  <a class="brand-detail-mobile-action" href="{escape(brand['shopUrl'])}"
+     target="_blank" rel="noopener noreferrer">
+    공식 판매처 방문
+  </a>
+        """.strip()
+    mobile_shop_block = f"\n\n  {mobile_shop_action}" if mobile_shop_action else ""
 
     gallery_items: list[str] = []
     for gallery_image in brand.get("images", {}).get("gallery", []):
@@ -214,7 +222,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260727-live-map">
+  <link rel="stylesheet" href="/styles.css?v=20260728-studio">
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="FYND × 영진마켓">
   <meta property="og:title" content="{name} {product} | FYND × 영진마켓">
@@ -273,7 +281,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
       <h2>{escape(brand.get("storyTitle") or "브랜드가 지키는 가치")}</h2>
       <p>{escape(brand.get("storyDescription") or brand["description"])}</p>{gallery_block}
     </section>
-  </main>
+  </main>{mobile_shop_block}
 
   <footer class="site-footer">
     <div class="footer-inner brand-detail-footer">

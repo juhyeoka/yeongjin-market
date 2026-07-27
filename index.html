@@ -5,35 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>FYND × 영진마켓 | 이동 중 만나는 로컬 브랜드</title>
-  <meta
-    name="description"
-    content="FYND × 영진마켓이 지역의 좋은 브랜드를 소개합니다. 입점 업체의 이야기와 대표 상품을 살펴보고 공식 스마트스토어로 바로 연결하세요."
-  >
+  <meta name="description" content="FYND × 영진마켓에서 지역 브랜드의 상품과 이야기를 발견하고 공식 판매처로 바로 연결하세요.">
   <meta name="keywords" content="영진마켓, FYND, 파인드, 지역 브랜드, 로컬 브랜드, 입점 브랜드, 브랜드 스토리, 스마트스토어">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="FYND × 영진마켓">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#f4f5f7">
   <meta name="format-detection" content="telephone=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <link rel="canonical" href="https://yeongjin-market.onrender.com/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/i4-eggs.png" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/styles.css?v=20260727-live-map">
+  <link rel="stylesheet" href="/styles.css?v=20260728-studio">
 
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FYND × 영진마켓">
   <meta property="og:title" content="FYND × 영진마켓 | 이동 중 만나는 로컬 브랜드">
-  <meta
-    property="og:description"
-    content="입점 업체의 이야기와 대표 상품을 만나고 공식 판매처로 연결되는 지역 브랜드 플랫폼."
-  >
+  <meta property="og:description" content="입점 업체의 이야기와 대표 상품을 만나고 공식 판매처로 연결되는 지역 브랜드 플랫폼.">
   <meta property="og:url" content="https://yeongjin-market.onrender.com/">
   <meta property="og:image" content="https://yeongjin-market.onrender.com/assets/i4-eggs.png">
   <meta property="og:image:alt" content="영진마켓 입점 브랜드 대표 상품">
-
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FYND × 영진마켓">
   <meta name="twitter:description" content="이동 중 만나는 로컬 브랜드와 그 안의 이야기를 발견하세요.">
@@ -97,13 +88,13 @@
           </svg>
           <span class="market-logo-copy">
             <strong>영진마켓</strong>
-            <small>Discover Brands</small>
+            <small>LOCAL BRAND SELECT</small>
           </span>
         </span>
       </a>
 
       <nav class="desktop-nav" aria-label="주요 메뉴">
-        <a href="#brands">입점 브랜드</a>
+        <a href="/#brands">입점 브랜드</a>
         <a href="/map.html">브랜드 지도</a>
         <a href="/guide.html">이용 안내</a>
         <a href="/partnership.html">입점 안내</a>
@@ -116,99 +107,96 @@
             <path d="m20 20-3.6-3.6"></path>
           </svg>
         </button>
-        <button
-          class="menu-button"
-          id="menuButton"
-          type="button"
-          aria-label="메뉴 열기"
-          aria-controls="mobileMenu"
-          aria-expanded="false"
-        >
+        <button class="menu-button" id="menuButton" type="button" aria-label="메뉴 열기" aria-controls="mobileMenu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
 
     <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴" hidden>
-      <a href="#brands"><span>01</span>입점 브랜드</a>
-      <a href="/map.html"><span>02</span>브랜드 지도</a>
-      <a href="/guide.html"><span>03</span>이용 안내</a>
-      <a href="/partnership.html"><span>04</span>입점 안내</a>
+      <a href="/#brands">입점 브랜드</a>
+      <a href="/map.html">브랜드 지도</a>
+      <a href="/guide.html">이용 안내</a>
+      <a href="/partnership.html">입점 안내</a>
     </nav>
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="heroTitle">
+    <section class="discovery-hero" aria-labelledby="heroTitle">
+      <div class="hero-route" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
       <div class="hero-copy">
-        <p class="eyebrow">FYND × YEONGJIN MARKET</p>
-        <h1 id="heroTitle">
-          이동 중 만나는<br>
-          <em>로컬 브랜드</em>
-        </h1>
-        <p>
-          잘 알려지지 않았지만 충분히 좋은 지역 브랜드.<br>
-          상품보다 먼저 그 안의 사람과 이야기를 발견합니다.
+        <p class="eyebrow"><span></span>FYND × YEONGJIN MARKET</p>
+        <h1 id="heroTitle">이동 중 만나는<br><em>로컬 브랜드</em></h1>
+        <p class="hero-description">
+          농산물부터 식당과 카페까지.<br>
+          지역 브랜드의 상품과 공식 판매처를 한곳에서 확인하세요.
         </p>
+
+        <form class="hero-search" id="brandSearchForm" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.6-3.6"></path>
+          </svg>
+          <label class="visually-hidden" for="brandSearchInput">브랜드 검색</label>
+          <input id="brandSearchInput" type="search" name="search" placeholder="브랜드, 상품, 지역으로 검색" autocomplete="off">
+          <button id="clearSearchButton" type="button" aria-label="검색어 지우기" hidden>×</button>
+        </form>
+
+        <div class="hero-quick-links">
+          <a href="#brands">전체 브랜드</a>
+          <a href="/map.html">지역으로 찾기</a>
+        </div>
       </div>
 
-      <div class="hero-illustration" aria-hidden="true">
-        <span class="hero-sun"></span>
-        <span class="hero-city"></span>
-        <span class="hero-road"></span>
-        <span class="hero-bus">
-          <i></i><i></i>
-        </span>
-      </div>
-
-      <form class="hero-search" id="brandSearchForm" role="search">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.6-3.6"></path>
-        </svg>
-        <label class="visually-hidden" for="brandSearchInput">브랜드 검색</label>
-        <input
-          id="brandSearchInput"
-          type="search"
-          name="search"
-          placeholder="브랜드, 상품, 지역으로 검색"
-          autocomplete="off"
-        >
-        <button id="clearSearchButton" type="button" aria-label="검색어 지우기" hidden>×</button>
-      </form>
+      <a class="hero-feature" id="heroFeatureLink" href="/brands/i4/" aria-label="오늘의 발견 i4 보기">
+        <span class="hero-feature-index">TODAY'S DISCOVERY</span>
+        <div class="hero-feature-media">
+          <img id="heroFeatureImage" src="/assets/i4-eggs.png" alt="i4 계란" fetchpriority="high">
+          <span class="hero-feature-category" id="heroFeatureCategory">농산 · 충남 홍성</span>
+        </div>
+        <div class="hero-feature-copy">
+          <span>
+            <small id="heroFeatureProduct">계란</small>
+            <strong id="heroFeatureName">i4</strong>
+          </span>
+          <p id="heroFeatureHeadline">농장 환경과 생산 과정을 직접 확인할 수 있는 계란</p>
+          <b aria-hidden="true">브랜드 보기</b>
+        </div>
+      </a>
     </section>
 
     <section class="brand-section" id="brands" aria-labelledby="brandSectionTitle">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">DISCOVER LOCAL BRANDS</p>
-          <h2 id="brandSectionTitle">입점 브랜드</h2>
+          <p class="section-kicker">LOCAL BRAND DIRECTORY</p>
+          <h2 id="brandSectionTitle">지금 만날 수 있는 브랜드</h2>
+          <p>브랜드를 선택하면 대표 상품, 소개와 공식 판매처를 확인할 수 있습니다.</p>
         </div>
         <p class="random-note">
-          <span aria-hidden="true">↻</span>
-          10초마다 브랜드 순서가 바뀝니다
+          <i aria-hidden="true"></i>
+          모든 브랜드가 공정하게 순환합니다
         </p>
       </div>
 
-      <div class="category-filter" id="categoryFilter" aria-label="브랜드 카테고리">
-        <button class="active" type="button" data-category="all">전체</button>
+      <div class="brand-toolbar">
+        <div class="category-filter" id="categoryFilter" aria-label="브랜드 카테고리">
+          <button class="active" type="button" data-category="all">전체</button>
+        </div>
+        <p class="result-summary" id="resultSummary" aria-live="polite">브랜드를 불러오는 중입니다.</p>
       </div>
 
-      <p class="result-summary" id="resultSummary" aria-live="polite">
-        입점 브랜드를 불러오는 중입니다.
-      </p>
-
       <div class="brand-grid" id="brandGrid">
-        <a class="brand-card brand-card-featured" href="/brands/i4/">
-          <img src="/assets/i4-eggs.png" alt="i4 계란 대표 상품" fetchpriority="high">
-          <span class="brand-card-overlay"></span>
-          <span class="brand-card-badge">농산 · 충남 홍성</span>
-          <span class="brand-card-copy">
+        <a class="brand-card" href="/brands/i4/">
+          <span class="brand-card-media">
+            <img src="/assets/i4-eggs.png" alt="i4 계란 대표 상품" fetchpriority="high">
+            <i class="brand-card-status">입점 브랜드</i>
+          </span>
+          <span class="brand-card-body">
+            <small>농산 · 충남 홍성</small>
             <strong>i4</strong>
-            <small>농장 환경과 생산 과정을 직접 확인할 수 있는 계란</small>
-            <span class="brand-card-footer">
-              <i>계란</i>
-              <b aria-label="상세 보기">→</b>
-            </span>
+            <p>농장 환경과 생산 과정을 직접 확인할 수 있는 계란</p>
+            <span class="brand-card-meta"><i>계란</i><b>브랜드 보기</b></span>
           </span>
         </a>
       </div>
@@ -218,114 +206,67 @@
         <p>다른 브랜드명, 상품명 또는 지역으로 검색해 보세요.</p>
         <button type="button" id="resetSearchButton">전체 브랜드 보기</button>
       </div>
-
-      <div class="onboarding-slots" id="onboardingSlots" aria-label="입점 예정 브랜드 안내">
-        <article>
-          <span>NEW PARTNER</span>
-          <strong>다음 브랜드를<br>준비하고 있습니다.</strong>
-          <p>새 입점 업체의 사진과 이야기가 등록되면 이 자리에 자동으로 표시됩니다.</p>
-        </article>
-        <article>
-          <span>YOUR STORY</span>
-          <strong>좋은 상품에는<br>좋은 이야기가 있습니다.</strong>
-          <p>업체 소개, 대표 상품 한 가지, 공식 판매처를 하나의 페이지로 연결합니다.</p>
-        </article>
-      </div>
     </section>
 
-    <section class="market-partner-section" aria-labelledby="partnerNetworkTitle">
-      <div class="market-partner-heading">
-        <p class="section-kicker">LOCAL BRAND NETWORK</p>
-        <h2 id="partnerNetworkTitle">함께 만나는 브랜드</h2>
-        <span>실제 입점 브랜드와 화면 확인용 샘플 브랜드가 함께 표시됩니다.</span>
+    <section class="market-actions" aria-label="영진마켓 바로가기">
+      <a class="market-action map-action" href="/map.html">
+        <span class="market-action-label">BRAND MAP</span>
+        <strong>지역별 브랜드</strong>
+        <p>브랜드가 활동하는 지역을 지도에서 모아 볼 수 있습니다.</p>
+        <b>브랜드 지도 열기</b>
+        <i class="map-route-art" aria-hidden="true"><span></span><span></span><span></span></i>
+      </a>
+      <a class="market-action partner-action" href="/partnership.html">
+        <span class="market-action-label">JOIN THE MARKET</span>
+        <strong>영진마켓 입점 안내</strong>
+        <p>업체 소개, 대표 상품과 공식 판매처를 영진마켓에 등록할 수 있습니다.</p>
+        <b>입점 안내 보기</b>
+      </a>
+    </section>
+
+    <section class="brand-lineup" aria-labelledby="lineupTitle">
+      <div class="brand-lineup-heading">
+        <p class="section-kicker">BRANDS ON THE ROUTE</p>
+        <h2 id="lineupTitle">함께하는 브랜드</h2>
       </div>
-      <div class="market-partner-marquee" aria-label="영진마켓 브랜드 목록">
-        <div class="market-partner-track">
-          <div class="market-partner-list">
-            <a class="real" href="/brands/i4/"><strong>i4</strong><small>PREMIUM EGGS</small></a>
-            <a href="/brands/demo-sunshine-orchard/"><strong>햇살담은농원</strong><small>LOCAL APPLE FARM</small></a>
-            <a href="/brands/demo-cozy-eggs/"><strong>포근한알</strong><small>FRESH EGGS</small></a>
-            <a href="/brands/demo-green-fields/"><strong>바른들채소</strong><small>SEASONAL VEGETABLES</small></a>
-            <a href="/brands/demo-shine-grapes/"><strong>샤인마루</strong><small>PREMIUM GRAPES</small></a>
-            <a href="/brands/demo-mountain-honey/"><strong>산들꿀방</strong><small>LOCAL HONEY</small></a>
-            <a href="/brands/demo-seed-oil/"><strong>들꽃기름방</strong><small>LOCAL SESAME OIL</small></a>
-            <a href="/brands/demo-daily-bakery/"><strong>오늘의빵집</strong><small>LOCAL BAKERY</small></a>
-            <a href="/brands/demo-wind-roasters/"><strong>바람로스터스</strong><small>LOCAL ROASTERY</small></a>
-            <a href="/brands/demo-village-noodles/"><strong>마을면가</strong><small>LOCAL DINING</small></a>
-            <a href="/brands/demo-sea-table/"><strong>바다찬상</strong><small>LOCAL SEAFOOD</small></a>
-            <a href="/brands/demo-warm-table/"><strong>온기한상</strong><small>SEASONAL TABLE</small></a>
-            <a href="/brands/demo-fire-grill/"><strong>불향고기집</strong><small>LOCAL GRILL</small></a>
-          </div>
-          <div class="market-partner-list" aria-hidden="true">
-            <a class="real" href="/brands/i4/" tabindex="-1"><strong>i4</strong><small>PREMIUM EGGS</small></a>
-            <a href="/brands/demo-sunshine-orchard/" tabindex="-1"><strong>햇살담은농원</strong><small>LOCAL APPLE FARM</small></a>
-            <a href="/brands/demo-cozy-eggs/" tabindex="-1"><strong>포근한알</strong><small>FRESH EGGS</small></a>
-            <a href="/brands/demo-green-fields/" tabindex="-1"><strong>바른들채소</strong><small>SEASONAL VEGETABLES</small></a>
-            <a href="/brands/demo-shine-grapes/" tabindex="-1"><strong>샤인마루</strong><small>PREMIUM GRAPES</small></a>
-            <a href="/brands/demo-mountain-honey/" tabindex="-1"><strong>산들꿀방</strong><small>LOCAL HONEY</small></a>
-            <a href="/brands/demo-seed-oil/" tabindex="-1"><strong>들꽃기름방</strong><small>LOCAL SESAME OIL</small></a>
-            <a href="/brands/demo-daily-bakery/" tabindex="-1"><strong>오늘의빵집</strong><small>LOCAL BAKERY</small></a>
-            <a href="/brands/demo-wind-roasters/" tabindex="-1"><strong>바람로스터스</strong><small>LOCAL ROASTERY</small></a>
-            <a href="/brands/demo-village-noodles/" tabindex="-1"><strong>마을면가</strong><small>LOCAL DINING</small></a>
-            <a href="/brands/demo-sea-table/" tabindex="-1"><strong>바다찬상</strong><small>LOCAL SEAFOOD</small></a>
-            <a href="/brands/demo-warm-table/" tabindex="-1"><strong>온기한상</strong><small>SEASONAL TABLE</small></a>
-            <a href="/brands/demo-fire-grill/" tabindex="-1"><strong>불향고기집</strong><small>LOCAL GRILL</small></a>
-          </div>
-        </div>
+      <div class="brand-lineup-window">
+        <div class="brand-lineup-track" id="brandTicker" aria-label="영진마켓 브랜드 목록"></div>
       </div>
     </section>
 
     <section class="inquiry-section" id="inquiry" aria-labelledby="inquiryTitle">
       <div class="inquiry-copy">
         <p class="section-kicker">PARTNERSHIP CONTACT</p>
-        <h2 id="inquiryTitle">입점 문의</h2>
-        <p>영진마켓 입점에 관한 문의는 아래 이메일로 보내주세요.</p>
+        <h2 id="inquiryTitle">입점 상담</h2>
+        <p>입점에 필요한 자료와 등록 절차를 이메일로 안내해 드립니다.</p>
       </div>
-      <a
-        class="inquiry-email"
-        href="mailto:fyndcom@gmail.com?subject=FYND%20%C3%97%20%EC%98%81%EC%A7%84%EB%A7%88%EC%BC%93%20%EC%9E%85%EC%A0%90%20%EB%AC%B8%EC%9D%98"
-      >
-        <span>이메일 문의</span>
+      <a class="inquiry-email" href="mailto:fyndcom@gmail.com?subject=FYND%20%C3%97%20%EC%98%81%EC%A7%84%EB%A7%88%EC%BC%93%20%EC%9E%85%EC%A0%90%20%EB%AC%B8%EC%9D%98">
+        <span>입점 문의 이메일</span>
         <strong>fyndcom@gmail.com</strong>
-        <b aria-hidden="true">↗</b>
+        <b>메일 보내기</b>
       </a>
     </section>
   </main>
 
   <nav class="bottom-navigation" aria-label="하단 메뉴">
-    <a class="active" href="#top">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m3 11 9-8 9 8"></path>
-        <path d="M5 10v10h14V10"></path>
-      </svg>
+    <a class="active" href="/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg>
       <span>홈</span>
     </a>
     <button id="bottomSearchButton" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"></circle>
-        <path d="m20 20-3.6-3.6"></path>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
       <span>브랜드 찾기</span>
     </button>
-    <a href="#brands">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 5h16v14H4z"></path>
-        <path d="M8 9h8M8 13h5"></path>
-      </svg>
+    <a href="/#brands">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg>
       <span>입점 브랜드</span>
     </a>
     <a href="/map.html">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
-        <path d="M9 3v15M15 6v15"></path>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path><path d="M9 3v15M15 6v15"></path></svg>
       <span>브랜드 지도</span>
     </a>
     <button id="recentBrandButton" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M12 7v5l3 2"></path>
-      </svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
       <span>최근 본 브랜드</span>
     </button>
   </nav>
@@ -340,11 +281,16 @@
         <i class="footer-yeongjin-mark" aria-hidden="true"><b></b><b></b><b></b></i>
         <em>영진관광</em>
       </a>
+      <nav aria-label="푸터 메뉴">
+        <a href="/#brands">입점 브랜드</a>
+        <a href="/map.html">브랜드 지도</a>
+        <a href="/partnership.html">입점 문의</a>
+      </nav>
       <p>이동 중 만나는 로컬 브랜드와 그 안의 이야기를 전합니다.</p>
       <small>© 2026 FYND × 영진관광. All rights reserved.</small>
     </div>
   </footer>
 
-  <script src="/app.js?v=20260727-map-page"></script>
+  <script src="/app.js?v=20260728-studio"></script>
 </body>
 </html>

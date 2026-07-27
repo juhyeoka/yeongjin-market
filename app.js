@@ -17,6 +17,13 @@ const toast = document.querySelector("#toast");
 const mapCategoryFilter = document.querySelector("#mapCategoryFilter");
 const mapRegionPanel = document.querySelector("#mapRegionPanel");
 const mapLoading = document.querySelector("#mapLoading");
+const heroFeatureLink = document.querySelector("#heroFeatureLink");
+const heroFeatureImage = document.querySelector("#heroFeatureImage");
+const heroFeatureCategory = document.querySelector("#heroFeatureCategory");
+const heroFeatureProduct = document.querySelector("#heroFeatureProduct");
+const heroFeatureName = document.querySelector("#heroFeatureName");
+const heroFeatureHeadline = document.querySelector("#heroFeatureHeadline");
+const brandTicker = document.querySelector("#brandTicker");
 
 const RECENT_BRAND_KEY = "yeongjin-market-recent-brand";
 const BRAND_ROTATION_INTERVAL = 10000;
@@ -152,6 +159,8 @@ function rotateBrandOrder() {
   const applyNewOrder = () => {
     randomizedBrands = shuffledWithNewOrder(randomizedBrands);
     renderBrands();
+    renderHeroFeature(randomizedBrands[0]);
+    renderBrandTicker(randomizedBrands);
     window.requestAnimationFrame(() => {
       brandGrid.classList.remove("is-reordering");
     });
@@ -199,42 +208,111 @@ function getBrandPageUrl(brand) {
 function renderBrandCard(brand, index) {
   const image =
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
-  const sizeClass = [
-    index % 4 === 0 ? "brand-card-featured" : "",
-    brand.demo ? "brand-card-demo" : ""
-  ]
-    .filter(Boolean)
-    .join(" ");
   const location = [brand.category, brand.region].filter(Boolean).join(" · ");
-  const cardClass = sizeClass ? ` ${sizeClass}` : "";
+  const cardClass = brand.demo ? "brand-card-demo" : "brand-card-real";
 
   return `
     <a
-      class="brand-card${cardClass}"
+      class="brand-card ${cardClass}"
       href="${getBrandPageUrl(brand)}"
       data-brand-slug="${escapeHtml(brand.slug)}"
       data-brand-name="${escapeHtml(brand.name)}"
     >
-      <img
-        src="${escapeHtml(image)}"
-        alt="${escapeHtml(brand.name)} ${escapeHtml(brand.product)} 대표 이미지"
-        ${index < 2 ? 'fetchpriority="high"' : 'loading="lazy"'}
-      >
-      <span class="brand-card-overlay"></span>
-      <span class="brand-card-badge">
-        ${brand.demo ? "<i>샘플</i>" : ""}
-        ${escapeHtml(location)}
+      <span class="brand-card-media">
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(brand.name)} ${escapeHtml(brand.product)} 대표 이미지"
+          ${index < 3 ? 'fetchpriority="high"' : 'loading="lazy"'}
+        >
+        <i class="brand-card-status">
+          ${brand.demo ? "화면 예시" : "입점 브랜드"}
+        </i>
       </span>
-      <span class="brand-card-copy">
+
+      <span class="brand-card-body">
+        <small>${escapeHtml(location)}</small>
         <strong>${escapeHtml(brand.name)}</strong>
-        <small>${escapeHtml(brand.headline)}</small>
-        <span class="brand-card-footer">
+        <p>${escapeHtml(brand.headline)}</p>
+        <span class="brand-card-meta">
           <i>${escapeHtml(brand.product)}</i>
-          <b aria-label="${escapeHtml(brand.name)} 상세 보기">→</b>
+          <b>브랜드 보기</b>
         </span>
       </span>
     </a>
   `;
+}
+
+function renderHeroFeature(brand) {
+  if (
+    !brand ||
+    !heroFeatureLink ||
+    !heroFeatureImage ||
+    !heroFeatureCategory ||
+    !heroFeatureProduct ||
+    !heroFeatureName ||
+    !heroFeatureHeadline
+  ) {
+    return;
+  }
+
+  const updateFeature = () => {
+    const image =
+      brand.images?.main || "/assets/brands/brand-placeholder.svg";
+    const location = [brand.category, brand.region].filter(Boolean).join(" · ");
+
+    heroFeatureLink.href = getBrandPageUrl(brand);
+    heroFeatureLink.dataset.brandSlug = brand.slug;
+    heroFeatureLink.dataset.brandName = brand.name;
+    heroFeatureLink.setAttribute(
+      "aria-label",
+      `오늘의 발견 ${brand.name} 브랜드 보기`
+    );
+    heroFeatureImage.src = image;
+    heroFeatureImage.alt = `${brand.name} ${brand.product} 대표 이미지`;
+    heroFeatureCategory.textContent = brand.demo
+      ? `화면 예시 · ${location}`
+      : location;
+    heroFeatureProduct.textContent = brand.product;
+    heroFeatureName.textContent = brand.name;
+    heroFeatureHeadline.textContent = brand.headline;
+    heroFeatureLink.classList.remove("is-changing");
+  };
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    updateFeature();
+    return;
+  }
+
+  heroFeatureLink.classList.add("is-changing");
+  window.setTimeout(updateFeature, 180);
+}
+
+function renderBrandTicker(brands) {
+  if (!brandTicker || !brands.length) {
+    return;
+  }
+
+  const renderList = (hidden = false) => `
+    <div class="brand-lineup-list"${hidden ? ' aria-hidden="true"' : ""}>
+      ${brands
+        .map(
+          (brand) => `
+            <a
+              class="${brand.demo ? "" : "real"}"
+              href="${getBrandPageUrl(brand)}"
+              data-brand-slug="${escapeHtml(brand.slug)}"
+              data-brand-name="${escapeHtml(brand.name)}"
+            >
+              <strong>${escapeHtml(brand.name)}</strong>
+              <small>${escapeHtml(brand.product)} · ${escapeHtml(brand.region)}</small>
+            </a>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+
+  brandTicker.innerHTML = renderList() + renderList(true);
 }
 
 function renderCategoryButtons(brands) {
@@ -397,6 +475,17 @@ function saveRecentBrand(link) {
 }
 
 brandGrid?.addEventListener("click", (event) => {
+  const link = event.target.closest("a[data-brand-slug]");
+  if (link) {
+    saveRecentBrand(link);
+  }
+});
+
+heroFeatureLink?.addEventListener("click", () => {
+  saveRecentBrand(heroFeatureLink);
+});
+
+brandTicker?.addEventListener("click", (event) => {
   const link = event.target.closest("a[data-brand-slug]");
   if (link) {
     saveRecentBrand(link);
@@ -805,6 +894,8 @@ async function loadBrands() {
     }
 
     renderBrands();
+    renderHeroFeature(randomizedBrands[0]);
+    renderBrandTicker(randomizedBrands);
     startBrandRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
@@ -826,6 +917,9 @@ async function loadBrands() {
     renderCategoryButtons(randomizedBrands);
     renderMapCategoryButtons(randomizedBrands);
     renderBrands();
+    renderHeroFeature(randomizedBrands[0]);
+    renderBrandTicker(randomizedBrands);
+    startBrandRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
     }
