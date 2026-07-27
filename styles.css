@@ -11,6 +11,258 @@
   --shadow-strong: 0 28px 70px rgba(20, 20, 20, 0.15);
 }
 
+/* Split pages and moving local-brand network */
+.home-page .how-section,
+.home-page .partnership {
+  display: none;
+}
+
+.market-partner-section {
+  padding: 68px 0 74px;
+  overflow: hidden;
+  background: #0d0f11;
+  color: #fff;
+}
+
+.market-partner-heading {
+  width: min(100% - 48px, 1180px);
+  margin: 0 auto 30px;
+}
+
+.market-partner-heading h2 {
+  margin: 7px 0 0;
+  font-size: clamp(32px, 4.6vw, 52px);
+  letter-spacing: -0.065em;
+}
+
+.market-partner-heading > span {
+  display: block;
+  margin-top: 12px;
+  color: #8f949b;
+  font-size: 13px;
+}
+
+.market-partner-marquee {
+  width: 100%;
+  overflow: hidden;
+  border-block: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.market-partner-track {
+  display: flex;
+  width: max-content;
+  animation: marketPartnerFlow 34s linear infinite;
+}
+
+.market-partner-list {
+  display: flex;
+}
+
+.market-partner-list > span,
+.market-partner-list > a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 230px;
+  min-height: 108px;
+  padding: 0 28px;
+  color: #fff;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.market-partner-list > a.real {
+  background: var(--accent);
+}
+
+.market-partner-list strong {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.market-partner-list small {
+  margin-top: 7px;
+  color: #8f949b;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.market-partner-list > a.real small {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+@keyframes marketPartnerFlow {
+  to { transform: translateX(-50%); }
+}
+
+.info-page {
+  min-height: 100vh;
+  background: #f5f5f3;
+}
+
+.info-page-main {
+  width: min(100% - 48px, 1060px);
+  margin: 0 auto;
+  padding: 82px 0 100px;
+}
+
+.info-page-hero {
+  padding: 56px;
+  color: #fff;
+  background: #111315;
+  border-radius: 30px;
+}
+
+.info-page-hero h1 {
+  margin: 12px 0 0;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.07em;
+}
+
+.info-page-hero > p:last-child {
+  max-width: 650px;
+  margin: 22px 0 0;
+  color: #aeb2b8;
+  line-height: 1.8;
+}
+
+.info-page-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.info-page-content article {
+  min-height: 210px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #e6e6e4;
+  border-radius: 22px;
+}
+
+.info-page-content article > span {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.info-page-content h2 {
+  margin: 26px 0 10px;
+  font-size: 22px;
+  letter-spacing: -0.05em;
+}
+
+.info-page-content p {
+  margin: 0;
+  color: #70757c;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.partnership-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 22px;
+  padding: 32px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 22px;
+}
+
+.partnership-contact strong {
+  display: block;
+  font-size: 25px;
+}
+
+.partnership-contact span {
+  display: block;
+  margin-top: 7px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.partnership-contact a {
+  min-width: 190px;
+  padding: 15px 20px;
+  color: var(--accent);
+  text-align: center;
+  background: #fff;
+  border-radius: 999px;
+  font-weight: 900;
+}
+
+@media (max-width: 720px) {
+  .market-partner-section {
+    padding: 52px 0 58px;
+  }
+
+  .market-partner-heading,
+  .info-page-main {
+    width: calc(100% - 36px);
+  }
+
+  .market-partner-list > span,
+  .market-partner-list > a {
+    width: 190px;
+    min-height: 92px;
+    padding: 0 22px;
+  }
+
+  .brand-detail-header .collab-times,
+  .brand-detail-header .fynd-logo {
+    display: block;
+  }
+
+  .brand-detail-header .collab-logo {
+    transform: scale(0.78);
+    transform-origin: left center;
+  }
+
+  .info-page-main {
+    padding: 44px 0 70px;
+  }
+
+  .info-page-hero {
+    padding: 36px 24px;
+    border-radius: 24px;
+  }
+
+  .info-page-content {
+    grid-template-columns: 1fr;
+  }
+
+  .info-page-content article {
+    min-height: 0;
+  }
+
+  .partnership-contact {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .partnership-contact a {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .market-partner-track {
+    animation: none;
+  }
+
+  .market-partner-marquee {
+    overflow-x: auto;
+  }
+
+  .market-partner-list[aria-hidden="true"] {
+    display: none;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -927,12 +1179,44 @@ svg {
   margin: 0 auto;
 }
 
-.footer-collab-logo {
-  filter: brightness(0) invert(1);
+.footer-signature {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  width: max-content;
+  color: #fff;
+  text-decoration: none;
 }
 
-.footer-collab-logo .market-logo-copy small {
-  color: #aaa;
+.footer-signature strong,
+.footer-signature em {
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.footer-signature > span {
+  color: #777;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.footer-yeongjin-mark {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  height: 24px;
+  transform: skew(-20deg);
+}
+
+.footer-yeongjin-mark b {
+  display: block;
+  width: 6px;
+  height: 24px;
+  background: #ff3f46;
+  border-radius: 2px;
 }
 
 .footer-inner p,
@@ -1600,10 +1884,6 @@ svg {
     margin-top: 10px;
   }
 
-  .footer-collab-logo {
-    width: max-content;
-  }
-
   .brand-detail-body {
     padding-bottom: 0;
   }
@@ -1614,7 +1894,7 @@ svg {
 
   .brand-detail-header .collab-times,
   .brand-detail-header .fynd-logo {
-    display: none;
+    display: block;
   }
 
   .brand-detail-back {

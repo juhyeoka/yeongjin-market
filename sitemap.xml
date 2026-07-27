@@ -12,4 +12,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://yeongjin-market.onrender.com/guide.html</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
+    <loc>https://yeongjin-market.onrender.com/partnership.html</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
 </urlset>

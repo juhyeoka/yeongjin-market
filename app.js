@@ -21,6 +21,7 @@ let randomizedBrands = [];
 let activeCategory = "all";
 let searchKeyword = "";
 let toastTimer = null;
+let rotationTimer = null;
 
 function setMenuOpen(open) {
   if (!menuButton || !mobileMenu) {
@@ -365,6 +366,19 @@ async function loadBrands() {
     }
 
     renderBrands();
+
+    window.clearInterval(rotationTimer);
+    rotationTimer = window.setInterval(() => {
+      if (
+        randomizedBrands.length > 1 &&
+        activeCategory === "all" &&
+        !searchKeyword &&
+        !document.hidden
+      ) {
+        randomizedBrands = shuffled(randomizedBrands);
+        renderBrands();
+      }
+    }, 14000);
   } catch (error) {
     console.error(error);
     randomizedBrands = [
