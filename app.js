@@ -17,16 +17,21 @@ const toast = document.querySelector("#toast");
 const mapCategoryFilter = document.querySelector("#mapCategoryFilter");
 const mapRegionPanel = document.querySelector("#mapRegionPanel");
 const mapLoading = document.querySelector("#mapLoading");
-const heroFeatureLink = document.querySelector("#heroFeatureLink");
-const heroFeatureImage = document.querySelector("#heroFeatureImage");
-const heroFeatureCategory = document.querySelector("#heroFeatureCategory");
-const heroFeatureProduct = document.querySelector("#heroFeatureProduct");
-const heroFeatureName = document.querySelector("#heroFeatureName");
-const heroFeatureHeadline = document.querySelector("#heroFeatureHeadline");
 const brandTicker = document.querySelector("#brandTicker");
 
 const RECENT_BRAND_KEY = "yeongjin-market-recent-brand";
 const BRAND_ROTATION_INTERVAL = 10000;
+const BRAND_CARD_LAYOUTS = [
+  "tall",
+  "compact",
+  "standard",
+  "compact",
+  "tall",
+  "standard",
+  "tall",
+  "standard",
+  "compact"
+];
 
 let randomizedBrands = [];
 let activeCategory = "all";
@@ -159,7 +164,6 @@ function rotateBrandOrder() {
   const applyNewOrder = () => {
     randomizedBrands = shuffledWithNewOrder(randomizedBrands);
     renderBrands();
-    renderHeroFeature(randomizedBrands[0]);
     renderBrandTicker(randomizedBrands);
     window.requestAnimationFrame(() => {
       brandGrid.classList.remove("is-reordering");
@@ -210,10 +214,12 @@ function renderBrandCard(brand, index) {
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
   const location = [brand.category, brand.region].filter(Boolean).join(" · ");
   const cardClass = brand.demo ? "brand-card-demo" : "brand-card-real";
+  const layoutClass =
+    BRAND_CARD_LAYOUTS[index % BRAND_CARD_LAYOUTS.length];
 
   return `
     <a
-      class="brand-card ${cardClass}"
+      class="brand-card ${cardClass} brand-card-${layoutClass}"
       href="${getBrandPageUrl(brand)}"
       data-brand-slug="${escapeHtml(brand.slug)}"
       data-brand-name="${escapeHtml(brand.name)}"
@@ -240,51 +246,6 @@ function renderBrandCard(brand, index) {
       </span>
     </a>
   `;
-}
-
-function renderHeroFeature(brand) {
-  if (
-    !brand ||
-    !heroFeatureLink ||
-    !heroFeatureImage ||
-    !heroFeatureCategory ||
-    !heroFeatureProduct ||
-    !heroFeatureName ||
-    !heroFeatureHeadline
-  ) {
-    return;
-  }
-
-  const updateFeature = () => {
-    const image =
-      brand.images?.main || "/assets/brands/brand-placeholder.svg";
-    const location = [brand.category, brand.region].filter(Boolean).join(" · ");
-
-    heroFeatureLink.href = getBrandPageUrl(brand);
-    heroFeatureLink.dataset.brandSlug = brand.slug;
-    heroFeatureLink.dataset.brandName = brand.name;
-    heroFeatureLink.setAttribute(
-      "aria-label",
-      `오늘의 발견 ${brand.name} 브랜드 보기`
-    );
-    heroFeatureImage.src = image;
-    heroFeatureImage.alt = `${brand.name} ${brand.product} 대표 이미지`;
-    heroFeatureCategory.textContent = brand.demo
-      ? `화면 예시 · ${location}`
-      : location;
-    heroFeatureProduct.textContent = brand.product;
-    heroFeatureName.textContent = brand.name;
-    heroFeatureHeadline.textContent = brand.headline;
-    heroFeatureLink.classList.remove("is-changing");
-  };
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    updateFeature();
-    return;
-  }
-
-  heroFeatureLink.classList.add("is-changing");
-  window.setTimeout(updateFeature, 180);
 }
 
 function renderBrandTicker(brands) {
@@ -479,10 +440,6 @@ brandGrid?.addEventListener("click", (event) => {
   if (link) {
     saveRecentBrand(link);
   }
-});
-
-heroFeatureLink?.addEventListener("click", () => {
-  saveRecentBrand(heroFeatureLink);
 });
 
 brandTicker?.addEventListener("click", (event) => {
@@ -894,7 +851,6 @@ async function loadBrands() {
     }
 
     renderBrands();
-    renderHeroFeature(randomizedBrands[0]);
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
     if (document.querySelector("#brandMap")) {
@@ -917,7 +873,6 @@ async function loadBrands() {
     renderCategoryButtons(randomizedBrands);
     renderMapCategoryButtons(randomizedBrands);
     renderBrands();
-    renderHeroFeature(randomizedBrands[0]);
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
     if (document.querySelector("#brandMap")) {

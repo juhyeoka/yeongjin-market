@@ -15,7 +15,7 @@
   <link rel="canonical" href="https://yeongjin-market.onrender.com/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/i4-eggs.png" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/styles.css?v=20260728-studio">
+  <link rel="stylesheet" href="/styles.css?v=20260728-masonry">
 
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="website">
@@ -123,14 +123,12 @@
 
   <main id="main">
     <section class="discovery-hero" aria-labelledby="heroTitle">
-      <div class="hero-route" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
       <div class="hero-copy">
-        <p class="eyebrow"><span></span>FYND × YEONGJIN MARKET</p>
-        <h1 id="heroTitle">이동 중 만나는<br><em>로컬 브랜드</em></h1>
+        <p class="eyebrow"><span></span>지역 브랜드 디렉터리</p>
+        <h1 id="heroTitle">지역에서 찾은<br><em>좋은 것들</em></h1>
         <p class="hero-description">
-          농산물부터 식당과 카페까지.<br>
-          지역 브랜드의 상품과 공식 판매처를 한곳에서 확인하세요.
+          먹거리와 식당, 카페, 생활 상품까지.<br>
+          입점 브랜드의 대표 상품과 판매처를 소개합니다.
         </p>
 
         <form class="hero-search" id="brandSearchForm" role="search">
@@ -144,39 +142,19 @@
         </form>
 
         <div class="hero-quick-links">
-          <a href="#brands">전체 브랜드</a>
-          <a href="/map.html">지역으로 찾기</a>
+          <a href="#brands">브랜드 둘러보기</a>
+          <a href="/map.html">지도에서 찾기</a>
         </div>
       </div>
-
-      <a class="hero-feature" id="heroFeatureLink" href="/brands/i4/" aria-label="오늘의 발견 i4 보기">
-        <span class="hero-feature-index">TODAY'S DISCOVERY</span>
-        <div class="hero-feature-media">
-          <img id="heroFeatureImage" src="/assets/i4-eggs.png" alt="i4 계란" fetchpriority="high">
-          <span class="hero-feature-category" id="heroFeatureCategory">농산 · 충남 홍성</span>
-        </div>
-        <div class="hero-feature-copy">
-          <span>
-            <small id="heroFeatureProduct">계란</small>
-            <strong id="heroFeatureName">i4</strong>
-          </span>
-          <p id="heroFeatureHeadline">농장 환경과 생산 과정을 직접 확인할 수 있는 계란</p>
-          <b aria-hidden="true">브랜드 보기</b>
-        </div>
-      </a>
     </section>
 
     <section class="brand-section" id="brands" aria-labelledby="brandSectionTitle">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">LOCAL BRAND DIRECTORY</p>
-          <h2 id="brandSectionTitle">지금 만날 수 있는 브랜드</h2>
-          <p>브랜드를 선택하면 대표 상품, 소개와 공식 판매처를 확인할 수 있습니다.</p>
+          <p class="section-kicker">입점 브랜드</p>
+          <h2 id="brandSectionTitle">브랜드 둘러보기</h2>
+          <p>업체를 선택하면 소개와 대표 상품, 공식 판매처를 볼 수 있습니다.</p>
         </div>
-        <p class="random-note">
-          <i aria-hidden="true"></i>
-          모든 브랜드가 공정하게 순환합니다
-        </p>
       </div>
 
       <div class="brand-toolbar">
@@ -210,24 +188,24 @@
 
     <section class="market-actions" aria-label="영진마켓 바로가기">
       <a class="market-action map-action" href="/map.html">
-        <span class="market-action-label">BRAND MAP</span>
-        <strong>지역별 브랜드</strong>
-        <p>브랜드가 활동하는 지역을 지도에서 모아 볼 수 있습니다.</p>
-        <b>브랜드 지도 열기</b>
+        <span class="market-action-label">지역에서 찾기</span>
+        <strong>브랜드 지도</strong>
+        <p>입점 브랜드를 지역별로 확인합니다.</p>
+        <b>지도 보기</b>
         <i class="map-route-art" aria-hidden="true"><span></span><span></span><span></span></i>
       </a>
       <a class="market-action partner-action" href="/partnership.html">
-        <span class="market-action-label">JOIN THE MARKET</span>
-        <strong>영진마켓 입점 안내</strong>
-        <p>업체 소개, 대표 상품과 공식 판매처를 영진마켓에 등록할 수 있습니다.</p>
-        <b>입점 안내 보기</b>
+        <span class="market-action-label">함께하기</span>
+        <strong>입점 문의</strong>
+        <p>브랜드 소개에 필요한 자료와 접수 방법을 안내합니다.</p>
+        <b>안내 보기</b>
       </a>
     </section>
 
     <section class="brand-lineup" aria-labelledby="lineupTitle">
       <div class="brand-lineup-heading">
-        <p class="section-kicker">BRANDS ON THE ROUTE</p>
-        <h2 id="lineupTitle">함께하는 브랜드</h2>
+        <p class="section-kicker">영진마켓</p>
+        <h2 id="lineupTitle">입점 브랜드</h2>
       </div>
       <div class="brand-lineup-window">
         <div class="brand-lineup-track" id="brandTicker" aria-label="영진마켓 브랜드 목록"></div>
@@ -236,9 +214,9 @@
 
     <section class="inquiry-section" id="inquiry" aria-labelledby="inquiryTitle">
       <div class="inquiry-copy">
-        <p class="section-kicker">PARTNERSHIP CONTACT</p>
-        <h2 id="inquiryTitle">입점 상담</h2>
-        <p>입점에 필요한 자료와 등록 절차를 이메일로 안내해 드립니다.</p>
+        <p class="section-kicker">영진마켓 입점</p>
+        <h2 id="inquiryTitle">입점 문의</h2>
+        <p>브랜드 소개에 필요한 자료를 메일로 보내주세요.</p>
       </div>
       <a class="inquiry-email" href="mailto:fyndcom@gmail.com?subject=FYND%20%C3%97%20%EC%98%81%EC%A7%84%EB%A7%88%EC%BC%93%20%EC%9E%85%EC%A0%90%20%EB%AC%B8%EC%9D%98">
         <span>입점 문의 이메일</span>
@@ -286,11 +264,11 @@
         <a href="/map.html">브랜드 지도</a>
         <a href="/partnership.html">입점 문의</a>
       </nav>
-      <p>이동 중 만나는 로컬 브랜드와 그 안의 이야기를 전합니다.</p>
+      <p>지역 브랜드와 공식 판매처를 소개합니다.</p>
       <small>© 2026 FYND × 영진관광. All rights reserved.</small>
     </div>
   </footer>
 
-  <script src="/app.js?v=20260728-studio"></script>
+  <script src="/app.js?v=20260728-masonry"></script>
 </body>
 </html>
