@@ -198,7 +198,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260727-platform">
+  <link rel="stylesheet" href="/styles.css?v=20260727-inquiry">
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="영진마켓 × FYND">
   <meta property="og:title" content="{name} {product} | 영진마켓 × FYND">

@@ -784,107 +784,97 @@ svg {
   line-height: 1.65;
 }
 
-.how-section {
-  padding: 86px max(24px, calc((100vw - 1180px) / 2)) 96px;
+.inquiry-section {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 54px;
+  align-items: center;
+  padding: 82px max(24px, calc((100vw - 1180px) / 2));
+  overflow: hidden;
   color: #fff;
   background:
-    radial-gradient(circle at 86% 18%, rgba(255, 61, 61, 0.19), transparent 26%),
+    radial-gradient(circle at 86% 18%, rgba(255, 61, 61, 0.2), transparent 28%),
     var(--dark);
 }
 
-.how-list {
+.inquiry-section::before {
+  position: absolute;
+  top: -110px;
+  left: 47%;
+  width: 260px;
+  height: 260px;
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+}
+
+.inquiry-copy,
+.inquiry-email {
+  position: relative;
+  z-index: 1;
+}
+
+.inquiry-copy h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(38px, 4.4vw, 56px);
+  font-weight: 950;
+  letter-spacing: -0.07em;
+}
+
+.inquiry-copy > p:last-child {
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.inquiry-email {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin: 44px 0 0;
-  padding: 0;
-  overflow: hidden;
-  list-style: none;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  grid-template-columns: 1fr auto;
+  gap: 7px 24px;
+  align-items: center;
+  min-height: 132px;
+  padding: 28px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background 180ms ease, transform 180ms ease;
 }
 
-.how-list li {
-  display: flex;
-  gap: 21px;
-  min-height: 190px;
-  padding: 32px;
-  background: #17191c;
+.inquiry-email:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
 }
 
-.how-list > li > span {
-  flex: 0 0 auto;
-  color: var(--accent);
+.inquiry-email > span {
+  color: rgba(255, 255, 255, 0.58);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 800;
 }
 
-.how-list strong {
-  display: block;
-  font-size: 20px;
+.inquiry-email strong {
+  grid-column: 1;
+  font-size: clamp(20px, 2.5vw, 31px);
   font-weight: 900;
   letter-spacing: -0.04em;
 }
 
-.how-list p {
-  margin: 12px 0 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.partnership {
+.inquiry-email b {
+  grid-row: 1 / 3;
+  grid-column: 2;
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 80px;
-  align-items: start;
-  width: min(100% - 48px, 1180px);
-  margin: 0 auto;
-  padding: 96px 0;
-}
-
-.partnership h2 {
-  margin: 0;
-  font-size: clamp(36px, 4.4vw, 56px);
-  font-weight: 950;
-  line-height: 1.15;
-  letter-spacing: -0.07em;
-}
-
-.partnership-copy > p {
-  margin: 0;
-  color: #646970;
-  font-size: 17px;
-  line-height: 1.75;
-}
-
-.partnership-copy ul {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 28px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.partnership-copy li {
-  position: relative;
-  padding: 16px 16px 16px 42px;
-  background: #f6f6f4;
-  border-radius: 13px;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.partnership-copy li::before {
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  color: var(--accent);
-  content: "✓";
-  font-size: 16px;
-  transform: translateY(-50%);
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  color: #111;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 22px;
 }
 
 .bottom-navigation {
@@ -1220,17 +1210,9 @@ svg {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .how-list {
+  .inquiry-section {
     grid-template-columns: 1fr;
-  }
-
-  .how-list li {
-    min-height: 140px;
-  }
-
-  .partnership {
-    grid-template-columns: 1fr;
-    gap: 34px;
+    gap: 28px;
   }
 
   .footer-inner,
@@ -1500,36 +1482,27 @@ svg {
     font-size: 22px;
   }
 
-  .how-section {
-    padding-top: 64px;
-    padding-bottom: 72px;
+  .inquiry-section {
+    padding: 62px 20px;
   }
 
-  .how-list {
-    margin-top: 28px;
+  .inquiry-copy h2 {
+    font-size: 38px;
+  }
+
+  .inquiry-email {
+    min-height: 116px;
+    padding: 23px 21px;
     border-radius: 18px;
   }
 
-  .how-list li {
-    min-height: 130px;
-    padding: 26px 22px;
+  .inquiry-email strong {
+    font-size: 18px;
   }
 
-  .partnership {
-    width: 100%;
-    padding: 72px 20px;
-  }
-
-  .partnership h2 {
-    font-size: 37px;
-  }
-
-  .partnership-copy > p {
-    font-size: 15px;
-  }
-
-  .partnership-copy ul {
-    grid-template-columns: 1fr;
+  .inquiry-email b {
+    width: 44px;
+    height: 44px;
   }
 
   .bottom-navigation {
