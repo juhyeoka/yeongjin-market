@@ -13,6 +13,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://yeongjin-market.onrender.com/map.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://yeongjin-market.onrender.com/partnership.html</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>monthly</changefreq>

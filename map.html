@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>브랜드 지도 | FYND × 영진마켓</title>
+  <meta name="description" content="FYND × 영진마켓 입점 브랜드의 활동 지역을 카카오맵에서 확인하세요.">
+  <link rel="canonical" href="https://yeongjin-market.onrender.com/map.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=map-page-20260727">
+</head>
+<body class="map-page">
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <a class="collab-logo" href="/" aria-label="FYND × 영진마켓 홈">
+        <svg class="fynd-logo" viewBox="90 410 1080 410" role="img" aria-label="FYND 로고"><image href="/assets/brand/fynd-logo-original.jpeg" width="1260" height="1260"></image></svg>
+        <span class="collab-times" aria-hidden="true">×</span>
+        <span class="market-logo">
+          <svg class="yeongjin-mark" viewBox="115 245 465 335" role="img" aria-label="영진관광 로고"><image href="/assets/brand/yeongjin-logo-original.png" width="2022" height="778"></image></svg>
+          <span class="market-logo-copy"><strong>영진마켓</strong><small>Discover Brands</small></span>
+        </span>
+      </a>
+      <nav class="desktop-nav" aria-label="주요 메뉴">
+        <a href="/#brands">입점 브랜드</a>
+        <a href="/map.html" aria-current="page">브랜드 지도</a>
+        <a href="/guide.html">이용 안내</a>
+        <a href="/partnership.html">입점 안내</a>
+      </nav>
+      <div class="header-actions">
+        <button class="menu-button" id="menuButton" type="button" aria-label="메뉴 열기" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴" hidden>
+      <a href="/#brands"><span>01</span>입점 브랜드</a>
+      <a href="/map.html"><span>02</span>브랜드 지도</a>
+      <a href="/guide.html"><span>03</span>이용 안내</a>
+      <a href="/partnership.html"><span>04</span>입점 안내</a>
+    </nav>
+  </header>
+
+  <main id="main" class="map-page-main">
+    <section class="map-section" id="brandMapSection" aria-labelledby="mapSectionTitle">
+      <div class="map-section-heading">
+        <div>
+          <p class="section-kicker">LOCAL BRAND MAP</p>
+          <h1 id="mapSectionTitle">브랜드 지도</h1>
+          <p>입점 브랜드가 활동하는 지역을 한눈에 살펴보세요.</p>
+        </div>
+        <p class="map-location-note">정확한 사업장 주소가 아닌 등록 지역의 중심 위치로 표시됩니다.</p>
+      </div>
+
+      <div class="map-category-filter" id="mapCategoryFilter" aria-label="지도 카테고리">
+        <button class="active" type="button" data-map-category="all">전체</button>
+      </div>
+
+      <div class="brand-map-layout">
+        <div class="brand-map-canvas" id="brandMap" aria-label="입점 브랜드 지역 지도">
+          <div class="map-loading" id="mapLoading">
+            <strong>카카오맵을 불러오고 있습니다.</strong>
+            <span>잠시만 기다려 주세요.</span>
+          </div>
+        </div>
+        <aside class="map-region-panel" id="mapRegionPanel" aria-live="polite">
+          <p class="section-kicker">REGION BRANDS</p>
+          <strong>지도에서 지역을 선택하세요.</strong>
+          <span>지역 마커를 누르면 해당 지역의 브랜드가 표시됩니다.</span>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="footer-signature" href="/" aria-label="FYND × 영진관광 홈"><strong>FYND</strong><span aria-hidden="true">×</span><i class="footer-yeongjin-mark" aria-hidden="true"><b></b><b></b><b></b></i><em>영진관광</em></a>
+      <p>이동 중 만나는 로컬 브랜드와 그 안의 이야기를 전합니다.</p>
+      <small>© 2026 FYND × 영진관광.</small>
+    </div>
+  </footer>
+
+  <script src="/map-config.js?v=20260727-map-page"></script>
+  <script src="/app.js?v=20260727-map-page"></script>
+</body>
+</html>

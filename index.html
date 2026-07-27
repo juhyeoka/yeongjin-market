@@ -104,7 +104,7 @@
 
       <nav class="desktop-nav" aria-label="주요 메뉴">
         <a href="#brands">입점 브랜드</a>
-        <a href="#brandMapSection">브랜드 지도</a>
+        <a href="/map.html">브랜드 지도</a>
         <a href="/guide.html">이용 안내</a>
         <a href="/partnership.html">입점 안내</a>
       </nav>
@@ -131,7 +131,7 @@
 
     <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴" hidden>
       <a href="#brands"><span>01</span>입점 브랜드</a>
-      <a href="#brandMapSection"><span>02</span>브랜드 지도</a>
+      <a href="/map.html"><span>02</span>브랜드 지도</a>
       <a href="/guide.html"><span>03</span>이용 안내</a>
       <a href="/partnership.html"><span>04</span>입점 안내</a>
     </nav>
@@ -275,37 +275,6 @@
       </div>
     </section>
 
-    <section class="map-section" id="brandMapSection" aria-labelledby="mapSectionTitle">
-      <div class="map-section-heading">
-        <div>
-          <p class="section-kicker">LOCAL BRAND MAP</p>
-          <h2 id="mapSectionTitle">브랜드 지도</h2>
-          <p>입점 브랜드가 활동하는 지역을 한눈에 살펴보세요.</p>
-        </div>
-        <p class="map-location-note">
-          정확한 사업장 주소가 아닌 등록 지역의 중심 위치로 표시됩니다.
-        </p>
-      </div>
-
-      <div class="map-category-filter" id="mapCategoryFilter" aria-label="지도 카테고리">
-        <button class="active" type="button" data-map-category="all">전체</button>
-      </div>
-
-      <div class="brand-map-layout">
-        <div class="brand-map-canvas" id="brandMap" aria-label="입점 브랜드 지역 지도">
-          <div class="map-loading" id="mapLoading">
-            <strong>카카오맵을 불러오고 있습니다.</strong>
-            <span>잠시만 기다려 주세요.</span>
-          </div>
-        </div>
-        <aside class="map-region-panel" id="mapRegionPanel" aria-live="polite">
-          <p class="section-kicker">REGION BRANDS</p>
-          <strong>지도에서 지역을 선택하세요.</strong>
-          <span>지역 마커를 누르면 해당 지역의 브랜드가 표시됩니다.</span>
-        </aside>
-      </div>
-    </section>
-
     <section class="inquiry-section" id="inquiry" aria-labelledby="inquiryTitle">
       <div class="inquiry-copy">
         <p class="section-kicker">PARTNERSHIP CONTACT</p>
@@ -345,7 +314,7 @@
       </svg>
       <span>입점 브랜드</span>
     </a>
-    <a href="#brandMapSection">
+    <a href="/map.html">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
         <path d="M9 3v15M15 6v15"></path>
@@ -376,7 +345,6 @@
     </div>
   </footer>
 
-  <script src="/map-config.js?v=20260727-map"></script>
-  <script src="/app.js?v=20260727-live-map"></script>
+  <script src="/app.js?v=20260727-map-page"></script>
 </body>
 </html>

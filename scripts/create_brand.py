@@ -306,6 +306,11 @@ def build_sitemap(brands: list[dict], base_url: str) -> None:
             "0.6",
         ),
         (
+            f"{base_url}/map.html",
+            "weekly",
+            "0.7",
+        ),
+        (
             f"{base_url}/partnership.html",
             "monthly",
             "0.6",

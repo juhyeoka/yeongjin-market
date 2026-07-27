@@ -775,7 +775,9 @@ async function loadBrands() {
 
     renderBrands();
     startBrandRotation();
-    loadKakaoMapSdk();
+    if (document.querySelector("#brandMap")) {
+      loadKakaoMapSdk();
+    }
   } catch (error) {
     console.error(error);
     randomizedBrands = [
@@ -793,7 +795,9 @@ async function loadBrands() {
     renderCategoryButtons(randomizedBrands);
     renderMapCategoryButtons(randomizedBrands);
     renderBrands();
-    loadKakaoMapSdk();
+    if (document.querySelector("#brandMap")) {
+      loadKakaoMapSdk();
+    }
   }
 }
 

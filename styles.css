@@ -1077,6 +1077,7 @@ svg {
   margin-bottom: 28px;
 }
 
+.map-section-heading h1,
 .map-section-heading h2 {
   margin: 0;
   font-size: clamp(34px, 4.4vw, 52px);
@@ -2178,6 +2179,7 @@ svg {
     margin-bottom: 22px;
   }
 
+  .map-section-heading h1,
   .map-section-heading h2 {
     font-size: 38px;
   }
