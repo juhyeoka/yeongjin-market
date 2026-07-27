@@ -472,6 +472,27 @@ const regionSearchQueries = {
   "전북 고창": "전북특별자치도 고창군"
 };
 
+/*
+ * 공개 지도에는 업체의 상세 주소가 아니라 시·군·구 중심 위치를 표시합니다.
+ * 자주 쓰는 지역은 미리 확인한 좌표를 사용해 지도 로딩과 마커 표시를 안정화하고,
+ * 새 지역이 추가된 경우에만 아래의 카카오 주소 검색을 보조 수단으로 사용합니다.
+ */
+const regionCoordinates = {
+  "경남 통영": { lat: 34.8544448243999, lng: 128.43314921138 },
+  "경북 문경": { lat: 36.5865273680411, lng: 128.186771917242 },
+  "대전 유성": { lat: 36.3622851114387, lng: 127.356257593324 },
+  "세종 조치원": { lat: 36.604591645707, lng: 127.298444484667 },
+  "전남 나주": { lat: 34.9894649675157, lng: 126.740867401345 },
+  "전북 고창": { lat: 35.4356982163474, lng: 126.702120365321 },
+  "제주 제주시": { lat: 33.4995342411967, lng: 126.531171087132 },
+  "충남 공주": { lat: 36.4465551158221, lng: 127.11905504092 },
+  "충남 예산": { lat: 36.6826228017856, lng: 126.848642241312 },
+  "충남 천안": { lat: 36.8150678816279, lng: 127.113911972591 },
+  "충남 홍성": { lat: 36.6013575607948, lng: 126.66083238915 },
+  "충북 영동": { lat: 36.1749928212643, lng: 127.783438619236 },
+  "충북 청주": { lat: 36.6424871337285, lng: 127.489020156402 }
+};
+
 function showMapMessage(title, description) {
   if (!mapLoading) {
     return;
@@ -533,6 +554,16 @@ function clearBrandMapOverlays() {
 function resolveRegionPosition(region) {
   if (regionPositionCache.has(region)) {
     return Promise.resolve(regionPositionCache.get(region));
+  }
+
+  const storedCoordinate = regionCoordinates[region];
+  if (storedCoordinate) {
+    const position = new kakao.maps.LatLng(
+      storedCoordinate.lat,
+      storedCoordinate.lng
+    );
+    regionPositionCache.set(region, position);
+    return Promise.resolve(position);
   }
 
   const query = regionSearchQueries[region] || region;
