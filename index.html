@@ -20,7 +20,7 @@
   <link rel="canonical" href="https://yeongjin-market.onrender.com/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/i4-eggs.png" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/styles.css?v=20260727-platform">
+  <link rel="stylesheet" href="/styles.css?v=20260727-live-map">
 
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="website">
@@ -104,8 +104,8 @@
 
       <nav class="desktop-nav" aria-label="주요 메뉴">
         <a href="#brands">입점 브랜드</a>
-        <a href="/guide.html">이용 안내</a>
-        <a href="/partnership.html">입점 안내</a>
+        <a href="#brandMapSection">브랜드 지도</a>
+        <a href="#inquiry">입점 문의</a>
       </nav>
 
       <div class="header-actions">
@@ -130,8 +130,8 @@
 
     <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴" hidden>
       <a href="#brands"><span>01</span>입점 브랜드</a>
-      <a href="/guide.html"><span>02</span>이용 안내</a>
-      <a href="/partnership.html"><span>03</span>입점 안내</a>
+      <a href="#brandMapSection"><span>02</span>브랜드 지도</a>
+      <a href="#inquiry"><span>03</span>입점 문의</a>
     </nav>
   </header>
 
@@ -183,7 +183,7 @@
         </div>
         <p class="random-note">
           <span aria-hidden="true">↻</span>
-          접속할 때마다 순서가 바뀝니다
+          10초마다 브랜드 순서가 바뀝니다
         </p>
       </div>
 
@@ -231,88 +231,51 @@
       </div>
     </section>
 
-    <section class="market-partner-section" aria-labelledby="marketPartnerTitle">
-      <div class="market-partner-heading">
-        <p class="section-kicker">LOCAL BRAND NETWORK</p>
-        <h2 id="marketPartnerTitle">함께 만나는 브랜드</h2>
-        <span>정식 입점 전 화면 구성을 확인하기 위한 예시 브랜드가 포함되어 있습니다.</span>
-      </div>
-      <div class="market-partner-marquee" aria-label="브랜드 이름 흐름 목록">
-        <div class="market-partner-track">
-          <div class="market-partner-list">
-            <a class="real" href="/brands/i4/"><strong>i4</strong><small>PREMIUM EGGS</small></a>
-            <span><strong>청도복숭아농장</strong><small>PEACH FARM</small></span>
-            <span><strong>한우명가</strong><small>KOREAN BEEF</small></span>
-            <span><strong>카페 윤슬</strong><small>LOCAL CAFE</small></span>
-            <span><strong>바다소리</strong><small>LOCAL SEAFOOD</small></span>
-            <span><strong>샤인마루</strong><small>FRESH FRUIT</small></span>
-            <span><strong>온길식당</strong><small>LOCAL DINING</small></span>
-            <span><strong>들꽃상회</strong><small>LOCAL GOODS</small></span>
-          </div>
-          <div class="market-partner-list" aria-hidden="true">
-            <span><strong>i4</strong><small>PREMIUM EGGS</small></span>
-            <span><strong>청도복숭아농장</strong><small>PEACH FARM</small></span>
-            <span><strong>한우명가</strong><small>KOREAN BEEF</small></span>
-            <span><strong>카페 윤슬</strong><small>LOCAL CAFE</small></span>
-            <span><strong>바다소리</strong><small>LOCAL SEAFOOD</small></span>
-            <span><strong>샤인마루</strong><small>FRESH FRUIT</small></span>
-            <span><strong>온길식당</strong><small>LOCAL DINING</small></span>
-            <span><strong>들꽃상회</strong><small>LOCAL GOODS</small></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="how-section" id="how-it-works" aria-labelledby="howTitle">
-      <div class="section-heading light">
+    <section class="map-section" id="brandMapSection" aria-labelledby="mapSectionTitle">
+      <div class="map-section-heading">
         <div>
-          <p class="section-kicker">HOW IT WORKS</p>
-          <h2 id="howTitle">브랜드를 발견하는 방법</h2>
+          <p class="section-kicker">LOCAL BRAND MAP</p>
+          <h2 id="mapSectionTitle">브랜드 지도</h2>
+          <p>입점 브랜드가 활동하는 지역을 한눈에 살펴보세요.</p>
         </div>
+        <p class="map-location-note">
+          정확한 사업장 주소가 아닌 등록 지역의 중심 위치로 표시됩니다.
+        </p>
       </div>
 
-      <ol class="how-list">
-        <li>
-          <span>01</span>
-          <div>
-            <strong>브랜드 찾기</strong>
-            <p>관심 있는 지역, 상품 또는 브랜드 이름으로 검색합니다.</p>
+      <div class="map-category-filter" id="mapCategoryFilter" aria-label="지도 카테고리">
+        <button class="active" type="button" data-map-category="all">전체</button>
+      </div>
+
+      <div class="brand-map-layout">
+        <div class="brand-map-canvas" id="brandMap" aria-label="입점 브랜드 지역 지도">
+          <div class="map-loading" id="mapLoading">
+            <strong>카카오맵을 불러오고 있습니다.</strong>
+            <span>잠시만 기다려 주세요.</span>
           </div>
-        </li>
-        <li>
-          <span>02</span>
-          <div>
-            <strong>이야기 살펴보기</strong>
-            <p>업체가 전하는 소개와 대표 상품, 생산 이야기를 확인합니다.</p>
-          </div>
-        </li>
-        <li>
-          <span>03</span>
-          <div>
-            <strong>공식 판매처 방문</strong>
-            <p>각 업체 상세 페이지에서 스마트스토어 또는 공식 판매처로 이동합니다.</p>
-          </div>
-        </li>
-      </ol>
+        </div>
+        <aside class="map-region-panel" id="mapRegionPanel" aria-live="polite">
+          <p class="section-kicker">REGION BRANDS</p>
+          <strong>지도에서 지역을 선택하세요.</strong>
+          <span>지역 마커를 누르면 해당 지역의 브랜드가 표시됩니다.</span>
+        </aside>
+      </div>
     </section>
 
-    <section class="partnership" id="partnership" aria-labelledby="partnershipTitle">
-      <div>
-        <p class="section-kicker">BRAND PARTNERSHIP</p>
-        <h2 id="partnershipTitle">당신의 브랜드도<br>영진마켓에서 소개하세요.</h2>
+    <section class="inquiry-section" id="inquiry" aria-labelledby="inquiryTitle">
+      <div class="inquiry-copy">
+        <p class="section-kicker">PARTNERSHIP CONTACT</p>
+        <h2 id="inquiryTitle">입점 문의</h2>
+        <p>영진마켓 입점에 관한 문의는 아래 이메일로 보내주세요.</p>
       </div>
-      <div class="partnership-copy">
-        <p>
-          입점 업체마다 독립된 소개 페이지를 만들고, 대표 상품 한 가지와
-          브랜드 스토리, 스마트스토어 링크를 함께 연결합니다.
-        </p>
-        <ul>
-          <li>업체별 독립 상세 페이지</li>
-          <li>대표 상품·브랜드 스토리 소개</li>
-          <li>공식 스마트스토어 연결</li>
-          <li>브랜드 노출 순서 무작위 운영</li>
-        </ul>
-      </div>
+      <a
+        class="inquiry-email"
+        href="mailto:fyndcom@gmail.com?subject=FYND%20%C3%97%20%EC%98%81%EC%A7%84%EB%A7%88%EC%BC%93%20%EC%9E%85%EC%A0%90%20%EB%AC%B8%EC%9D%98"
+      >
+        <span>이메일 문의</span>
+        <strong>fyndcom@gmail.com</strong>
+        <b aria-hidden="true">↗</b>
+      </a>
     </section>
   </main>
 
@@ -338,6 +301,13 @@
       </svg>
       <span>입점 브랜드</span>
     </a>
+    <a href="#brandMapSection">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+        <path d="M9 3v15M15 6v15"></path>
+      </svg>
+      <span>브랜드 지도</span>
+    </a>
     <button id="recentBrandButton" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="9"></circle>
@@ -351,17 +321,27 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <a class="footer-signature" href="/" aria-label="FYND × 영진관광 홈">
-        <strong>FYND</strong>
-        <span aria-hidden="true">×</span>
-        <i class="footer-yeongjin-mark" aria-hidden="true"><b></b><b></b><b></b></i>
-        <em>영진관광</em>
+      <a class="collab-logo footer-collab-logo" href="/" aria-label="FYND × 영진마켓 홈">
+        <svg class="fynd-logo" viewBox="90 410 1080 410" role="img" aria-label="FYND 로고">
+          <image href="/assets/brand/fynd-logo-original.jpeg" width="1260" height="1260"></image>
+        </svg>
+        <span class="collab-times" aria-hidden="true">×</span>
+        <span class="market-logo">
+          <svg class="yeongjin-mark" viewBox="115 245 465 335" role="img" aria-label="영진관광 로고">
+            <image href="/assets/brand/yeongjin-logo-original.png" width="2022" height="778"></image>
+          </svg>
+          <span class="market-logo-copy">
+            <strong>영진마켓</strong>
+            <small>Discover Brands</small>
+          </span>
+        </span>
       </a>
       <p>이동 중 만나는 로컬 브랜드와 그 안의 이야기를 전합니다.</p>
-      <small>© 2026 FYND × 영진관광. All rights reserved.</small>
+      <small>© 2026 FYND × YEONGJIN MARKET. All rights reserved.</small>
     </div>
   </footer>
 
-  <script src="/app.js?v=20260727-platform"></script>
+  <script src="/map-config.js?v=20260727-map"></script>
+  <script src="/app.js?v=20260727-live-map"></script>
 </body>
 </html>

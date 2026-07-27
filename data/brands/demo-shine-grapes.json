@@ -1,0 +1,26 @@
+{
+  "slug": "demo-shine-grapes",
+  "name": "샤인마루",
+  "category": "농산",
+  "categoryKey": "agriculture",
+  "product": "샤인머스켓",
+  "region": "충북 영동",
+  "headline": "영동의 햇살로 키운 향긋하고 아삭한 포도",
+  "description": "홈페이지의 입점 브랜드 노출과 무작위 순환 기능을 확인하기 위해 만든 샘플 브랜드입니다.",
+  "quantity": "샘플 상품",
+  "storyTitle": "화면 확인용 샘플",
+  "storyDescription": "실제 입점 업체의 사진과 소개 자료를 받으면 해당 업체 정보로 교체됩니다.",
+  "shopUrl": "",
+  "homepageUrl": "",
+  "traceUrl": "",
+  "phone": "",
+  "published": true,
+  "demo": true,
+  "sortOrder": 911,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/demo-shine-grapes/",
+  "qrImage": "",
+  "images": {
+    "main": "/assets/brands/demo/shine-grapes.jpg",
+    "gallery": []
+  }
+}

@@ -23,6 +23,7 @@ CATEGORY_MAP = {
     "축산": "livestock",
     "수산": "seafood",
     "카페": "cafe",
+    "식당": "restaurant",
     "건강": "health",
     "생활": "lifestyle",
 }
@@ -101,6 +102,13 @@ def build_detail_html(brand: dict, base_url: str) -> str:
     )
     page_url = f"{base_url}/brands/{escape(brand['slug'])}/"
     image_url = image if image.startswith("http") else f"{base_url}{image}"
+    is_demo = bool(brand.get("demo"))
+    robots_value = (
+        "noindex, nofollow, noarchive"
+        if is_demo
+        else "index, follow, max-image-preview:large"
+    )
+    sample_label = " · 샘플 브랜드" if is_demo else ""
     structured_data = json.dumps(
         {
             "@context": "https://schema.org",
@@ -117,6 +125,10 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 
     collab_logo = """
       <span class="collab-logo">
+        <svg class="fynd-logo" viewBox="90 410 1080 410" role="img" aria-label="FYND 로고">
+          <image href="/assets/brand/fynd-logo-original.jpeg" width="1260" height="1260"></image>
+        </svg>
+        <span class="collab-times" aria-hidden="true">×</span>
         <span class="market-logo">
           <svg class="yeongjin-mark" viewBox="115 245 465 335" role="img" aria-label="영진관광 로고">
             <image href="/assets/brand/yeongjin-logo-original.png" width="2022" height="778"></image>
@@ -126,10 +138,6 @@ def build_detail_html(brand: dict, base_url: str) -> str:
             <small>Discover Brands</small>
           </span>
         </span>
-        <span class="collab-times" aria-hidden="true">×</span>
-        <svg class="fynd-logo" viewBox="90 410 1080 410" role="img" aria-label="FYND 로고">
-          <image href="/assets/brand/fynd-logo-original.jpeg" width="1260" height="1260"></image>
-        </svg>
       </span>
     """.strip()
 
@@ -149,6 +157,14 @@ def build_detail_html(brand: dict, base_url: str) -> str:
           <a class="brand-detail-action phone" href="tel:{escape(phone)}">
             전화 문의 {escape(brand['phone'])} <span>☎</span>
           </a>
+        """
+
+    if is_demo:
+        actions = """
+          <div class="brand-detail-sample-notice">
+            <strong>화면 확인용 샘플 브랜드입니다.</strong>
+            <span>실제 업체 입점 시 공식 판매처 정보로 교체됩니다.</span>
+          </div>
         """
 
     shop_action = ""
@@ -191,17 +207,17 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{name} {product} | 영진마켓 × FYND</title>
+  <title>{name} {product} | FYND × 영진마켓</title>
   <meta name="description" content="{headline}">
   <meta name="keywords" content="{name}, {product}, {region}, 영진마켓, FYND, 지역 브랜드">
-  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="robots" content="{robots_value}">
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260727-platform">
+  <link rel="stylesheet" href="/styles.css?v=20260727-live-map">
   <meta property="og:type" content="product">
-  <meta property="og:site_name" content="영진마켓 × FYND">
-  <meta property="og:title" content="{name} {product} | 영진마켓 × FYND">
+  <meta property="og:site_name" content="FYND × 영진마켓">
+  <meta property="og:title" content="{name} {product} | FYND × 영진마켓">
   <meta property="og:description" content="{headline}">
   <meta property="og:url" content="{page_url}">
   <meta property="og:image" content="{image_url}">
@@ -212,13 +228,13 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 <body class="brand-detail-body">
   <header class="site-header">
     <div class="header-inner brand-detail-header">
-      <a href="/" aria-label="영진마켓 × FYND 홈">{collab_logo}</a>
+      <a href="/" aria-label="FYND × 영진마켓 홈">{collab_logo}</a>
       <a class="brand-detail-back" href="/">← 브랜드 목록</a>
     </div>
   </header>
 
   <main class="brand-detail-main">
-    <p class="brand-detail-breadcrumb">입점 브랜드 · {category} · {region}</p>
+    <p class="brand-detail-breadcrumb">입점 브랜드{sample_label} · {category} · {region}</p>
     <section class="brand-detail-hero">
       <div class="brand-detail-visual">
         <img src="{image}" alt="{name} {product}" fetchpriority="high">
@@ -263,7 +279,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
     <div class="footer-inner brand-detail-footer">
       <a class="footer-collab-logo" href="/">{collab_logo}</a>
       <p>지역의 좋은 상품과 브랜드 이야기를 소개합니다.</p>
-      <small>© 2026 YEONGJIN MARKET × FYND.</small>
+      <small>© 2026 FYND × YEONGJIN MARKET.</small>
     </div>
   </footer>
 </body>
@@ -281,7 +297,7 @@ def build_sitemap(brands: list[dict], base_url: str) -> None:
         )
     ]
     for brand in brands:
-        if brand.get("published", True):
+        if brand.get("published", True) and not brand.get("demo"):
             urls.append(
                 (
                     f"{base_url}/brands/{brand['slug']}/",
@@ -418,7 +434,7 @@ def main() -> None:
 
     brands = build_all(base_url)
     print(f"총 {len(brands)}개 브랜드 페이지를 갱신했습니다.")
-    print("브랜드 노출 순서는 페이지를 새로 열 때마다 무작위로 결정됩니다.")
+    print("브랜드 노출 순서는 처음 무작위로 정해지고 화면에서 10초마다 다시 섞입니다.")
     print("대표 사진을 assets/brands/<slug>/main.jpg에 넣고 다시 실행하세요.")
 
 
