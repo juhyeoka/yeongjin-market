@@ -134,8 +134,8 @@ def build_detail_html(brand: dict, base_url: str) -> str:
             <image href="/assets/brand/yeongjin-logo-original.png" width="2022" height="778"></image>
           </svg>
           <span class="market-logo-copy">
-            <strong>영진마켓</strong>
-            <small>LOCAL BRAND SELECT</small>
+            <strong>영진관광</strong>
+            <small>YEONGJIN TOUR</small>
           </span>
         </span>
       </span>
@@ -215,7 +215,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{name} {product} | FYND × 영진마켓</title>
+  <title>{name} {product} | FYND × 영진관광</title>
   <meta name="description" content="{headline}">
   <meta name="keywords" content="{name}, {product}, {region}, 영진마켓, FYND, 지역 브랜드">
   <meta name="robots" content="{robots_value}">
@@ -224,8 +224,8 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css?v=20260728-masonry">
   <meta property="og:type" content="product">
-  <meta property="og:site_name" content="FYND × 영진마켓">
-  <meta property="og:title" content="{name} {product} | FYND × 영진마켓">
+  <meta property="og:site_name" content="FYND × 영진관광">
+  <meta property="og:title" content="{name} {product} | FYND × 영진관광">
   <meta property="og:description" content="{headline}">
   <meta property="og:url" content="{page_url}">
   <meta property="og:image" content="{image_url}">
@@ -236,7 +236,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
 <body class="brand-detail-body">
   <header class="site-header">
     <div class="header-inner brand-detail-header">
-      <a href="/" aria-label="FYND × 영진마켓 홈">{collab_logo}</a>
+      <a href="/" aria-label="FYND × 영진관광 홈">{collab_logo}</a>
       <a class="brand-detail-back" href="/">← 브랜드 목록</a>
     </div>
   </header>
