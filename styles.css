@@ -333,6 +333,19 @@ img {
   box-shadow: 0 16px 46px rgba(24, 28, 36, 0.045);
 }
 
+.discovery-hero::before {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 47%;
+  content: "";
+  background:
+    linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.86) 27%, rgba(255, 255, 255, 0.34) 100%),
+    url("/assets/brands/demo/green-fields.jpg") center 42% / cover no-repeat;
+  opacity: 0.24;
+  filter: saturate(0.8);
+  pointer-events: none;
+}
+
 .discovery-hero::after {
   position: absolute;
   right: 76px;
@@ -1896,6 +1909,14 @@ img {
 
   .discovery-hero {
     padding: 58px 50px;
+  }
+
+  .discovery-hero::before {
+    width: 100%;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.82), #fff 70%),
+      url("/assets/brands/demo/green-fields.jpg") center 36% / cover no-repeat;
+    opacity: 0.16;
   }
 
   .hero-copy {
