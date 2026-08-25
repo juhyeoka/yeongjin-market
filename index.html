@@ -59,13 +59,19 @@
       {
         "@type": "ItemList",
         "name": "영진마켓 입점 브랜드",
-        "numberOfItems": 1,
+        "numberOfItems": 2,
         "itemListElement": [
           {
             "@type": "ListItem",
             "position": 1,
             "url": "https://yeongjin-market.onrender.com/brands/i4/",
             "name": "i4"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "url": "https://yeongjin-market.onrender.com/brands/yesan-apple-united/",
+            "name": "예산 애플 유나이티드"
           }
         ]
       }
@@ -154,8 +160,8 @@
       <div class="section-heading">
         <div>
           <p class="section-kicker">충남에서 발견하기</p>
-          <h2 id="brandSectionTitle">브랜드와 축제</h2>
-          <p>충남의 브랜드 이야기와 대표 상품, 지금 가볼 만한 지역 축제를 함께 소개합니다.</p>
+          <h2 id="brandSectionTitle">입점 브랜드</h2>
+          <p>충남 곳곳에서 만난 브랜드와 대표 상품을 소개합니다.</p>
         </div>
       </div>
 
@@ -185,6 +191,24 @@
         <strong>검색 결과가 없습니다.</strong>
         <p>다른 브랜드명, 상품명 또는 지역으로 검색해 보세요.</p>
         <button type="button" id="resetSearchButton">전체 브랜드 보기</button>
+      </div>
+    </section>
+
+    <section class="festival-section" id="festivals" aria-labelledby="festivalSectionTitle">
+      <div class="festival-heading">
+        <div>
+          <p class="section-kicker">충남에서 즐기기</p>
+          <h2 id="festivalSectionTitle">지금 가볼 만한 축제</h2>
+          <p>계절마다 달라지는 충남의 행사와 축제 소식을 따로 모았습니다.</p>
+        </div>
+        <p class="result-summary" id="festivalResultSummary" aria-live="polite">축제를 불러오는 중입니다.</p>
+      </div>
+
+      <div class="festival-grid" id="festivalGrid"></div>
+
+      <div class="empty-result festival-empty-result" id="festivalEmptyResult" hidden>
+        <strong>검색 조건에 맞는 축제가 없습니다.</strong>
+        <p>검색어를 지우면 전체 축제를 다시 볼 수 있습니다.</p>
       </div>
     </section>
 

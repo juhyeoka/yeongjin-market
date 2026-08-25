@@ -1,0 +1,31 @@
+{
+  "slug": "yesan-apple-united",
+  "name": "예산 애플 유나이티드",
+  "category": "교육",
+  "categoryKey": "education",
+  "product": "유소년 축구",
+  "region": "충남 예산",
+  "headline": "축구를 좋아하는 마음부터 키우는 유소년 축구 교육",
+  "description": "예산 애플 유나이티드는 아이들이 공을 차고 친구들과 뛰면서 축구의 기본을 익히는 유소년 축구 교육 공간입니다.",
+  "quantity": "유소년 축구 교육",
+  "storyTitle": "축구가 기다려지는 시간",
+  "storyDescription": "연습과 경기를 차근차근 경험하며 기본기와 팀워크를 배웁니다. 수업과 활동 소식은 공식 인스타그램에서 확인할 수 있습니다.",
+  "shopUrl": "",
+  "homepageUrl": "https://www.instagram.com/yesanappleunited/?hl=ko",
+  "instagramUrl": "https://www.instagram.com/yesanappleunited/?hl=ko",
+  "traceUrl": "",
+  "phone": "0507-1360-5546",
+  "address": "충청남도 예산군 삽교읍 예목로 154 제1동 제6층",
+  "published": true,
+  "sortOrder": 2,
+  "publicUrl": "https://yeongjin-market.onrender.com/brands/yesan-apple-united/",
+  "images": {
+    "main": "/assets/brands/yesan-apple-united/cover.jpg",
+    "gallery": [
+      "/assets/brands/yesan-apple-united/gallery-01.jpg",
+      "/assets/brands/yesan-apple-united/gallery-02.jpg",
+      "/assets/brands/yesan-apple-united/gallery-03.jpg",
+      "/assets/brands/yesan-apple-united/gallery-04.jpg"
+    ]
+  }
+}

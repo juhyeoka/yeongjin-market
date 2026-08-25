@@ -8,9 +8,12 @@ const brandSearchInput = document.querySelector("#brandSearchInput");
 const clearSearchButton = document.querySelector("#clearSearchButton");
 const resetSearchButton = document.querySelector("#resetSearchButton");
 const brandGrid = document.querySelector("#brandGrid");
+const festivalGrid = document.querySelector("#festivalGrid");
 const categoryFilter = document.querySelector("#categoryFilter");
 const resultSummary = document.querySelector("#resultSummary");
+const festivalResultSummary = document.querySelector("#festivalResultSummary");
 const emptyResult = document.querySelector("#emptyResult");
+const festivalEmptyResult = document.querySelector("#festivalEmptyResult");
 const onboardingSlots = document.querySelector("#onboardingSlots");
 const recentBrandButton = document.querySelector("#recentBrandButton");
 const toast = document.querySelector("#toast");
@@ -34,11 +37,14 @@ const BRAND_CARD_LAYOUTS = [
 ];
 
 let randomizedBrands = [];
+let randomizedFestivals = [];
 let activeCategory = "all";
 let searchKeyword = "";
 let toastTimer = null;
 let brandRotationTimer = null;
+let festivalRotationTimer = null;
 let brandGridInteractionActive = false;
+let festivalGridInteractionActive = false;
 let brandRotationPauseUntil = 0;
 let brandMap = null;
 let brandMapGeocoder = null;
@@ -187,6 +193,45 @@ function startBrandRotation() {
   );
 }
 
+function canRotateFestivals() {
+  return (
+    randomizedFestivals.length > 1 &&
+    !searchKeyword &&
+    !document.hidden &&
+    !festivalGridInteractionActive
+  );
+}
+
+function rotateFestivalOrder() {
+  if (!festivalGrid || !canRotateFestivals()) {
+    return;
+  }
+
+  const applyNewOrder = () => {
+    randomizedFestivals = shuffledWithNewOrder(randomizedFestivals);
+    renderFestivals();
+    window.requestAnimationFrame(() => {
+      festivalGrid.classList.remove("is-reordering");
+    });
+  };
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyNewOrder();
+    return;
+  }
+
+  festivalGrid.classList.add("is-reordering");
+  window.setTimeout(applyNewOrder, 240);
+}
+
+function startFestivalRotation() {
+  window.clearInterval(festivalRotationTimer);
+  festivalRotationTimer = window.setInterval(
+    rotateFestivalOrder,
+    BRAND_ROTATION_INTERVAL + 2000
+  );
+}
+
 function normalized(value) {
   return String(value ?? "").trim().toLocaleLowerCase("ko");
 }
@@ -267,6 +312,36 @@ function renderBrandCard(brand, index) {
   `;
 }
 
+function renderFestivalCard(festival, index) {
+  const image =
+    festival.images?.main || "/assets/brands/brand-placeholder.svg";
+  const eventDate = festival.eventDate || festival.product || "행사 일정 확인";
+
+  return `
+    <a
+      class="festival-card"
+      href="${getBrandPageUrl(festival)}"
+      ${getExternalLinkAttributes(festival)}
+      data-brand-slug="${escapeHtml(festival.slug)}"
+      data-brand-name="${escapeHtml(festival.name)}"
+    >
+      <span class="festival-card-media">
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(festival.name)}"
+          ${index < 2 ? 'fetchpriority="high"' : 'loading="lazy"'}
+        >
+      </span>
+      <span class="festival-card-copy">
+        <small>${escapeHtml(festival.region)} · ${escapeHtml(eventDate)}</small>
+        <strong>${escapeHtml(festival.name)}</strong>
+        <p>${escapeHtml(festival.headline)}</p>
+        <b>공식 안내 보기 <span aria-hidden="true">↗</span></b>
+      </span>
+    </a>
+  `;
+}
+
 function renderBrandTicker(brands) {
   if (!brandTicker || !brands.length) {
     return;
@@ -328,6 +403,13 @@ function getVisibleBrands() {
   });
 }
 
+function getVisibleFestivals() {
+  return randomizedFestivals.filter(
+    (festival) =>
+      !searchKeyword || searchableText(festival).includes(searchKeyword)
+  );
+}
+
 function renderBrands() {
   if (!brandGrid) {
     return;
@@ -345,10 +427,7 @@ function renderBrands() {
   }
 
   if (resultSummary) {
-    const festivalCount = brands.filter(isFestival).length;
-    const realCount = brands.filter(
-      (brand) => !brand.demo && !isFestival(brand)
-    ).length;
+    const realCount = brands.filter((brand) => !brand.demo).length;
     const demoCount = brands.filter((brand) => brand.demo).length;
     const sampleSuffix = demoCount > 0 ? " · 화면 확인용 샘플 포함" : "";
 
@@ -359,7 +438,6 @@ function renderBrands() {
     } else {
       resultSummary.textContent =
         `입점 브랜드 ${realCount}개` +
-        (festivalCount > 0 ? ` · 충남 축제 ${festivalCount}개` : "") +
         (demoCount > 0 ? ` · 화면 확인용 샘플 ${demoCount}개` : "");
     }
   }
@@ -367,6 +445,27 @@ function renderBrands() {
   if (onboardingSlots) {
     onboardingSlots.hidden =
       Boolean(searchKeyword) || activeCategory !== "all" || randomizedBrands.length >= 4;
+  }
+}
+
+function renderFestivals() {
+  if (!festivalGrid) {
+    return;
+  }
+
+  const festivals = getVisibleFestivals();
+  festivalGrid.innerHTML = festivals
+    .map((festival, index) => renderFestivalCard(festival, index))
+    .join("");
+  festivalGrid.hidden = festivals.length === 0;
+
+  if (festivalEmptyResult) {
+    festivalEmptyResult.hidden = festivals.length !== 0;
+  }
+  if (festivalResultSummary) {
+    festivalResultSummary.textContent = searchKeyword
+      ? `검색 결과 ${festivals.length}개`
+      : `충남 축제 ${festivals.length}개`;
   }
 }
 
@@ -391,6 +490,7 @@ function resetFilters() {
   url.searchParams.delete("search");
   window.history.replaceState({}, "", url);
   renderBrands();
+  renderFestivals();
 }
 
 function applySearch(value) {
@@ -407,6 +507,7 @@ function applySearch(value) {
   }
   window.history.replaceState({}, "", url);
   renderBrands();
+  renderFestivals();
 }
 
 categoryFilter?.addEventListener("click", (event) => {
@@ -466,6 +567,13 @@ brandGrid?.addEventListener("click", (event) => {
   }
 });
 
+festivalGrid?.addEventListener("click", (event) => {
+  const link = event.target.closest("a[data-brand-slug]");
+  if (link) {
+    saveRecentBrand(link);
+  }
+});
+
 brandTicker?.addEventListener("click", (event) => {
   const link = event.target.closest("a[data-brand-slug]");
   if (link) {
@@ -498,6 +606,24 @@ brandGrid?.addEventListener(
   },
   { passive: true }
 );
+
+festivalGrid?.addEventListener("mouseenter", () => {
+  festivalGridInteractionActive = true;
+});
+
+festivalGrid?.addEventListener("mouseleave", () => {
+  festivalGridInteractionActive = false;
+});
+
+festivalGrid?.addEventListener("focusin", () => {
+  festivalGridInteractionActive = true;
+});
+
+festivalGrid?.addEventListener("focusout", (event) => {
+  if (!festivalGrid.contains(event.relatedTarget)) {
+    festivalGridInteractionActive = false;
+  }
+});
 
 function showToast(message) {
   if (!toast) {
@@ -853,8 +979,12 @@ async function loadBrands() {
     }
 
     const brands = await response.json();
+    const publishedItems = brands.filter((brand) => brand.published !== false);
     randomizedBrands = shuffled(
-      brands.filter((brand) => brand.published !== false)
+      publishedItems.filter((brand) => !isFestival(brand))
+    );
+    randomizedFestivals = shuffled(
+      publishedItems.filter((brand) => isFestival(brand))
     );
 
     renderCategoryButtons(randomizedBrands);
@@ -870,8 +1000,10 @@ async function loadBrands() {
     }
 
     renderBrands();
+    renderFestivals();
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
+    startFestivalRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
     }
@@ -889,11 +1021,14 @@ async function loadBrands() {
         images: { main: "/assets/i4-eggs.png" }
       }
     ];
+    randomizedFestivals = [];
     renderCategoryButtons(randomizedBrands);
     renderMapCategoryButtons(randomizedBrands);
     renderBrands();
+    renderFestivals();
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
+    startFestivalRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
     }
