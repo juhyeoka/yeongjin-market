@@ -656,6 +656,19 @@ img {
   background: var(--signal);
 }
 
+.brand-card-festival .brand-card-status {
+  color: #fff;
+  background: #195947;
+}
+
+.brand-card-festival .brand-card-body > small {
+  color: #195947;
+}
+
+.brand-card-festival .brand-card-meta b::after {
+  content: " ↗";
+}
+
 .brand-card-body {
   display: flex;
   flex-direction: column;

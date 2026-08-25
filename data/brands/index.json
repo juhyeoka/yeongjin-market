@@ -335,5 +335,138 @@
       "main": "/assets/brands/demo/seed-oil.jpg",
       "gallery": []
     }
+  },
+  {
+    "slug": "festival-hongwon-crab",
+    "type": "festival",
+    "name": "홍원항 자연산 전어·꽃게 축제",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "8.22 — 9.6",
+    "region": "충남 서천",
+    "headline": "제철 전어와 꽃게를 만나는 서천 홍원항의 가을 축제",
+    "description": "서천 홍원항에서 열리는 제철 수산물 축제입니다.",
+    "externalUrl": "https://tour.chungnam.go.kr/prog/fstvl/kor/sub02_02_02/view.do?fstvlNo=148",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1201,
+    "images": {
+      "main": "/assets/festivals/hongwon.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-janghang-lilyturf",
+    "type": "festival",
+    "name": "장항 맥문동 꽃 축제",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "8.28 — 8.30",
+    "region": "충남 서천",
+    "headline": "보랏빛 맥문동이 소나무 숲을 채우는 여름밤의 산책",
+    "description": "장항 송림산림욕장 일원에서 열리는 맥문동 꽃 축제입니다.",
+    "externalUrl": "https://tour.chungnam.go.kr/prog/fstvl/kor/sub02_02_02/view.do?fstvlNo=151",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1202,
+    "images": {
+      "main": "/assets/festivals/janghang.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-ganggyeong-heritage-night",
+    "type": "festival",
+    "name": "강경 국가유산야행",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "8.28 — 9.5",
+    "region": "충남 논산",
+    "headline": "강경의 국가유산을 따라 걷는 늦여름 밤의 문화 산책",
+    "description": "강경의 근대문화 유산을 야간 프로그램으로 만나는 행사입니다.",
+    "externalUrl": "https://www.nonsan.go.kr/site/cntf/",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1203,
+    "images": {
+      "main": "/assets/festivals/nonsan-night.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-cheonan-k-culture",
+    "type": "festival",
+    "name": "천안 K-컬처 박람회",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "9.2 — 9.6",
+    "region": "충남 천안",
+    "headline": "독립기념관에서 만나는 한류 문화와 새로운 콘텐츠",
+    "description": "한류 문화의 흐름과 콘텐츠를 한자리에서 만나는 박람회입니다.",
+    "externalUrl": "https://www.kcultureexpo.com/",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1204,
+    "images": {
+      "main": "/assets/festivals/kculture.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-gongju-heritage-night",
+    "type": "festival",
+    "name": "공주 국가유산야행",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "9.4 — 9.6",
+    "region": "충남 공주",
+    "headline": "왕도심의 골목과 국가유산을 빛으로 잇는 공주의 밤",
+    "description": "공주 왕도심의 역사와 문화를 야간에 즐기는 행사입니다.",
+    "externalUrl": "https://ggm-art.kr/",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1205,
+    "images": {
+      "main": "/assets/festivals/gongju-night.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-yesan-stork",
+    "type": "festival",
+    "name": "예산 황새축제",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "9.5 — 9.6",
+    "region": "충남 예산",
+    "headline": "황새와 사람이 함께 사는 생태마을에서 보내는 주말",
+    "description": "예산황새공원에서 열리는 생태 체험형 지역 축제입니다.",
+    "externalUrl": "https://yesan.go.kr/bbs/BBSMSTR_000000000047/view.do?nttId=B000000178167We1lR8",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1206,
+    "images": {
+      "main": "/assets/festivals/yesan-stork.jpg",
+      "gallery": []
+    }
+  },
+  {
+    "slug": "festival-cheongyang-pepper",
+    "type": "festival",
+    "name": "청양 고추·구기자 축제",
+    "category": "축제",
+    "categoryKey": "festival",
+    "product": "9.11 — 9.13",
+    "region": "충남 청양",
+    "headline": "청양의 고추와 구기자를 맛보고 즐기는 대표 농특산물 축제",
+    "description": "청양 백세공원 일원에서 열리는 대표 농특산물 축제입니다.",
+    "externalUrl": "https://tour.chungnam.go.kr/prog/fstvl/kor/sub02_02_02/view.do?fstvlNo=141",
+    "published": true,
+    "demo": false,
+    "sortOrder": 1207,
+    "images": {
+      "main": "/assets/festivals/cheongyang-pepper.jpg",
+      "gallery": []
+    }
   }
 ]

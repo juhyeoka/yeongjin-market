@@ -206,14 +206,32 @@ function searchableText(brand) {
 }
 
 function getBrandPageUrl(brand) {
+  if (brand.externalUrl) {
+    return brand.externalUrl;
+  }
+
   return `/brands/${encodeURIComponent(brand.slug)}/`;
+}
+
+function isFestival(brand) {
+  return brand.type === "festival";
+}
+
+function getExternalLinkAttributes(brand) {
+  return brand.externalUrl
+    ? ' target="_blank" rel="noopener noreferrer"'
+    : "";
 }
 
 function renderBrandCard(brand, index) {
   const image =
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
   const location = [brand.category, brand.region].filter(Boolean).join(" · ");
-  const cardClass = brand.demo ? "brand-card-demo" : "brand-card-real";
+  const cardClass = isFestival(brand)
+    ? "brand-card-festival"
+    : brand.demo
+      ? "brand-card-demo"
+      : "brand-card-real";
   const layoutClass =
     BRAND_CARD_LAYOUTS[index % BRAND_CARD_LAYOUTS.length];
 
@@ -221,6 +239,7 @@ function renderBrandCard(brand, index) {
     <a
       class="brand-card ${cardClass} brand-card-${layoutClass}"
       href="${getBrandPageUrl(brand)}"
+      ${getExternalLinkAttributes(brand)}
       data-brand-slug="${escapeHtml(brand.slug)}"
       data-brand-name="${escapeHtml(brand.name)}"
     >
@@ -231,7 +250,7 @@ function renderBrandCard(brand, index) {
           ${index < 3 ? 'fetchpriority="high"' : 'loading="lazy"'}
         >
         <i class="brand-card-status">
-          ${brand.demo ? "화면 예시" : "입점 브랜드"}
+          ${isFestival(brand) ? "충남 축제" : brand.demo ? "화면 예시" : "입점 브랜드"}
         </i>
       </span>
 
@@ -241,7 +260,7 @@ function renderBrandCard(brand, index) {
         <p>${escapeHtml(brand.headline)}</p>
         <span class="brand-card-meta">
           <i>${escapeHtml(brand.product)}</i>
-          <b>브랜드 보기</b>
+          <b>${isFestival(brand) ? "공식 안내" : "브랜드 보기"}</b>
         </span>
       </span>
     </a>
@@ -261,6 +280,7 @@ function renderBrandTicker(brands) {
             <a
               class="${brand.demo ? "" : "real"}"
               href="${getBrandPageUrl(brand)}"
+              ${getExternalLinkAttributes(brand)}
               data-brand-slug="${escapeHtml(brand.slug)}"
               data-brand-name="${escapeHtml(brand.name)}"
             >
@@ -325,7 +345,10 @@ function renderBrands() {
   }
 
   if (resultSummary) {
-    const realCount = brands.filter((brand) => !brand.demo).length;
+    const festivalCount = brands.filter(isFestival).length;
+    const realCount = brands.filter(
+      (brand) => !brand.demo && !isFestival(brand)
+    ).length;
     const demoCount = brands.filter((brand) => brand.demo).length;
     const sampleSuffix = demoCount > 0 ? " · 화면 확인용 샘플 포함" : "";
 
@@ -335,7 +358,8 @@ function renderBrands() {
       resultSummary.textContent = `${activeCategory} 브랜드 ${brands.length}개${sampleSuffix}`;
     } else {
       resultSummary.textContent =
-        `실제 입점 ${realCount}개` +
+        `입점 브랜드 ${realCount}개` +
+        (festivalCount > 0 ? ` · 충남 축제 ${festivalCount}개` : "") +
         (demoCount > 0 ? ` · 화면 확인용 샘플 ${demoCount}개` : "");
     }
   }
@@ -552,7 +576,9 @@ function renderMapCategoryButtons(brands) {
     return;
   }
 
-  const categories = [...new Set(brands.map((brand) => brand.category))]
+  const categories = [...new Set(
+    brands.filter((brand) => !isFestival(brand)).map((brand) => brand.category)
+  )]
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, "ko"));
 
@@ -696,10 +722,13 @@ async function renderBrandMapMarkers() {
   const renderSequence = ++mapRenderSequence;
   clearBrandMapOverlays();
 
+  const mappableBrands = randomizedBrands.filter(
+    (brand) => !isFestival(brand)
+  );
   const mapBrands =
     activeMapCategory === "all"
-      ? randomizedBrands
-      : randomizedBrands.filter(
+      ? mappableBrands
+      : mappableBrands.filter(
           (brand) => brand.category === activeMapCategory
         );
   const groups = groupMapBrands(mapBrands);
