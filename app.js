@@ -295,7 +295,7 @@ function renderBrandCard(brand, index) {
           ${index < 3 ? 'fetchpriority="high"' : 'loading="lazy"'}
         >
         <i class="brand-card-status">
-          ${isFestival(brand) ? "충남 축제" : brand.demo ? "화면 예시" : "입점 브랜드"}
+          ${isFestival(brand) ? "충남의 행사" : brand.demo ? "소개 예시" : "충남의 가게"}
         </i>
       </span>
 
@@ -429,16 +429,16 @@ function renderBrands() {
   if (resultSummary) {
     const realCount = brands.filter((brand) => !brand.demo).length;
     const demoCount = brands.filter((brand) => brand.demo).length;
-    const sampleSuffix = demoCount > 0 ? " · 화면 확인용 샘플 포함" : "";
+    const sampleSuffix = demoCount > 0 ? " · 소개 예시 포함" : "";
 
     if (searchKeyword) {
       resultSummary.textContent = `"${brandSearchInput.value.trim()}" 검색 결과 ${brands.length}개${sampleSuffix}`;
     } else if (activeCategory !== "all") {
-      resultSummary.textContent = `${activeCategory} 브랜드 ${brands.length}개${sampleSuffix}`;
+      resultSummary.textContent = `${activeCategory} 이야기 ${brands.length}곳${sampleSuffix}`;
     } else {
       resultSummary.textContent =
-        `입점 브랜드 ${realCount}개` +
-        (demoCount > 0 ? ` · 화면 확인용 샘플 ${demoCount}개` : "");
+        `등록된 이야기 ${realCount}곳` +
+        (demoCount > 0 ? ` · 소개 예시 ${demoCount}곳` : "");
     }
   }
 
@@ -465,7 +465,7 @@ function renderFestivals() {
   if (festivalResultSummary) {
     festivalResultSummary.textContent = searchKeyword
       ? `검색 결과 ${festivals.length}개`
-      : `충남 축제 ${festivals.length}개`;
+      : `행사와 축제 ${festivals.length}개`;
   }
 }
 
@@ -1036,3 +1036,64 @@ async function loadBrands() {
 }
 
 loadBrands();
+
+const serviceInquiryForm = document.querySelector("#serviceInquiryForm");
+const serviceInquiryStatus = document.querySelector("#serviceInquiryStatus");
+
+serviceInquiryForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const submitButton = serviceInquiryForm.querySelector('button[type="submit"]');
+  const formData = new FormData(serviceInquiryForm);
+  const originalLabel = submitButton?.textContent || "문의 보내기";
+
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "보내는 중";
+  }
+  if (serviceInquiryStatus) {
+    serviceInquiryStatus.textContent = "";
+    serviceInquiryStatus.className = "";
+  }
+
+  try {
+    const response = await fetch("https://formsubmit.co/ajax/fyndcom@gmail.com", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "상호 또는 담당자": formData.get("name"),
+        "연락처": formData.get("contact"),
+        "지역과 업종": formData.get("region"),
+        "문의 내용": formData.get("message") || "별도 내용 없음",
+        _subject: "[FYND 서비스웹] 소개 신청",
+        _template: "table"
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("문의 전송 실패");
+    }
+
+    serviceInquiryForm.reset();
+    if (serviceInquiryStatus) {
+      serviceInquiryStatus.textContent =
+        "문의가 접수되었습니다. 확인 후 입력한 연락처로 안내드리겠습니다.";
+      serviceInquiryStatus.className = "success";
+    }
+  } catch (error) {
+    console.error(error);
+    if (serviceInquiryStatus) {
+      serviceInquiryStatus.textContent =
+        "전송이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.";
+      serviceInquiryStatus.className = "error";
+    }
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalLabel;
+    }
+  }
+});

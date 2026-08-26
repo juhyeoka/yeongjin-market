@@ -57,6 +57,32 @@
     }
   },
   {
+    "slug": "yeongjin-tour",
+    "name": "영진관광",
+    "category": "이동",
+    "categoryKey": "mobility",
+    "product": "전세버스·단체 이동",
+    "region": "충남 천안",
+    "headline": "시간은 정확하게, 운행은 안전하게",
+    "description": "기업과 학교, 기관의 일정에 맞춰 단체 이동을 지원하는 충남 전세버스 운송 기업입니다.",
+    "quantity": "전세버스 운송",
+    "storyTitle": "약속한 시간에 안전하게",
+    "storyDescription": "출발 전 차량 점검부터 운행 일정 관리까지, 단체 이동에 필요한 과정을 꼼꼼하게 준비합니다.",
+    "shopUrl": "",
+    "homepageUrl": "",
+    "externalUrl": "https://yeongjin-tour.onrender.com/",
+    "traceUrl": "",
+    "phone": "1522-2274",
+    "published": true,
+    "sortOrder": 3,
+    "publicUrl": "https://yeongjin-tour.onrender.com/",
+    "qrImage": "",
+    "images": {
+      "main": "/assets/hero-bus.png",
+      "gallery": []
+    }
+  },
+  {
     "slug": "demo-sunshine-orchard",
     "name": "햇살담은농원",
     "category": "농산",
