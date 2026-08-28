@@ -16,7 +16,7 @@ DATA_DIR = BASE_DIR / "data" / "brands"
 ASSET_DIR = BASE_DIR / "assets" / "brands"
 PAGE_DIR = BASE_DIR / "brands"
 QR_DIR = BASE_DIR / "qrcodes"
-DEFAULT_BASE_URL = "https://yeongjin-market.onrender.com"
+DEFAULT_BASE_URL = "https://fynd-cnd.onrender.com"
 
 CATEGORY_MAP = {
     "농산": "agriculture",

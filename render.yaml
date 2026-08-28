@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: yeongjin-market
+    name: fynd-cnd
     runtime: static
     buildCommand: echo "No build required"
     staticPublishPath: .
