@@ -75,7 +75,7 @@ python3 scripts/create_brand.py --build-all
 - 각 페이지에 canonical, Open Graph 및 검색 설명 제공
 
 네이버 노출 현황을 직접 확인하려면 배포 후 네이버 서치어드바이저에
-`https://yeongjin-market.onrender.com`을 등록하고 `sitemap.xml`을 제출합니다.
+`https://fynd-cnd.onrender.com`을 등록하고 `sitemap.xml`을 제출합니다.
 
 ## 로컬 확인
 

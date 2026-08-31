@@ -16,7 +16,7 @@ DATA_DIR = BASE_DIR / "data" / "brands"
 ASSET_DIR = BASE_DIR / "assets" / "brands"
 PAGE_DIR = BASE_DIR / "brands"
 QR_DIR = BASE_DIR / "qrcodes"
-DEFAULT_BASE_URL = "https://yeongjin-market.onrender.com"
+DEFAULT_BASE_URL = "https://fynd-cnd.onrender.com"
 
 CATEGORY_MAP = {
     "농산": "agriculture",
@@ -222,7 +222,7 @@ def build_detail_html(brand: dict, base_url: str) -> str:
   <meta name="theme-color" content="#ffffff">
   <link rel="canonical" href="{page_url}">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css?v=20260728-masonry">
+  <link rel="stylesheet" href="/styles.css?v=logo-balance-20260730">
   <meta property="og:type" content="product">
   <meta property="og:site_name" content="FYND × 영진관광">
   <meta property="og:title" content="{name} {product} | FYND × 영진관광">

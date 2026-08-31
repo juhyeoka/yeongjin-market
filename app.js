@@ -8,9 +8,12 @@ const brandSearchInput = document.querySelector("#brandSearchInput");
 const clearSearchButton = document.querySelector("#clearSearchButton");
 const resetSearchButton = document.querySelector("#resetSearchButton");
 const brandGrid = document.querySelector("#brandGrid");
+const festivalGrid = document.querySelector("#festivalGrid");
 const categoryFilter = document.querySelector("#categoryFilter");
 const resultSummary = document.querySelector("#resultSummary");
+const festivalResultSummary = document.querySelector("#festivalResultSummary");
 const emptyResult = document.querySelector("#emptyResult");
+const festivalEmptyResult = document.querySelector("#festivalEmptyResult");
 const onboardingSlots = document.querySelector("#onboardingSlots");
 const recentBrandButton = document.querySelector("#recentBrandButton");
 const toast = document.querySelector("#toast");
@@ -34,11 +37,14 @@ const BRAND_CARD_LAYOUTS = [
 ];
 
 let randomizedBrands = [];
+let randomizedFestivals = [];
 let activeCategory = "all";
 let searchKeyword = "";
 let toastTimer = null;
 let brandRotationTimer = null;
+let festivalRotationTimer = null;
 let brandGridInteractionActive = false;
+let festivalGridInteractionActive = false;
 let brandRotationPauseUntil = 0;
 let brandMap = null;
 let brandMapGeocoder = null;
@@ -46,6 +52,7 @@ let brandMapOverlays = [];
 let brandMapResizeObserver = null;
 let activeMapCategory = "all";
 let mapRenderSequence = 0;
+let mapFallbackActive = false;
 const regionPositionCache = new Map();
 
 function setMenuOpen(open) {
@@ -187,6 +194,45 @@ function startBrandRotation() {
   );
 }
 
+function canRotateFestivals() {
+  return (
+    randomizedFestivals.length > 1 &&
+    !searchKeyword &&
+    !document.hidden &&
+    !festivalGridInteractionActive
+  );
+}
+
+function rotateFestivalOrder() {
+  if (!festivalGrid || !canRotateFestivals()) {
+    return;
+  }
+
+  const applyNewOrder = () => {
+    randomizedFestivals = shuffledWithNewOrder(randomizedFestivals);
+    renderFestivals();
+    window.requestAnimationFrame(() => {
+      festivalGrid.classList.remove("is-reordering");
+    });
+  };
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyNewOrder();
+    return;
+  }
+
+  festivalGrid.classList.add("is-reordering");
+  window.setTimeout(applyNewOrder, 240);
+}
+
+function startFestivalRotation() {
+  window.clearInterval(festivalRotationTimer);
+  festivalRotationTimer = window.setInterval(
+    rotateFestivalOrder,
+    BRAND_ROTATION_INTERVAL + 2000
+  );
+}
+
 function normalized(value) {
   return String(value ?? "").trim().toLocaleLowerCase("ko");
 }
@@ -206,14 +252,32 @@ function searchableText(brand) {
 }
 
 function getBrandPageUrl(brand) {
+  if (brand.externalUrl) {
+    return brand.externalUrl;
+  }
+
   return `/brands/${encodeURIComponent(brand.slug)}/`;
+}
+
+function isFestival(brand) {
+  return brand.type === "festival";
+}
+
+function getExternalLinkAttributes(brand) {
+  return brand.externalUrl
+    ? ' target="_blank" rel="noopener noreferrer"'
+    : "";
 }
 
 function renderBrandCard(brand, index) {
   const image =
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
   const location = [brand.category, brand.region].filter(Boolean).join(" · ");
-  const cardClass = brand.demo ? "brand-card-demo" : "brand-card-real";
+  const cardClass = isFestival(brand)
+    ? "brand-card-festival"
+    : brand.demo
+      ? "brand-card-demo"
+      : "brand-card-real";
   const layoutClass =
     BRAND_CARD_LAYOUTS[index % BRAND_CARD_LAYOUTS.length];
 
@@ -221,6 +285,7 @@ function renderBrandCard(brand, index) {
     <a
       class="brand-card ${cardClass} brand-card-${layoutClass}"
       href="${getBrandPageUrl(brand)}"
+      ${getExternalLinkAttributes(brand)}
       data-brand-slug="${escapeHtml(brand.slug)}"
       data-brand-name="${escapeHtml(brand.name)}"
     >
@@ -231,7 +296,7 @@ function renderBrandCard(brand, index) {
           ${index < 3 ? 'fetchpriority="high"' : 'loading="lazy"'}
         >
         <i class="brand-card-status">
-          ${brand.demo ? "화면 예시" : "입점 브랜드"}
+          ${isFestival(brand) ? "충남의 행사" : brand.demo ? "소개 예시" : "충남의 가게"}
         </i>
       </span>
 
@@ -241,8 +306,38 @@ function renderBrandCard(brand, index) {
         <p>${escapeHtml(brand.headline)}</p>
         <span class="brand-card-meta">
           <i>${escapeHtml(brand.product)}</i>
-          <b>브랜드 보기</b>
+          <b>${isFestival(brand) ? "공식 안내" : "브랜드 보기"}</b>
         </span>
+      </span>
+    </a>
+  `;
+}
+
+function renderFestivalCard(festival, index) {
+  const image =
+    festival.images?.main || "/assets/brands/brand-placeholder.svg";
+  const eventDate = festival.eventDate || festival.product || "행사 일정 확인";
+
+  return `
+    <a
+      class="festival-card"
+      href="${getBrandPageUrl(festival)}"
+      ${getExternalLinkAttributes(festival)}
+      data-brand-slug="${escapeHtml(festival.slug)}"
+      data-brand-name="${escapeHtml(festival.name)}"
+    >
+      <span class="festival-card-media">
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(festival.name)}"
+          ${index < 2 ? 'fetchpriority="high"' : 'loading="lazy"'}
+        >
+      </span>
+      <span class="festival-card-copy">
+        <small>${escapeHtml(festival.region)} · ${escapeHtml(eventDate)}</small>
+        <strong>${escapeHtml(festival.name)}</strong>
+        <p>${escapeHtml(festival.headline)}</p>
+        <b>공식 안내 보기 <span aria-hidden="true">↗</span></b>
       </span>
     </a>
   `;
@@ -261,6 +356,7 @@ function renderBrandTicker(brands) {
             <a
               class="${brand.demo ? "" : "real"}"
               href="${getBrandPageUrl(brand)}"
+              ${getExternalLinkAttributes(brand)}
               data-brand-slug="${escapeHtml(brand.slug)}"
               data-brand-name="${escapeHtml(brand.name)}"
             >
@@ -308,6 +404,13 @@ function getVisibleBrands() {
   });
 }
 
+function getVisibleFestivals() {
+  return randomizedFestivals.filter(
+    (festival) =>
+      !searchKeyword || searchableText(festival).includes(searchKeyword)
+  );
+}
+
 function renderBrands() {
   if (!brandGrid) {
     return;
@@ -327,22 +430,43 @@ function renderBrands() {
   if (resultSummary) {
     const realCount = brands.filter((brand) => !brand.demo).length;
     const demoCount = brands.filter((brand) => brand.demo).length;
-    const sampleSuffix = demoCount > 0 ? " · 화면 확인용 샘플 포함" : "";
+    const sampleSuffix = demoCount > 0 ? " · 소개 예시 포함" : "";
 
     if (searchKeyword) {
       resultSummary.textContent = `"${brandSearchInput.value.trim()}" 검색 결과 ${brands.length}개${sampleSuffix}`;
     } else if (activeCategory !== "all") {
-      resultSummary.textContent = `${activeCategory} 브랜드 ${brands.length}개${sampleSuffix}`;
+      resultSummary.textContent = `${activeCategory} 이야기 ${brands.length}곳${sampleSuffix}`;
     } else {
       resultSummary.textContent =
-        `실제 입점 ${realCount}개` +
-        (demoCount > 0 ? ` · 화면 확인용 샘플 ${demoCount}개` : "");
+        `등록된 이야기 ${realCount}곳` +
+        (demoCount > 0 ? ` · 소개 예시 ${demoCount}곳` : "");
     }
   }
 
   if (onboardingSlots) {
     onboardingSlots.hidden =
       Boolean(searchKeyword) || activeCategory !== "all" || randomizedBrands.length >= 4;
+  }
+}
+
+function renderFestivals() {
+  if (!festivalGrid) {
+    return;
+  }
+
+  const festivals = getVisibleFestivals();
+  festivalGrid.innerHTML = festivals
+    .map((festival, index) => renderFestivalCard(festival, index))
+    .join("");
+  festivalGrid.hidden = festivals.length === 0;
+
+  if (festivalEmptyResult) {
+    festivalEmptyResult.hidden = festivals.length !== 0;
+  }
+  if (festivalResultSummary) {
+    festivalResultSummary.textContent = searchKeyword
+      ? `검색 결과 ${festivals.length}개`
+      : `행사와 축제 ${festivals.length}개`;
   }
 }
 
@@ -367,6 +491,7 @@ function resetFilters() {
   url.searchParams.delete("search");
   window.history.replaceState({}, "", url);
   renderBrands();
+  renderFestivals();
 }
 
 function applySearch(value) {
@@ -383,6 +508,7 @@ function applySearch(value) {
   }
   window.history.replaceState({}, "", url);
   renderBrands();
+  renderFestivals();
 }
 
 categoryFilter?.addEventListener("click", (event) => {
@@ -442,6 +568,13 @@ brandGrid?.addEventListener("click", (event) => {
   }
 });
 
+festivalGrid?.addEventListener("click", (event) => {
+  const link = event.target.closest("a[data-brand-slug]");
+  if (link) {
+    saveRecentBrand(link);
+  }
+});
+
 brandTicker?.addEventListener("click", (event) => {
   const link = event.target.closest("a[data-brand-slug]");
   if (link) {
@@ -475,6 +608,24 @@ brandGrid?.addEventListener(
   { passive: true }
 );
 
+festivalGrid?.addEventListener("mouseenter", () => {
+  festivalGridInteractionActive = true;
+});
+
+festivalGrid?.addEventListener("mouseleave", () => {
+  festivalGridInteractionActive = false;
+});
+
+festivalGrid?.addEventListener("focusin", () => {
+  festivalGridInteractionActive = true;
+});
+
+festivalGrid?.addEventListener("focusout", (event) => {
+  if (!festivalGrid.contains(event.relatedTarget)) {
+    festivalGridInteractionActive = false;
+  }
+});
+
 function showToast(message) {
   if (!toast) {
     return;
@@ -505,17 +656,12 @@ recentBrandButton?.addEventListener("click", () => {
 const regionSearchQueries = {
   "충남 홍성": "충청남도 홍성군",
   "충남 예산": "충청남도 예산군",
-  "전남 나주": "전라남도 나주시",
   "충남 공주": "충청남도 공주시",
-  "경북 문경": "경상북도 문경시",
-  "제주 제주시": "제주특별자치도 제주시",
-  "세종 조치원": "세종특별자치시 조치원읍",
   "충남 천안": "충청남도 천안시",
-  "대전 유성": "대전광역시 유성구",
-  "충북 청주": "충청북도 청주시",
-  "경남 통영": "경상남도 통영시",
-  "충북 영동": "충청북도 영동군",
-  "전북 고창": "전북특별자치도 고창군"
+  "충남 청양": "충청남도 청양군",
+  "충남 아산": "충청남도 아산시",
+  "충남 논산": "충청남도 논산시",
+  "충남 보령": "충청남도 보령시"
 };
 
 /*
@@ -524,19 +670,14 @@ const regionSearchQueries = {
  * 새 지역이 추가된 경우에만 아래의 카카오 주소 검색을 보조 수단으로 사용합니다.
  */
 const regionCoordinates = {
-  "경남 통영": { lat: 34.8544448243999, lng: 128.43314921138 },
-  "경북 문경": { lat: 36.5865273680411, lng: 128.186771917242 },
-  "대전 유성": { lat: 36.3622851114387, lng: 127.356257593324 },
-  "세종 조치원": { lat: 36.604591645707, lng: 127.298444484667 },
-  "전남 나주": { lat: 34.9894649675157, lng: 126.740867401345 },
-  "전북 고창": { lat: 35.4356982163474, lng: 126.702120365321 },
-  "제주 제주시": { lat: 33.4995342411967, lng: 126.531171087132 },
+  "충남 아산": { lat: 36.789784, lng: 127.001849 },
+  "충남 논산": { lat: 36.187065, lng: 127.098745 },
+  "충남 보령": { lat: 36.333162, lng: 126.612944 },
+  "충남 청양": { lat: 36.459151, lng: 126.802238 },
   "충남 공주": { lat: 36.4465551158221, lng: 127.11905504092 },
   "충남 예산": { lat: 36.6826228017856, lng: 126.848642241312 },
   "충남 천안": { lat: 36.8150678816279, lng: 127.113911972591 },
-  "충남 홍성": { lat: 36.6013575607948, lng: 126.66083238915 },
-  "충북 영동": { lat: 36.1749928212643, lng: 127.783438619236 },
-  "충북 청주": { lat: 36.6424871337285, lng: 127.489020156402 }
+  "충남 홍성": { lat: 36.6013575607948, lng: 126.66083238915 }
 };
 
 function showMapMessage(title, description) {
@@ -562,7 +703,9 @@ function renderMapCategoryButtons(brands) {
     return;
   }
 
-  const categories = [...new Set(brands.map((brand) => brand.category))]
+  const categories = [...new Set(
+    brands.filter((brand) => !isFestival(brand)).map((brand) => brand.category)
+  )]
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, "ko"));
 
@@ -592,9 +735,104 @@ function groupMapBrands(brands) {
   return [...groups.values()];
 }
 
+function getFilteredMapGroups() {
+  const mappableBrands = randomizedBrands.filter(
+    (brand) => !isFestival(brand)
+  );
+  const mapBrands =
+    activeMapCategory === "all"
+      ? mappableBrands
+      : mappableBrands.filter(
+          (brand) => brand.category === activeMapCategory
+        );
+
+  return groupMapBrands(mapBrands);
+}
+
 function clearBrandMapOverlays() {
-  brandMapOverlays.forEach((overlay) => overlay.setMap(null));
+  brandMapOverlays.forEach((overlay) => overlay?.setMap?.(null));
   brandMapOverlays = [];
+}
+
+function renderMapFallback() {
+  const mapContainer = document.querySelector("#brandMap");
+  if (!mapContainer) {
+    return;
+  }
+
+  clearBrandMapOverlays();
+  brandMap = null;
+  brandMapGeocoder = null;
+  mapFallbackActive = true;
+  mapContainer.classList.add("is-fallback");
+
+  const groups = getFilteredMapGroups();
+  if (!groups.length) {
+    mapContainer.innerHTML = `
+      <div class="map-fallback map-fallback-empty">
+        <strong>표시할 지역이 없습니다.</strong>
+        <span>다른 분류를 선택해 주세요.</span>
+      </div>
+    `;
+    hideMapMessage();
+    return;
+  }
+
+  mapContainer.innerHTML = `
+    <div class="map-fallback">
+      <div class="map-fallback-map-stage">
+        <iframe
+          class="map-fallback-frame"
+          title="충청남도 지역 지도"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=125.85%2C35.85%2C127.95%2C37.15&amp;layer=mapnik"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+        <span class="map-fallback-badge">충청남도</span>
+      </div>
+      <div class="map-fallback-directory">
+        <div class="map-fallback-head">
+          <small>충남 지역 안내</small>
+          <strong>지역별 가게를 확인하세요.</strong>
+          <span>지역을 선택하면 등록된 가게와 브랜드를 볼 수 있습니다.</span>
+        </div>
+        <div class="map-fallback-grid">
+          ${groups
+            .map(
+              (group, index) => `
+                <button
+                  type="button"
+                  class="map-fallback-button${index === 0 ? " active" : ""}"
+                  data-fallback-region="${escapeHtml(group.region)}"
+                >
+                  <span>${escapeHtml(group.region)}</span>
+                  <strong>${group.brands.length}</strong>
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+      </div>
+    </div>
+  `;
+
+  mapContainer.querySelectorAll("[data-fallback-region]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const group = groups.find(
+        (item) => item.region === button.dataset.fallbackRegion
+      );
+      if (!group) {
+        return;
+      }
+      mapContainer.querySelectorAll(".map-fallback-button").forEach((item) => {
+        item.classList.toggle("active", item === button);
+      });
+      renderMapRegionPanel(group);
+    });
+  });
+
+  renderMapRegionPanel(groups[0]);
+  hideMapMessage();
 }
 
 function resolveRegionPosition(region) {
@@ -650,7 +888,7 @@ function renderMapRegionPanel(group) {
             loading="lazy"
           >
           <span>
-            <small>${brand.demo ? "샘플 · " : ""}${escapeHtml(brand.category)}</small>
+            <small>${escapeHtml(brand.category)}</small>
             <strong>${escapeHtml(brand.name)}</strong>
             <i>${escapeHtml(brand.product)}</i>
           </span>
@@ -706,13 +944,7 @@ async function renderBrandMapMarkers() {
   const renderSequence = ++mapRenderSequence;
   clearBrandMapOverlays();
 
-  const mapBrands =
-    activeMapCategory === "all"
-      ? randomizedBrands
-      : randomizedBrands.filter(
-          (brand) => brand.category === activeMapCategory
-        );
-  const groups = groupMapBrands(mapBrands);
+  const groups = getFilteredMapGroups();
 
   showMapMessage(
     "브랜드 지역을 표시하고 있습니다.",
@@ -751,15 +983,23 @@ async function renderBrandMapMarkers() {
 
 function initializeBrandMap() {
   const mapContainer = document.querySelector("#brandMap");
-  if (!mapContainer || brandMap) {
+  if (!mapContainer || (brandMap && !mapFallbackActive)) {
     return;
   }
 
-  brandMap = new kakao.maps.Map(mapContainer, {
-    center: new kakao.maps.LatLng(36.35, 127.75),
-    level: 12
-  });
-  brandMapGeocoder = new kakao.maps.services.Geocoder();
+  try {
+    mapContainer.classList.remove("is-fallback");
+    mapContainer.innerHTML = "";
+    mapFallbackActive = false;
+    brandMap = new kakao.maps.Map(mapContainer, {
+      center: new kakao.maps.LatLng(36.35, 127.75),
+      level: 12
+    });
+    brandMapGeocoder = new kakao.maps.services.Geocoder();
+  } catch (error) {
+    renderMapFallback();
+    return;
+  }
 
   if ("ResizeObserver" in window) {
     brandMapResizeObserver = new ResizeObserver(() => {
@@ -783,15 +1023,16 @@ function initializeBrandMap() {
 function loadKakaoMapSdk() {
   const key = String(window.KAKAO_JAVASCRIPT_KEY || "").trim();
   if (!key) {
-    showMapMessage(
-      "카카오맵 설정을 확인해 주세요.",
-      "지도 JavaScript 키가 설정되지 않았습니다."
-    );
+    renderMapFallback();
     return;
   }
 
   if (window.kakao?.maps) {
-    kakao.maps.load(initializeBrandMap);
+    try {
+      kakao.maps.load(initializeBrandMap);
+    } catch (error) {
+      renderMapFallback();
+    }
     return;
   }
 
@@ -800,14 +1041,25 @@ function loadKakaoMapSdk() {
     "https://dapi.kakao.com/v2/maps/sdk.js" +
     `?appkey=${encodeURIComponent(key)}` +
     "&autoload=false&libraries=services";
-  script.addEventListener("load", () => kakao.maps.load(initializeBrandMap));
-  script.addEventListener("error", () => {
-    showMapMessage(
-      "카카오맵을 불러오지 못했습니다.",
-      "잠시 후 다시 시도해 주세요."
-    );
+  script.addEventListener("load", () => {
+    if (!window.kakao?.maps) {
+      renderMapFallback();
+      return;
+    }
+    try {
+      kakao.maps.load(initializeBrandMap);
+    } catch (error) {
+      renderMapFallback();
+    }
   });
+  script.addEventListener("error", renderMapFallback);
   document.head.appendChild(script);
+
+  window.setTimeout(() => {
+    if (!brandMap && !mapFallbackActive) {
+      renderMapFallback();
+    }
+  }, 6000);
 }
 
 mapCategoryFilter?.addEventListener("click", (event) => {
@@ -820,7 +1072,11 @@ mapCategoryFilter?.addEventListener("click", (event) => {
   mapCategoryFilter.querySelectorAll("button").forEach((item) => {
     item.classList.toggle("active", item === button);
   });
-  renderBrandMapMarkers();
+  if (mapFallbackActive) {
+    renderMapFallback();
+  } else {
+    renderBrandMapMarkers();
+  }
 });
 
 async function loadBrands() {
@@ -834,8 +1090,12 @@ async function loadBrands() {
     }
 
     const brands = await response.json();
+    const publishedItems = brands.filter((brand) => brand.published !== false);
     randomizedBrands = shuffled(
-      brands.filter((brand) => brand.published !== false)
+      publishedItems.filter((brand) => !isFestival(brand))
+    );
+    randomizedFestivals = shuffled(
+      publishedItems.filter((brand) => isFestival(brand))
     );
 
     renderCategoryButtons(randomizedBrands);
@@ -851,8 +1111,10 @@ async function loadBrands() {
     }
 
     renderBrands();
+    renderFestivals();
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
+    startFestivalRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
     }
@@ -870,11 +1132,14 @@ async function loadBrands() {
         images: { main: "/assets/i4-eggs.png" }
       }
     ];
+    randomizedFestivals = [];
     renderCategoryButtons(randomizedBrands);
     renderMapCategoryButtons(randomizedBrands);
     renderBrands();
+    renderFestivals();
     renderBrandTicker(randomizedBrands);
     startBrandRotation();
+    startFestivalRotation();
     if (document.querySelector("#brandMap")) {
       loadKakaoMapSdk();
     }
@@ -882,3 +1147,64 @@ async function loadBrands() {
 }
 
 loadBrands();
+
+const serviceInquiryForm = document.querySelector("#serviceInquiryForm");
+const serviceInquiryStatus = document.querySelector("#serviceInquiryStatus");
+
+serviceInquiryForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const submitButton = serviceInquiryForm.querySelector('button[type="submit"]');
+  const formData = new FormData(serviceInquiryForm);
+  const originalLabel = submitButton?.textContent || "문의 보내기";
+
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "보내는 중";
+  }
+  if (serviceInquiryStatus) {
+    serviceInquiryStatus.textContent = "";
+    serviceInquiryStatus.className = "";
+  }
+
+  try {
+    const response = await fetch("https://formsubmit.co/ajax/fyndcom@gmail.com", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "상호 또는 담당자": formData.get("name"),
+        "연락처": formData.get("contact"),
+        "지역과 업종": formData.get("region"),
+        "문의 내용": formData.get("message") || "별도 내용 없음",
+        _subject: "[FYND 서비스웹] 소개 신청",
+        _template: "table"
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("문의 전송 실패");
+    }
+
+    serviceInquiryForm.reset();
+    if (serviceInquiryStatus) {
+      serviceInquiryStatus.textContent =
+        "문의가 접수되었습니다. 확인 후 입력한 연락처로 안내드리겠습니다.";
+      serviceInquiryStatus.className = "success";
+    }
+  } catch (error) {
+    console.error(error);
+    if (serviceInquiryStatus) {
+      serviceInquiryStatus.textContent =
+        "전송이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.";
+      serviceInquiryStatus.className = "error";
+    }
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalLabel;
+    }
+  }
+});

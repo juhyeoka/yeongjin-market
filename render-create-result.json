@@ -2,10 +2,10 @@
   "autoDeploy": "yes",
   "autoDeployTrigger": "commit",
   "branch": "main",
-  "createdAt": "2026-07-07T01:35:20.433865Z",
-  "dashboardUrl": "https://dashboard.render.com/static/srv-d965fltckfvc73errl70",
-  "id": "srv-d965fltckfvc73errl70",
-  "name": "yeongjin-market",
+  "createdAt": "2026-08-28T17:03:11.03384Z",
+  "dashboardUrl": "https://dashboard.render.com/static/srv-da8rujh42hec73dtg7l0",
+  "id": "srv-da8rujh42hec73dtg7l0",
+  "name": "fynd-cnd",
   "notifyOnFail": "default",
   "ownerId": "tea-d6ik7at6ubrc73caqv40",
   "repo": "https://github.com/juhyeoka/yeongjin-market",
@@ -24,11 +24,11 @@
     },
     "publishPath": ".",
     "pullRequestPreviewsEnabled": "no",
-    "url": "https://yeongjin-market.onrender.com"
+    "url": "https://fynd-cnd.onrender.com"
   },
-  "slug": "yeongjin-market",
+  "slug": "fynd-cnd",
   "suspended": "not_suspended",
   "suspenders": [],
   "type": "static_site",
-  "updatedAt": "2026-07-07T01:35:20.433865Z"
+  "updatedAt": "2026-08-28T17:03:11.03384Z"
 }

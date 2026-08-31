@@ -4,7 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-DEFAULT_RENDER_URL="https://yeongjin-market.onrender.com"
+DEFAULT_RENDER_URL="https://fynd-cnd.onrender.com"
 
 echo ""
 read -r -p "현재 영진마켓 주소 [$DEFAULT_RENDER_URL]: " SITE_URL
