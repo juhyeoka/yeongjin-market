@@ -53,6 +53,7 @@ let brandMapResizeObserver = null;
 let activeMapCategory = "all";
 let mapRenderSequence = 0;
 let mapFallbackActive = false;
+let brandMasonryResizeTimer = null;
 const regionPositionCache = new Map();
 
 function setMenuOpen(open) {
@@ -411,6 +412,39 @@ function getVisibleFestivals() {
   );
 }
 
+function layoutBrandMasonry() {
+  if (!brandGrid || brandGrid.hidden) {
+    return;
+  }
+
+  const cards = [...brandGrid.querySelectorAll(".brand-card")];
+  if (!cards.length) {
+    brandGrid.classList.remove("is-masonry");
+    return;
+  }
+
+  brandGrid.classList.remove("is-masonry");
+  cards.forEach((card) => card.style.removeProperty("grid-row-end"));
+
+  const gutter =
+    Number.parseFloat(
+      window.getComputedStyle(brandGrid).getPropertyValue("--brand-grid-gap")
+    ) || 18;
+  const cardHeights = cards.map((card) =>
+    Math.ceil(card.getBoundingClientRect().height + gutter)
+  );
+
+  cards.forEach((card, index) => {
+    card.style.gridRowEnd = `span ${cardHeights[index]}`;
+  });
+  brandGrid.classList.add("is-masonry");
+}
+
+window.addEventListener("resize", () => {
+  window.clearTimeout(brandMasonryResizeTimer);
+  brandMasonryResizeTimer = window.setTimeout(layoutBrandMasonry, 120);
+});
+
 function renderBrands() {
   if (!brandGrid) {
     return;
@@ -423,6 +457,7 @@ function renderBrands() {
     .join("");
 
   brandGrid.hidden = brands.length === 0;
+  layoutBrandMasonry();
   if (emptyResult) {
     emptyResult.hidden = brands.length !== 0;
   }

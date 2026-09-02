@@ -418,11 +418,23 @@
 }
 
 .service-v3 .brand-grid {
+  --brand-grid-gap: 18px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: var(--brand-grid-gap);
   align-items: start;
   transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.service-v3 .brand-grid.is-masonry {
+  grid-auto-flow: dense;
+  grid-auto-rows: 1px;
+  column-gap: var(--brand-grid-gap);
+  row-gap: 0;
+}
+
+.service-v3 .brand-grid.is-masonry .brand-card {
+  margin: 0 0 var(--brand-grid-gap);
 }
 
 .service-v3 .brand-grid.is-reordering,
@@ -440,8 +452,6 @@
   border-radius: 0;
   box-shadow: none;
 }
-
-.service-v3 .brand-card:nth-child(3n + 2) { margin-top: 70px; }
 
 .service-v3 .brand-card-media {
   position: relative;
@@ -899,8 +909,6 @@
   .service-v3 .sv3-hero-copy { max-width: 760px; }
   .service-v3 .sv3-hero-directory { min-height: 470px; }
   .service-v3 .brand-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .service-v3 .brand-card:nth-child(3n + 2) { margin-top: 0; }
-  .service-v3 .brand-card:nth-child(even) { margin-top: 54px; }
   .service-v3 .festival-card,
   .service-v3 .festival-card:nth-child(4n + 1),
   .service-v3 .festival-card:nth-child(4n + 2) { grid-column: span 6; }
@@ -955,11 +963,10 @@
   .service-v3 .sv3-section-head h2 { font-size: 36px; line-height: 1.17; }
   .service-v3 .sv3-section-head > span { display: block; margin-top: 16px; font-size: 13px; }
   .service-v3 .sv3-brand-toolbar { align-items: flex-start; flex-direction: column; }
-  .service-v3 .brand-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .service-v3 .brand-card:nth-child(even) { margin-top: 0; }
-  .service-v3 .brand-card-media,
-  .service-v3 .brand-card-tall .brand-card-media,
-  .service-v3 .brand-card-compact .brand-card-media { height: clamp(142px, 42vw, 178px); }
+  .service-v3 .brand-grid { --brand-grid-gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .service-v3 .brand-card-media { height: clamp(142px, 42vw, 178px); }
+  .service-v3 .brand-card-tall .brand-card-media { height: clamp(176px, 52vw, 220px); }
+  .service-v3 .brand-card-compact .brand-card-media { height: clamp(118px, 34vw, 148px); }
   .service-v3 .brand-card-status { top: 9px; left: 9px; padding: 5px 7px; font-size: 8px; }
   .service-v3 .brand-card-body { min-height: 148px; padding: 13px 12px 12px; }
   .service-v3 .brand-card-body > small { font-size: 9px; }
