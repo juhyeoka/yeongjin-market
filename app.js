@@ -270,6 +270,15 @@ function getExternalLinkAttributes(brand) {
     : "";
 }
 
+function getRegionBadge(region) {
+  const label = String(region || "")
+    .replace(/^충청남도\s*/, "")
+    .replace(/^충남\s*/, "")
+    .trim();
+
+  return label || "충남";
+}
+
 function renderBrandCard(brand, index) {
   const image =
     brand.images?.main || "/assets/brands/brand-placeholder.svg";
@@ -297,7 +306,7 @@ function renderBrandCard(brand, index) {
           ${index < 3 ? 'fetchpriority="high"' : 'loading="lazy"'}
         >
         <i class="brand-card-status">
-          ${isFestival(brand) ? "충남의 행사" : brand.demo ? "소개 예시" : "충남의 가게"}
+          ${escapeHtml(getRegionBadge(brand.region))}
         </i>
       </span>
 

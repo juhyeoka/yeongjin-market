@@ -20,12 +20,14 @@
   "sortOrder": 2,
   "publicUrl": "https://fynd-cnd.onrender.com/brands/yesan-apple-united/",
   "images": {
-    "main": "/assets/brands/yesan-apple-united/cover.jpg",
+    "main": "/assets/brands/yesan-apple-united/cover-20260904.jpg",
     "gallery": [
-      "/assets/brands/yesan-apple-united/gallery-01.jpg",
-      "/assets/brands/yesan-apple-united/gallery-02.jpg",
-      "/assets/brands/yesan-apple-united/gallery-03.jpg",
-      "/assets/brands/yesan-apple-united/gallery-04.jpg"
+      "/assets/brands/yesan-apple-united/team-talk-20260904.jpg",
+      "/assets/brands/yesan-apple-united/team-awards-20260904.jpg",
+      "/assets/brands/yesan-apple-united/team-trophies-20260904.jpg",
+      "/assets/brands/yesan-apple-united/indoor-ground-20260904.jpg",
+      "/assets/brands/yesan-apple-united/stadium-highlight-20260826.jpg",
+      "/assets/brands/yesan-apple-united/stadium-lineup-20260826.jpg"
     ]
   }
 }
