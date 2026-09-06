@@ -694,7 +694,7 @@ recentBrandButton?.addEventListener("click", () => {
     // 잘못된 저장값은 무시합니다.
   }
 
-  showToast("아직 확인한 브랜드가 없습니다.");
+  showToast("아직 살펴본 브랜드가 없어요.");
 });
 
 const regionSearchQueries = {
@@ -814,8 +814,8 @@ function renderMapFallback() {
   if (!groups.length) {
     mapContainer.innerHTML = `
       <div class="map-fallback map-fallback-empty">
-        <strong>표시할 지역이 없습니다.</strong>
-        <span>다른 분류를 선택해 주세요.</span>
+        <strong>지금은 표시할 지역이 없어요.</strong>
+        <span>다른 분류를 골라보세요.</span>
       </div>
     `;
     hideMapMessage();
@@ -824,21 +824,18 @@ function renderMapFallback() {
 
   mapContainer.innerHTML = `
     <div class="map-fallback">
-      <div class="map-fallback-map-stage">
-        <iframe
-          class="map-fallback-frame"
-          title="충청남도 지역 지도"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=125.85%2C35.85%2C127.95%2C37.15&amp;layer=mapnik"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
-        <span class="map-fallback-badge">충청남도</span>
+      <div class="map-fallback-kakao-stage">
+        <div class="map-fallback-kakao-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <small>KAKAO MAP</small>
+        <strong>지도를 잠시 불러오지 못했어요.</strong>
+        <span>지역 목록은 그대로 둘러볼 수 있어요.</span>
+        <a href="https://map.kakao.com/?q=${encodeURIComponent("충청남도")}" target="_blank" rel="noopener noreferrer">카카오맵에서 충남 보기 <b aria-hidden="true">↗</b></a>
       </div>
       <div class="map-fallback-directory">
         <div class="map-fallback-head">
-          <small>충남 지역 안내</small>
-          <strong>지역별 가게를 확인하세요.</strong>
-          <span>지역을 선택하면 등록된 가게와 브랜드를 볼 수 있습니다.</span>
+          <small>지역으로 찾기</small>
+          <strong>지역을 선택하면 가게와 브랜드를 볼 수 있어요.</strong>
+          <span>먼저 궁금한 지역을 골라보세요.</span>
         </div>
         <div class="map-fallback-grid">
           ${groups
@@ -943,9 +940,9 @@ function renderMapRegionPanel(group) {
     .join("");
 
   mapRegionPanel.innerHTML = `
-    <p class="section-kicker">REGION BRANDS</p>
+    <p class="section-kicker">지역별 이야기</p>
     <h3>${escapeHtml(group.region)}</h3>
-    <span>${group.brands.length}개 브랜드 · 지역 중심 위치</span>
+    <span>${group.brands.length}곳을 만나볼 수 있어요.</span>
     <div class="map-region-brand-list">${cards}</div>
   `;
 }
@@ -991,8 +988,8 @@ async function renderBrandMapMarkers() {
   const groups = getFilteredMapGroups();
 
   showMapMessage(
-    "브랜드 지역을 표시하고 있습니다.",
-    "등록된 지역의 중심 위치를 확인하는 중입니다."
+    "가게가 있는 지역을 표시하고 있어요.",
+    "잠시만 기다려 주세요."
   );
 
   const positionedGroups = await Promise.all(
@@ -1009,8 +1006,8 @@ async function renderBrandMapMarkers() {
   const validGroups = positionedGroups.filter((item) => item.position);
   if (!validGroups.length) {
     showMapMessage(
-      "표시할 지역을 찾지 못했습니다.",
-      "다른 카테고리를 선택해 주세요."
+      "지금은 표시할 지역이 없어요.",
+      "다른 분류를 골라보세요."
     );
     return;
   }
@@ -1167,11 +1164,11 @@ async function loadBrands() {
     randomizedBrands = [
       {
         slug: "i4",
-        name: "i4",
+        name: "아이뽀란",
         category: "농산",
         product: "계란",
         region: "충남 홍성",
-        headline: "농장 환경과 생산 과정을 직접 확인할 수 있는 계란",
+        headline: "농장에서 식탁까지 과정을 살펴볼 수 있는 계란",
         published: true,
         images: { main: "/assets/i4-eggs.png" }
       }
@@ -1235,14 +1232,14 @@ serviceInquiryForm?.addEventListener("submit", async (event) => {
     serviceInquiryForm.reset();
     if (serviceInquiryStatus) {
       serviceInquiryStatus.textContent =
-        "문의가 접수되었습니다. 확인 후 입력한 연락처로 안내드리겠습니다.";
+        "문의가 접수됐어요. 남겨주신 연락처로 답변드릴게요.";
       serviceInquiryStatus.className = "success";
     }
   } catch (error) {
     console.error(error);
     if (serviceInquiryStatus) {
       serviceInquiryStatus.textContent =
-        "전송이 원활하지 않습니다. 잠시 후 다시 시도해 주세요.";
+        "지금은 전송이 되지 않아요. 잠시 후 다시 보내주세요.";
       serviceInquiryStatus.className = "error";
     }
   } finally {
